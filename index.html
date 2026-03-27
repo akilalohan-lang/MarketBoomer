@@ -1,0 +1,2659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marketboomer – Procurement Platform for Hotels</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* =====================
+       RESET & ROOT
+    ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f2542;
+      --navy-deep: #091a30;
+      --navy-mid: #1a3a6e;
+      --teal: #2faee3;
+      --teal-light: #5cc8f0;
+      --teal-deep: #0096b7;
+      --indigo: #3b5bdb;
+      --light-bg: #f8fafc;
+      --white: #ffffff;
+      --text-primary: #0f2542;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --border: #e2e8f0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      overflow-x: hidden;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* =====================
+       SHARED UTILITIES
+    ===================== */
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--teal);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .section-eyebrow::before,
+    .section-eyebrow::after {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--teal);
+      border-radius: 2px;
+    }
+
+    h1, h2, h3 { text-wrap: balance; }
+
+    /* All buttons — never wrap text on any device */
+    .btn-primary, .btn-intro, .btn-white, .btn-outline-white,
+    .banner-btn, .hero-nav-cta, .footer-login-btn, .feat-cta,
+    .feature-btn, .logos-cta-link, .banner-btn {
+      white-space: nowrap;
+    }
+
+    /* =====================
+       1. HERO
+    ===================== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .hero-left {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 60px 80px;
+      width: 58%;
+      min-height: 100vh;
+      background: linear-gradient(100deg, #ffffff 0%, #ffffff 55%, rgba(255,255,255,0.9) 72%, rgba(255,255,255,0.3) 86%, transparent 100%);
+    }
+    .hero-right {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
+    /* =====================
+       NAVIGATION
+    ===================== */
+    .hero-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 60px;
+      z-index: 1000;
+      background: #ffffff;
+      box-shadow: 0 1px 0 rgba(15,37,66,0.08), 0 4px 16px rgba(15,37,66,0.04);
+    }
+    .hero-logo { display: flex; align-items: center; flex-shrink: 0; }
+    .hero-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+    .hero-nav-links {
+      display: flex;
+      gap: 4px;
+      list-style: none;
+      align-items: center;
+      margin-left: auto;
+      margin-right: 8px;
+    }
+    .hero-nav-links > li { position: relative; }
+    .hero-nav-links > li > a {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: rgba(15,37,66,0.7);
+      text-decoration: none;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 8px 11px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .hero-nav-links > li > a:hover,
+    .hero-nav-links > li.nav-open > a { color: var(--navy); background: rgba(15,37,66,0.04); }
+
+    /* Dropdown chevron */
+    .nav-chevron { width: 12px; height: 12px; transition: transform 0.2s; flex-shrink: 0; }
+    .hero-nav-links > li.nav-open .nav-chevron { transform: rotate(180deg); }
+
+    /* Dropdown panel */
+    .nav-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 200px;
+      background: #ffffff;
+      border: 1px solid rgba(15,37,66,0.08);
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(15,37,66,0.12);
+      list-style: none;
+      padding: 6px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+      z-index: 100;
+    }
+    .hero-nav-links > li.nav-open .nav-dropdown {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+    .nav-dropdown a {
+      display: block;
+      padding: 9px 14px;
+      color: rgba(15,37,66,0.7);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 400;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-dropdown a:hover { background: rgba(36,150,208,0.06); color: var(--teal); }
+
+    /* Get Started CTA */
+    .hero-nav-cta {
+      background: var(--teal);
+      box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 20px rgba(47,174,227,0.3);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 9px 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: box-shadow 0.2s, transform 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .hero-nav-cta:hover { box-shadow: 0 0 40px rgba(47,174,227,0.7), 0 8px 32px rgba(47,174,227,0.45); transform: translateY(-1px); }
+
+    /* Hamburger button */
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px; height: 40px;
+      background: none;
+      border: 1px solid rgba(15,37,66,0.15);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .hamburger-btn span {
+      display: block; width: 18px; height: 1.5px;
+      background: var(--navy); border-radius: 2px; transition: all 0.25s;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile nav overlay */
+    .mobile-nav-overlay {
+      position: fixed; inset: 0;
+      background: rgba(9,26,48,0.45);
+      z-index: 1999;
+      transition: opacity 0.3s;
+    }
+    /* Mobile nav drawer */
+    .mobile-nav {
+      position: fixed;
+      top: 0; right: -320px;
+      width: 300px; max-width: 90vw; height: 100vh;
+      background: #ffffff;
+      z-index: 2000;
+      overflow-y: auto;
+      transition: right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      padding: 0 0 40px;
+      display: flex; flex-direction: column;
+      box-shadow: -8px 0 40px rgba(9,26,48,0.12);
+    }
+    .mobile-nav.open { right: 0; }
+    .mobile-nav-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(15,37,66,0.08);
+    }
+    .mobile-nav-logo img { height: 26px; width: auto; }
+    .mobile-nav-close {
+      background: none; border: none; cursor: pointer;
+      padding: 6px; color: rgba(15,37,66,0.5); font-size: 1.1rem; line-height: 1;
+      border-radius: 6px; transition: background 0.15s, color 0.15s;
+    }
+    .mobile-nav-close:hover { background: rgba(15,37,66,0.06); color: var(--navy); }
+    .mobile-nav-links { list-style: none; flex: 1; padding: 8px 12px; }
+    .mobile-nav-links > li { border-bottom: 1px solid rgba(15,37,66,0.05); }
+    .mobile-nav-links > li > a,
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 8px;
+      color: var(--navy); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500;
+      letter-spacing: 0.03em; text-transform: uppercase;
+      background: none; border: none; cursor: pointer; width: 100%; text-align: left;
+      transition: color 0.15s;
+    }
+    .mobile-nav-links > li > a:hover, .mobile-nav-toggle:hover { color: var(--teal); }
+    .mobile-nav-chevron { width: 14px; height: 14px; transition: transform 0.2s; color: rgba(15,37,66,0.4); flex-shrink: 0; }
+    .mobile-nav-links > li.mob-open .mobile-nav-chevron { transform: rotate(180deg); }
+    .mobile-sub { list-style: none; padding: 0 0 8px 12px; display: none; }
+    .mobile-nav-links > li.mob-open .mobile-sub { display: block; }
+    .mobile-sub a {
+      display: block; padding: 9px 8px;
+      color: rgba(15,37,66,0.65); text-decoration: none; font-size: 0.82rem; font-weight: 400;
+      transition: color 0.15s;
+    }
+    .mobile-sub a:hover { color: var(--teal); }
+    .mobile-nav-footer { padding: 20px; }
+    .mobile-nav-footer .hero-nav-cta { display: block; text-align: center; padding: 13px 20px; font-size: 0.85rem; }
+
+    /* Responsive nav */
+    @media (max-width: 1200px) {
+      .hero-nav { padding: 13px 40px; }
+      .hero-logo img { height: 28px; }
+      .hero-nav-links > li > a { font-size: 0.63rem; padding: 7px 8px; }
+    }
+    @media (max-width: 980px) {
+      .hero-nav { padding: 12px 28px; }
+      .hero-logo img { height: 26px; }
+      .hero-nav-links > li > a { font-size: 0.58rem; padding: 6px 6px; letter-spacing: 0.02em; }
+      .hero-nav-cta { padding: 8px 14px; font-size: 0.72rem; }
+    }
+    @media (max-width: 820px) {
+      .hero-nav { padding: 11px 24px; }
+      .hero-logo img { height: 22px; }
+      .hero-nav-links { gap: 0; margin-right: 4px; }
+      .hero-nav-links > li > a { font-size: 0.44rem; padding: 5px 4px; letter-spacing: 0; }
+      .hero-nav-cta { padding: 7px 11px; font-size: 0.68rem; }
+    }
+    @media (max-width: 700px) {
+      .hero-nav-links { display: none; }
+      .hero-nav-cta { display: none; }
+      .hamburger-btn { display: flex; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 600px;
+      animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(47, 174, 227, 0.12);
+      border: 1px solid rgba(47, 174, 227, 0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      margin-bottom: 28px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--teal-light);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .hero-eyebrow .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .hero-h1 {
+      font-size: clamp(2rem, 4.2vw, 4.2rem);
+      font-weight: 300;
+      color: var(--navy);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    /* ── Animated gradient highlight ── */
+    .highlight {
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light), #a8ecff, var(--teal-light), var(--teal));
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientFlow 4s linear infinite;
+    }
+    @keyframes gradientFlow {
+      0%   { background-position: 0% center; }
+      100% { background-position: 250% center; }
+    }
+    @keyframes btnGradientFlow {
+      0%   { background-position: 0% center; }
+      100% { background-position: 250% center; }
+    }
+    strong { font-weight: 800; }
+
+    .hero-sub {
+      font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+      color: rgba(15, 37, 66, 0.6);
+      line-height: 1.75;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--teal);
+      box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 20px rgba(47,174,227,0.3);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: box-shadow 0.25s, transform 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(47,174,227,0.7), 0 8px 32px rgba(47,174,227,0.45);
+    }
+
+    .btn-arrow { font-size: 1rem; transition: transform 0.2s; }
+    .btn-primary:hover .btn-arrow { transform: translateX(4px); }
+
+    .hero-stats {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      gap: 40px;
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(15,37,66,0.1);
+    }
+    .hero-stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .hero-stat-value span { color: var(--teal); }
+    .hero-stat-label {
+      font-size: 0.72rem;
+      color: rgba(15,37,66,0.45);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 5px;
+      white-space: nowrap;
+    }
+    .hero-stat-divider {
+      width: 1px;
+      background: rgba(15,37,66,0.1);
+      align-self: stretch;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 36px;
+      left: 72px;
+      z-index: 10;
+    }
+    .scroll-indicator svg {
+      width: 32px;
+      height: 32px;
+      animation: bounceDown 1.5s ease-in-out infinite;
+    }
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(0); opacity: 0.5; }
+      50% { transform: translateY(10px); opacity: 1; }
+    }
+
+    /* =====================
+       2. INTRO
+    ===================== */
+    .intro-section {
+      background: var(--white);
+      padding: 100px 60px;
+      overflow: hidden;
+    }
+    .intro-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 96px;
+      align-items: center;
+    }
+
+    .intro-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .intro-left.visible { opacity: 1; transform: translateX(0); }
+
+    .intro-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--teal);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .intro-eyebrow::before {
+      content: '';
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--teal);
+      border-radius: 2px;
+    }
+
+    .intro-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .intro-body {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 36px;
+    }
+
+    .chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .chip:hover { transform: translateY(-2px); }
+    .chip-1 { background: rgba(47, 174, 227, 0.08); color: #0077a8; border: 1px solid rgba(47, 174, 227, 0.2); }
+    .chip-2 { background: rgba(59, 91, 219, 0.08); color: var(--indigo); border: 1px solid rgba(59, 91, 219, 0.2); }
+    .chip-3 { background: rgba(15, 37, 66, 0.06); color: var(--navy); border: 1px solid rgba(15, 37, 66, 0.12); }
+    .chip-4 { background: rgba(47, 174, 227, 0.08); color: #0077a8; border: 1px solid rgba(47, 174, 227, 0.2); }
+    .chip-1:hover { box-shadow: 0 4px 16px rgba(47, 174, 227, 0.18); }
+    .chip-2:hover { box-shadow: 0 4px 16px rgba(59, 91, 219, 0.18); }
+    .chip-3:hover { box-shadow: 0 4px 16px rgba(15, 37, 66, 0.1); }
+    .chip-4:hover { box-shadow: 0 4px 16px rgba(47, 174, 227, 0.18); }
+    .chip-img {
+      width: 20px; height: 20px;
+      object-fit: contain;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .btn-intro {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--navy);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 4px 20px rgba(15, 37, 66, 0.2);
+    }
+    .btn-intro:hover {
+      background: var(--navy-mid);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(15, 37, 66, 0.3);
+    }
+    .btn-intro .arrow { transition: transform 0.2s; }
+    .btn-intro:hover .arrow { transform: translateX(4px); }
+
+    .intro-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+    }
+    .intro-right.visible { opacity: 1; transform: translateX(0); }
+
+    .graphic-card {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+    }
+    .gcard-main {
+      background: linear-gradient(145deg, var(--navy) 0%, #1a3a6e 100%);
+      border-radius: 24px;
+      padding: 44px;
+      box-shadow: 0 32px 80px rgba(15, 37, 66, 0.25), 0 0 0 1px rgba(255,255,255,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .gcard-main::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(47, 174, 227, 0.14), transparent 70%);
+    }
+    .gcard-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 18px;
+    }
+    .metric-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .metric-row:last-child { border-bottom: none; }
+    .metric-name {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+      font-weight: 400;
+    }
+    .metric-bar-wrap {
+      flex: 1;
+      margin: 0 14px;
+      height: 5px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .metric-bar {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      animation: barFill 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    @keyframes barFill { from { width: 0 !important; } }
+    .metric-val {
+      font-size: 0.82rem;
+      color: var(--white);
+      font-weight: 700;
+      min-width: 34px;
+      text-align: right;
+    }
+
+    .gcard-float {
+      position: absolute;
+      bottom: -28px; left: -28px;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 210px;
+      animation: floatCard 5s ease-in-out infinite;
+    }
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    .gcard-float-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .gcard-float-icon svg { width: 20px; height: 20px; }
+    .gcard-float-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .gcard-float-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 3px;
+    }
+
+    .gcard-float-2 {
+      position: absolute;
+      top: -22px; right: -22px;
+      background: var(--white);
+      border-radius: 14px;
+      padding: 14px 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      animation: floatCard2 6s ease-in-out infinite;
+      animation-delay: -2s;
+    }
+    @keyframes floatCard2 {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%       { transform: translateY(-6px) rotate(0.4deg); }
+    }
+    .gcard-float-2-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+    }
+    .gcard-float-2-text {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    /* =====================
+       3. FEATURES
+    ===================== */
+    .features-section {
+      background: var(--light-bg);
+      padding: 100px 60px;
+      overflow: hidden;
+    }
+    .features-container { max-width: 1280px; margin: 0 auto; }
+
+    .features-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 72px;
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .features-header.visible { opacity: 1; transform: translateY(0); }
+
+    .features-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .features-sub {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+
+    /* Feature alternating rows */
+    .feat-rows { margin: 0 -60px; }
+    .feat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 460px;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .feat-row.visible { opacity: 1; transform: translateY(0); }
+    .feat-row:nth-child(2) { transition-delay: 0.1s; }
+    .feat-row:nth-child(3) { transition-delay: 0.2s; }
+    .feat-row--dark { background: var(--navy); }
+    .feat-img { overflow: hidden; }
+    .feat-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .feat-row:hover .feat-img img { transform: scale(1.04); }
+    .feat-text {
+      padding: 72px 68px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .feat-row--reverse .feat-img { order: 2; }
+    .feat-row--reverse .feat-text { order: 1; }
+    .feat-num {
+      font-size: 4.5rem; font-weight: 900; line-height: 1;
+      letter-spacing: -0.06em; color: rgba(47,174,227,0.1);
+      margin-bottom: -8px; user-select: none; pointer-events: none;
+    }
+    .feat-row--dark .feat-num { color: rgba(255,255,255,0.05); }
+    .feat-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(47,174,227,0.08); color: #0077a8;
+      border-radius: 100px; padding: 5px 12px;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      margin-bottom: 18px; align-self: flex-start;
+    }
+    .feat-row--dark .feat-badge { background: rgba(47,174,227,0.2); color: var(--teal-light); }
+    .feat-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+    .feat-h3 {
+      font-size: clamp(1.25rem, 1.8vw, 1.8rem);
+      font-weight: 300; color: var(--text-primary);
+      letter-spacing: -0.025em; line-height: 1.25;
+      margin-bottom: 16px; text-wrap: balance;
+    }
+    .feat-row--dark .feat-h3 { color: var(--white); }
+    .feat-h3 strong { font-weight: 800; }
+    .feat-body {
+      font-size: 0.95rem; color: var(--text-secondary);
+      line-height: 1.75; margin-bottom: 32px; max-width: 440px;
+    }
+    .feat-row--dark .feat-body { color: rgba(255,255,255,0.65); }
+    .feat-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--teal); text-decoration: none;
+      font-size: 0.875rem; font-weight: 700;
+      letter-spacing: 0.02em;
+      border-bottom: 2px solid transparent; padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s, gap 0.2s;
+      align-self: flex-start;
+    }
+    .feat-row--dark .feat-cta { color: var(--teal-light); }
+    .feat-cta:hover { border-color: var(--teal); gap: 12px; }
+
+    .features-banner {
+      margin-top: 56px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      border-radius: 20px;
+      padding: 36px 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+    }
+    .features-banner.visible { opacity: 1; transform: translateY(0); }
+    .banner-text {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .banner-text strong { color: var(--white); font-weight: 700; }
+    .banner-btn {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--teal);
+      box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 20px rgba(47,174,227,0.3);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: box-shadow 0.25s, transform 0.25s;
+      white-space: nowrap;
+    }
+    .banner-btn:hover { box-shadow: 0 0 40px rgba(47,174,227,0.7), 0 8px 32px rgba(47,174,227,0.45); transform: translateY(-1px); }
+
+    /* =====================
+       4. PRODUCTS
+    ===================== */
+    .products-section {
+      background: linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 50%, var(--navy-mid) 100%);
+      padding: 100px 60px;
+      overflow: hidden;
+      position: relative;
+    }
+    .products-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 10% 80%, rgba(47, 174, 227, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 90% 20%, rgba(59, 91, 219, 0.1) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .products-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+    }
+    .products-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .products-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 64px;
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .products-header.visible { opacity: 1; transform: translateY(0); }
+    .products-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .products-sub {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.75;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .product-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 52px 48px;
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.4s;
+      cursor: default;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    .product-card.visible { opacity: 1; transform: translateY(0); }
+    .product-card:nth-child(2) { transition-delay: 0.12s; }
+    .product-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(47, 174, 227, 0.35);
+      box-shadow:
+        0 32px 80px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(47, 174, 227, 0.1),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    .product-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(47, 174, 227, 0.1), transparent 50%, rgba(59, 91, 219, 0.08));
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+    .product-card:hover::before { opacity: 1; }
+    .product-card .card-bg-shape { position: absolute; pointer-events: none; }
+    .product-card:nth-child(1) .card-bg-shape {
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(47, 174, 227, 0.08), transparent 70%);
+      top: -80px; right: -80px;
+    }
+    .product-card:nth-child(2) .card-bg-shape {
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59, 91, 219, 0.1), transparent 70%);
+      bottom: -80px; left: -80px;
+    }
+    .product-num {
+      position: absolute;
+      top: 24px; right: 32px;
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.04);
+      letter-spacing: -0.05em;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .product-icon-wrap {
+      width: 68px; height: 68px;
+      border-radius: 18px;
+      background: rgba(47, 174, 227, 0.12);
+      border: 1px solid rgba(47, 174, 227, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .product-card:hover .product-icon-wrap {
+      background: rgba(47, 174, 227, 0.2);
+      box-shadow: 0 8px 28px rgba(47, 174, 227, 0.25);
+    }
+    .product-icon-wrap svg { width: 30px; height: 30px; }
+    .product-name-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(47, 174, 227, 0.1);
+      border: 1px solid rgba(47, 174, 227, 0.2);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal-light);
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+    .product-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 1.3;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .product-body {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.75;
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 1;
+    }
+    .product-features {
+      list-style: none;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .product-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.65);
+      font-weight: 400;
+    }
+    .product-features li::before {
+      content: '';
+      display: block;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(47, 174, 227, 0.15);
+      border: 1px solid rgba(47, 174, 227, 0.3);
+      flex-shrink: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2300b4d8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 10px;
+    }
+    .product-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+      position: relative;
+      z-index: 1;
+    }
+    .product-btn:hover {
+      background: rgba(47, 174, 227, 0.15);
+      border-color: var(--teal);
+      transform: translateY(-2px);
+    }
+    .product-btn .arrow { transition: transform 0.2s; }
+    .product-btn:hover .arrow { transform: translateX(4px); }
+
+    /* =====================
+       5. TESTIMONIALS
+    ===================== */
+    .testimonials-section {
+      background: var(--white);
+      padding: 100px 60px;
+      overflow: hidden;
+      position: relative;
+    }
+    .testimonials-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .testi-container { max-width: 1280px; margin: 0 auto; }
+
+    .testi-header {
+      text-align: center;
+      margin-bottom: 64px;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .testi-header.visible { opacity: 1; transform: translateY(0); }
+
+    .testi-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 18px;
+    }
+    .testi-label::before,
+    .testi-label::after {
+      content: '';
+      display: block;
+      width: 24px; height: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      border-radius: 2px;
+    }
+    .testi-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    .testi-sub { font-size: 0.92rem; color: var(--text-muted); }
+    .testi-stars {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .star { color: #f59e0b; font-size: 1rem; }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testi-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s;
+      cursor: default;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    .testi-card.visible { opacity: 1; transform: translateY(0); }
+    .testi-card:nth-child(2) { transition-delay: 0.1s; }
+    .testi-card:nth-child(3) { transition-delay: 0.2s; }
+    .testi-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 56px rgba(15, 37, 66, 0.1);
+      border-color: rgba(47, 174, 227, 0.25);
+    }
+    .quote-mark {
+      position: absolute;
+      top: 20px; right: 28px;
+      font-size: 5.5rem;
+      line-height: 1;
+      color: rgba(47, 174, 227, 0.08);
+      font-family: Georgia, 'Times New Roman', serif;
+      font-weight: 900;
+      pointer-events: none;
+      user-select: none;
+      transition: color 0.3s;
+    }
+    .testi-card:hover .quote-mark { color: rgba(47, 174, 227, 0.15); }
+    .card-stars { display: flex; gap: 3px; margin-bottom: 20px; }
+    .card-star { color: #f59e0b; font-size: 0.82rem; }
+    .testi-quote {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      font-style: italic;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+    .testi-divider { height: 1px; background: var(--border); margin-bottom: 22px; }
+    .testi-author { display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; }
+    .author-info { min-width: 0; flex: 1; }
+    .author-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .avatar-1 { background: linear-gradient(135deg, var(--teal), var(--teal-light)); }
+    .avatar-2 { background: linear-gradient(135deg, var(--indigo), #6b7ff0); }
+    .avatar-3 { background: linear-gradient(135deg, var(--navy), var(--navy-mid)); }
+    .author-name { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+    .author-role { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .author-verified {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 100px;
+      padding: 3px 9px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #16a34a;
+      letter-spacing: 0.04em;
+    }
+    .verified-dot { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; }
+
+    .testi-proof {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 56px;
+      padding-top: 44px;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+    }
+    .testi-proof.visible { opacity: 1; transform: translateY(0); }
+    .proof-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .proof-value { font-size: 1.4rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.03em; }
+    .proof-value span { color: var(--teal); }
+    .proof-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.03em; }
+    .proof-divider { width: 1px; height: 32px; background: var(--border); }
+
+    /* =====================
+       6. LOGOS
+    ===================== */
+    .logos-section {
+      background: var(--light-bg);
+      padding: 96px 60px;
+      overflow: hidden;
+      position: relative;
+    }
+    .logos-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .logos-container { max-width: 1280px; margin: 0 auto; }
+
+    .logos-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 56px;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .logos-header.visible { opacity: 1; transform: translateY(0); }
+
+    .logos-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .logos-eyebrow::before,
+    .logos-eyebrow::after {
+      content: '';
+      display: block;
+      width: 18px; height: 1px;
+      background: var(--border);
+    }
+    .logos-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .logos-sub { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
+
+    .logos-carousel-wrap {
+      overflow: hidden;
+      position: relative;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    }
+    .logos-track {
+      display: flex;
+      gap: 16px;
+      animation: logoScroll 32s linear infinite;
+      width: max-content;
+    }
+    .logos-carousel-wrap:hover .logos-track { animation-play-state: paused; }
+    @keyframes logoScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .logos-track .logo-item {
+      flex-shrink: 0;
+      width: 180px;
+      height: 90px;
+      background: var(--white);
+      border: 1px solid rgba(15,37,66,0.06);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+    }
+    .logos-track .logo-item img {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 48px;
+      display: block;
+      filter: grayscale(1) opacity(0.65);
+      transition: filter 0.3s;
+    }
+    .logos-track .logo-item:hover img { filter: grayscale(0) opacity(1); }
+    .logos-track .logo-item img[alt="The Peninsula Hotel"] { mix-blend-mode: multiply; }
+
+    .logos-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 48px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.5s, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.5s;
+      flex-wrap: wrap;
+    }
+    .logos-cta.visible { opacity: 1; transform: translateY(0); }
+    .logos-cta-text { font-size: 0.88rem; color: var(--text-muted); font-weight: 400; }
+    .logos-cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--teal);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-bottom: 1.5px solid transparent;
+      padding-bottom: 1px;
+      transition: border-color 0.2s, gap 0.2s;
+    }
+    .logos-cta-link:hover { border-color: var(--teal); gap: 10px; }
+
+    /* =====================
+       7. CTA
+    ===================== */
+    .cta-section {
+      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 45%, var(--teal-light) 100%);
+      padding: 100px 60px;
+      overflow: hidden;
+      position: relative;
+      text-align: center;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    .cta-circle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.12;
+    }
+    .cta-circle-1 {
+      width: 600px; height: 600px;
+      border: 1px solid rgba(255,255,255,0.3);
+      top: -200px; left: -150px;
+      animation: rotateSlow 30s linear infinite;
+    }
+    .cta-circle-2 {
+      width: 400px; height: 400px;
+      border: 1px solid rgba(255,255,255,0.2);
+      bottom: -120px; right: -100px;
+      animation: rotateSlow 22s linear infinite reverse;
+    }
+    .cta-circle-3 {
+      width: 250px; height: 250px;
+      background: rgba(255,255,255,0.06);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .cta-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(50px);
+      pointer-events: none;
+      opacity: 0.15;
+    }
+    .cta-orb-1 {
+      width: 300px; height: 300px;
+      background: var(--white);
+      top: -60px; right: 20%;
+      animation: ctaFloat 14s ease-in-out infinite;
+    }
+    .cta-orb-2 {
+      width: 200px; height: 200px;
+      background: rgba(15, 37, 66, 0.5);
+      bottom: -40px; left: 15%;
+      animation: ctaFloat 18s ease-in-out infinite;
+      animation-delay: -6s;
+    }
+    @keyframes ctaFloat {
+      0%, 100% { transform: translate(0, 0); }
+      33%       { transform: translate(20px, -15px); }
+      66%       { transform: translate(-10px, 20px); }
+    }
+    .cta-container {
+      position: relative;
+      z-index: 5;
+      max-width: 800px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .cta-container.visible { opacity: 1; transform: translateY(0); }
+    .cta-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 76px; height: 76px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      margin-bottom: 32px;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .cta-badge:hover { transform: scale(1.05) rotate(3deg); background: rgba(255,255,255,0.2); }
+    .cta-badge svg { width: 34px; height: 34px; }
+    /* On blue CTA bg, gradient must be white-dominant */
+    .cta-section .highlight {
+      background: linear-gradient(90deg, rgba(255,255,255,0.7), #ffffff, rgba(255,255,255,0.7));
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+    .cta-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .cta-body {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.75;
+      margin-bottom: 44px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 52px;
+    }
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--white);
+      color: var(--teal-deep);
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 15px 34px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.2s;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    }
+    .btn-white:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,0.2); background: rgba(255,255,255,0.95); }
+    .btn-white .arrow { transition: transform 0.2s; }
+    .btn-white:hover .arrow { transform: translateX(4px); }
+    .btn-outline-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: transparent;
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 15px 30px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+      letter-spacing: 0.02em;
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); transform: translateY(-3px); }
+    .cta-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 36px;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.7);
+      font-weight: 500;
+    }
+    .trust-icon {
+      width: 16px; height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.9);
+    }
+    .trust-icon svg { width: 15px; height: 15px; }
+
+    /* =====================
+       SITE FOOTER
+    ===================== */
+    .site-footer {
+      background: linear-gradient(135deg, #0f2542 0%, #1a5a8c 60%, #2faee3 100%);
+      color: rgba(255,255,255,0.85);
+      padding: 64px 60px 0;
+    }
+    .site-footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 1.5fr 1.4fr 0.9fr;
+      gap: 48px;
+      padding-bottom: 52px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .footer-brand-logo {
+      height: 30px; width: auto; display: block;
+      filter: brightness(0) invert(1);
+      margin-bottom: 22px;
+    }
+    .footer-contact-list {
+      padding-left: 18px;
+    }
+    .footer-contact-list p {
+      font-size: 0.81rem; line-height: 1.85; color: rgba(255,255,255,0.72);
+    }
+    .footer-contact-list strong {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.5);
+      font-weight: 700;
+      margin-right: 4px;
+    }
+    .footer-contact-list a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-contact-list a:hover { color: #ffffff; }
+    .footer-address { margin-top: 10px !important; }
+    .footer-col-title {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.45);
+      margin-bottom: 18px;
+    }
+    .footer-col-text { font-size: 0.83rem; line-height: 1.75; color: rgba(255,255,255,0.72); }
+    .footer-col-text + .footer-col-text { margin-top: 12px; }
+    .footer-nav-list { list-style: none; }
+    .footer-nav-list li { display: flex; align-items: center; }
+    .footer-nav-list li::before { content: '›'; margin-right: 7px; color: rgba(255,255,255,0.35); flex-shrink: 0; }
+    .footer-nav-list a {
+      color: rgba(255,255,255,0.72); text-decoration: none;
+      font-size: 0.76rem; line-height: 2.1; transition: color 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .footer-nav-list a:hover { color: #ffffff; }
+    .footer-col-cta { display: flex; flex-direction: column; justify-content: flex-start; padding-top: 24px; }
+    .footer-login-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #ffffff; text-decoration: none;
+      border-radius: 10px; padding: 14px 18px;
+      font-size: 0.83rem; font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .footer-login-btn:hover { background: rgba(255,255,255,0.2); }
+    .footer-login-icon { width: 17px; height: 17px; flex-shrink: 0; }
+    .footer-bottom { padding: 18px 0; }
+    .footer-bottom-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .footer-copyright { font-size: 0.76rem; color: rgba(255,255,255,0.4); }
+    .footer-bottom-links { display: flex; align-items: center; gap: 10px; }
+    .footer-bottom-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.76rem; transition: color 0.2s; }
+    .footer-bottom-links a:hover { color: rgba(255,255,255,0.85); }
+    .footer-sep { color: rgba(255,255,255,0.2); font-size: 0.76rem; }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 1100px) {
+      .hero-left { padding: 110px 40px 80px; }
+      .intro-container { gap: 60px; }
+      .feat-text { padding: 56px 52px; }
+      .testi-grid { gap: 18px; }
+      .testi-card { padding: 32px 24px; }
+      .author-name { font-size: 0.78rem; }
+      .author-role { font-size: 0.68rem; }
+      .author-verified { font-size: 0.58rem; padding: 2px 7px; }
+      .site-footer-inner { grid-template-columns: 1fr 1.4fr 1fr; gap: 36px; }
+      .footer-col-cta { display: none; }
+      .site-footer { padding: 56px 40px 0; }
+      .footer-bottom { padding: 16px 0; }
+    }
+    @media (max-width: 900px) {
+      .hero { display: block; min-height: auto; }
+      .hero-left {
+        position: relative; z-index: 1;
+        width: 100%; min-height: auto;
+        padding: 90px 40px 72px;
+        background:
+          linear-gradient(180deg,
+            rgba(255,255,255,0.65) 0%,
+            rgba(255,255,255,0.55) 50%,
+            rgba(255,255,255,0.78) 78%,
+            rgba(255,255,255,0.97) 93%,
+            #ffffff 100%),
+          url('https://marketboomer.com/wp-content/uploads/2021/05/home-banner-cropped.jpeg') 65% 30%/cover no-repeat;
+      }
+      .hero-right { display: none; }
+      .hero-stats { gap: 24px; margin-top: 40px; }
+      .scroll-indicator { display: none; }
+
+      .intro-section,
+      .features-section,
+      .products-section,
+      .testimonials-section,
+      .logos-section,
+      .cta-section { padding: 72px 40px; }
+
+      .intro-container { grid-template-columns: 1fr; gap: 64px; }
+      .intro-right { max-width: 500px; margin: 0 auto; }
+      .feat-rows { margin: 0 -40px; }
+      .feat-row { grid-template-columns: 1fr; min-height: auto; }
+      .feat-row--reverse .feat-img { order: 0; }
+      .feat-row--reverse .feat-text { order: 0; }
+      .feat-img { min-height: 320px; }
+      .feat-text { padding: 56px 48px; }
+      .features-banner { flex-direction: column; text-align: center; padding: 32px 28px; }
+      .products-grid { grid-template-columns: 1fr; max-width: 600px; margin: 0 auto; }
+      .product-card { padding: 40px 36px; }
+      .testi-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; }
+      .testi-proof { gap: 28px; }
+    }
+    @media (max-width: 768px) {
+      .site-footer-inner { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+      .site-footer { padding: 48px 32px 0; }
+      .footer-bottom { padding: 16px 0; }
+      .footer-col-cta { display: flex; order: 3; align-items: center; }
+      .footer-col-brand { order: 10; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+      /* About: order 1 (default), Our Tools: order 2 (default) */
+      .site-footer-inner > .footer-col:nth-child(2) { order: 1; }
+      .site-footer-inner > .footer-col:nth-child(3) { order: 2; }
+      .footer-brand-logo { margin: 0 auto 22px; }
+      .footer-contact-list { padding-left: 0; }
+      .footer-nav-list li { justify-content: center; }
+      .footer-nav-list li::before { display: none; }
+      .footer-login-btn { align-self: center; width: auto; padding: 9px 20px; font-size: 0.78rem; }
+      .footer-bottom-inner { flex-direction: column; align-items: center; gap: 8px; }
+    }
+    @media (max-width: 600px) {
+      /* Hero — center, image as faint bg, white fade covers dark shape at bottom */
+      .hero-left {
+        padding: 80px 32px 48px; text-align: center;
+        background:
+          linear-gradient(180deg,
+            rgba(255,255,255,0.6) 0%,
+            rgba(255,255,255,0.5) 45%,
+            rgba(255,255,255,0.72) 72%,
+            rgba(255,255,255,0.96) 90%,
+            #ffffff 100%),
+          url('https://marketboomer.com/wp-content/uploads/2021/05/home-banner-cropped.jpeg') 65% 30%/cover no-repeat;
+      }
+      .hero-right { display: none; }
+      .hero-content { max-width: 100%; }
+      .hero-eyebrow {
+        font-size: 0.58rem; padding: 4px 12px;
+        background: var(--navy); border-color: var(--navy);
+        color: rgba(255,255,255,0.9);
+      }
+      .hero-eyebrow .dot { background: var(--teal-light); }
+      .hero-h1 { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+      .hero-sub { max-width: 300px; margin-left: auto; margin-right: auto; font-size: 0.88rem; }
+      .hero-actions { justify-content: center; }
+
+      /* Stats — single flex row */
+      .hero-stats {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0;
+        margin-top: 32px;
+        padding-top: 24px;
+      }
+      .hero-stat { flex: 1; text-align: center; padding: 0 4px; }
+      .hero-stat-value { font-size: 1.05rem; }
+      .hero-stat-label { font-size: 0.5rem; letter-spacing: 0; }
+      .hero-stat-divider { display: block; width: 1px; height: 36px; background: rgba(15,37,66,0.12); flex-shrink: 0; }
+
+      /* All sections — 40px side padding */
+      .intro-section { padding: 56px 40px; }
+      .features-section,
+      .products-section,
+      .testimonials-section,
+      .logos-section,
+      .cta-section { padding: 56px 40px; }
+      .site-footer { padding: 40px 40px 0; }
+      .footer-bottom { padding: 14px 0; }
+      .intro-left { text-align: center; }
+      .intro-text, .section-eyebrow, .intro-h2, .intro-body { text-align: center; }
+      .intro-body { font-size: 0.78rem; line-height: 1.7; max-width: 300px; margin-left: auto; margin-right: auto; }
+
+      /* Eyebrow: center + line above instead of left */
+      .intro-eyebrow {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+      }
+      .intro-eyebrow::before {
+        width: 36px;
+        height: 2px;
+        display: block;
+      }
+
+      .chip-grid { justify-content: center; gap: 8px; }
+
+      /* All buttons — compact, consistent, never full-width */
+      .btn-primary,
+      .btn-intro,
+      .btn-white,
+      .btn-outline-white,
+      .banner-btn {
+        display: inline-flex;
+        padding: 9px 20px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        border-radius: 8px;
+      }
+      .btn-intro { align-self: center; }
+      .btn-primary { box-shadow: 0 4px 16px rgba(47,174,227,0.3); }
+
+      /* CTA: trust checkpoints above buttons */
+      .cta-container { display: flex; flex-direction: column; align-items: center; }
+      .cta-badge { align-self: center; }
+      .cta-trust { order: 4; border-top: none; border-bottom: 1px solid rgba(255,255,255,0.15); padding-top: 0; padding-bottom: 28px; margin-bottom: 28px; flex-direction: column; align-items: center; gap: 14px; }
+      .cta-buttons { order: 5; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+      .feat-rows { margin: 0 -28px; }
+      .feat-text { padding: 44px 28px; text-align: center; align-items: center; }
+      .feat-badge { align-self: center; }
+      .feat-body { max-width: 100%; }
+      .feat-cta { align-self: center; }
+      .feat-img { min-height: 260px; }
+      .feat-row { grid-template-columns: 1fr; min-height: auto; }
+      .feat-row--reverse .feat-img { order: 0; }
+      .feat-row--reverse .feat-text { order: 0; }
+
+      /* Graphic card — floating chips inside the card */
+      .intro-right { padding: 40px 20px 40px; overflow: visible; }
+      .graphic-card { margin: 36px auto 0; max-width: 290px; position: relative; }
+      .gcard-main { padding: 28px; }
+
+      /* Bottom float card — centered inside card, original row layout */
+      .gcard-float {
+        position: absolute;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        bottom: 20px;
+        min-width: 0;
+        padding: 12px 18px;
+        white-space: nowrap;
+        z-index: 10;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        animation: floatCard 5s ease-in-out infinite;
+      }
+      .gcard-float-icon { width: 36px; height: 36px; border-radius: 10px; }
+      .gcard-float-value { font-size: 1.1rem; }
+      .gcard-float-label { font-size: 0.62rem; }
+
+      /* Top float chip — inside card top-right, moved up slightly */
+      .gcard-float-2 {
+        right: 16px;
+        left: auto;
+        transform: none;
+        top: 16px;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .product-card { padding: 32px 24px; }
+      .product-features li { font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .testi-card { padding: 26px 22px; }
+
+      /* testi-proof: 4 stats in a single row */
+      .testi-proof { flex-wrap: nowrap; gap: 0; justify-content: center; }
+      .proof-divider { display: block; width: 1px; height: 32px; flex-shrink: 0; }
+      .proof-item { flex: 1; padding: 0 2px; }
+      .proof-value { font-size: 1rem; }
+      .proof-label { font-size: 0.46rem; letter-spacing: 0; }
+
+      .cta-trust { gap: 18px; }
+
+      /* Footer mobile — center + reorder */
+      .site-footer-inner { text-align: center; }
+      .footer-col-brand { order: 10; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .footer-col-cta { order: 3; align-items: center; }
+      .footer-brand-logo { margin: 0 auto 14px; height: 20px; }
+      .footer-contact-list { padding-left: 0; }
+      .footer-nav-list li { justify-content: center; }
+      .footer-nav-list li::before { display: none; }
+      .footer-login-btn { align-self: center; width: auto; padding: 9px 20px; font-size: 0.78rem; }
+      .footer-bottom-inner { flex-direction: column; align-items: center; gap: 8px; }
+
+      /* Center all page section text */
+      p, h1, h2, h3 { text-align: center; }
+      /* Re-exclude footer contact/nav p elements that should stay left-aligned relative to their container (footer already text-align:center at 768px) */
+      .footer-contact-list p { text-align: center; }
+
+      /* Center section eyebrows (inline-flex — need justify-content too) */
+      .section-eyebrow {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      /* Center features sub-text and headers */
+      .features-header, .products-header, .logos-header, .testi-header { text-align: center; }
+      .features-sub, .products-sub, .logos-sub, .testi-sub { text-align: center; }
+
+      /* Flex containers with column layout — align items center */
+      .intro-container { align-items: center; }
+
+      /* CTA section centering */
+      .cta-section { text-align: center; }
+      .cta-h2, .cta-body { text-align: center; }
+
+      /* Prevent orphan words on all text elements */
+      p, h1, h2, h3, h4,
+      .feat-body, .intro-body, .hero-sub,
+      .cta-body, .banner-text, .logos-sub, .product-body,
+      .proof-label, .hero-stat-label, .feat-h3, .cta-h2,
+      .logos-h2, .features-h2, .products-h2, .testi-h2 {
+        text-wrap: balance;
+      }
+      /* text-wrap: pretty targets last-line orphans in longer quotes */
+      .testi-quote { text-wrap: pretty; font-size: 0.84rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== SECTION 1: HERO ==================== -->
+  <section class="hero">
+
+    <!-- Left panel: text content -->
+    <div class="hero-left">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          Procurement Platform for Hotels
+        </div>
+        <h1 class="hero-h1">
+          Take <strong>complete control</strong> over your <span class="highlight">hotel's procurement</span> process
+        </h1>
+        <p class="hero-sub">
+          Gain the visibility you need to fast-track purchasing, simplify payments and empower smart decision-making
+        </p>
+        <div class="hero-actions">
+          <a href="#" class="btn-primary">Learn more <span class="btn-arrow">→</span></a>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value"><span>3,000</span>+</div>
+          <div class="hero-stat-label">Suppliers</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-value"><span>40</span>%</div>
+          <div class="hero-stat-label">Cost Reduction</div>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-value"><span>500</span>+</div>
+          <div class="hero-stat-label">Hotels Served</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel: hero photo fills the grid cell -->
+    <div class="hero-right">
+      <img
+        src="https://marketboomer.com/wp-content/uploads/2021/05/home-banner-cropped.jpeg"
+        alt="Hotel procurement hero"
+      />
+    </div>
+
+    <div class="scroll-indicator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2faee3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline><polyline points="6 14 12 20 18 14"></polyline></svg>
+    </div>
+  </section>
+
+  <!-- Navigation: fixed, spans full viewport -->
+  <nav class="hero-nav">
+    <div class="hero-logo">
+      <a href="#"><img src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png" alt="Marketboomer PurchasePlus" /></a>
+    </div>
+
+    <ul class="hero-nav-links">
+      <li><a href="#">Home</a></li>
+      <li class="has-dropdown">
+        <a href="#">About Us <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">In The News</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="#">Features <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">Real Time Marketplace</a></li>
+          <li><a href="#">Robotic Automation</a></li>
+          <li><a href="#">Centralised Data</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="#">Our Solutions <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">PurchasePlus</a></li>
+          <li><a href="#">Paperless Invoicing</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="#">Our Customers <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">Buyers</a></li>
+          <li><a href="#">Suppliers</a></li>
+          <li><a href="#">Channel Partners</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+
+    <a href="#" class="hero-nav-cta">Get started</a>
+
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" style="display:none;opacity:0;"></div>
+
+  <!-- Mobile nav drawer -->
+  <div class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+      <span style="font-size:0.8rem;font-weight:600;color:rgba(15,37,66,0.5);letter-spacing:0.06em;text-transform:uppercase;">Menu</span>
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+    </div>
+    <ul class="mobile-nav-links">
+      <li><a href="#">Home</a></li>
+      <li>
+        <button class="mobile-nav-toggle">About Us <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub"><li><a href="#">In The News</a></li></ul>
+      </li>
+      <li>
+        <button class="mobile-nav-toggle">Features <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub">
+          <li><a href="#">Real Time Marketplace</a></li>
+          <li><a href="#">Robotic Automation</a></li>
+          <li><a href="#">Centralised Data</a></li>
+        </ul>
+      </li>
+      <li>
+        <button class="mobile-nav-toggle">Our Solutions <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub">
+          <li><a href="#">PurchasePlus</a></li>
+          <li><a href="#">Paperless Invoicing</a></li>
+        </ul>
+      </li>
+      <li>
+        <button class="mobile-nav-toggle">Our Customers <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub">
+          <li><a href="#">Buyers</a></li>
+          <li><a href="#">Suppliers</a></li>
+          <li><a href="#">Channel Partners</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="mobile-nav-footer">
+      <a href="#" class="hero-nav-cta">Get started</a>
+    </div>
+  </div>
+
+  <!-- ==================== SECTION 2: INTRO ==================== -->
+  <section class="intro-section">
+    <div class="intro-container">
+
+      <div class="intro-left" id="introLeft">
+        <div class="intro-eyebrow">Why Marketboomer</div>
+        <h2 class="intro-h2">Make <strong>Procurement</strong> <span class="highlight">Easier Than Ever</span></h2>
+        <p class="intro-body">
+          Procurement is one of the most costly and time-consuming processes in your hotel. Marketboomer brings everything together — suppliers, approvals, payments and data — so you gain full control, cut costs, and free up your team.
+        </p>
+        <div class="chip-grid">
+          <span class="chip chip-1">
+            <img class="chip-img" src="https://marketboomer.com/wp-content/uploads/2019/08/Icon__connected-systems-1.png" alt="" />
+            Connected Systems
+          </span>
+          <span class="chip chip-2">
+            <img class="chip-img" src="https://marketboomer.com/wp-content/uploads/2019/08/Icon__automated-workflows-1.png" alt="" />
+            Automated Workflows
+          </span>
+          <span class="chip chip-3"><span style="font-size:0.85em;">📊</span> Instant Price &amp; Quality Review</span>
+          <span class="chip chip-4"><span style="font-size:0.85em;">💳</span> Integrated Payment Processes</span>
+        </div>
+        <a href="#" class="btn-intro">Learn more <span class="arrow">→</span></a>
+      </div>
+
+      <div class="intro-right" id="introRight">
+        <div class="graphic-card">
+          <div class="gcard-float-2">
+            <div class="gcard-float-2-dot"></div>
+            <div class="gcard-float-2-text">All systems connected</div>
+          </div>
+          <div class="gcard-main">
+            <div class="gcard-label">Procurement Overview</div>
+            <div class="metric-row">
+              <span class="metric-name">Cost Savings</span>
+              <div class="metric-bar-wrap"><div class="metric-bar" style="width: 82%"></div></div>
+              <span class="metric-val">82%</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-name">Supplier Coverage</span>
+              <div class="metric-bar-wrap"><div class="metric-bar" style="width: 94%"></div></div>
+              <span class="metric-val">94%</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-name">Process Automation</span>
+              <div class="metric-bar-wrap"><div class="metric-bar" style="width: 77%"></div></div>
+              <span class="metric-val">77%</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-name">Staff Productivity</span>
+              <div class="metric-bar-wrap"><div class="metric-bar" style="width: 89%"></div></div>
+              <span class="metric-val">89%</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-name">Payment Accuracy</span>
+              <div class="metric-bar-wrap"><div class="metric-bar" style="width: 98%"></div></div>
+              <span class="metric-val">98%</span>
+            </div>
+          </div>
+          <div class="gcard-float">
+            <div class="gcard-float-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                <polyline points="16 7 22 7 22 13"></polyline>
+              </svg>
+            </div>
+            <div>
+              <div class="gcard-float-value">40%</div>
+              <div class="gcard-float-label">Average cost reduction</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 3: FEATURES ==================== -->
+  <section class="features-section">
+    <div class="features-container">
+
+      <div class="features-header" id="featuresHeader">
+        <div class="section-eyebrow">Platform Features</div>
+        <h2 class="features-h2">3 <strong>Features</strong> For <span class="highlight">Greater Control</span></h2>
+        <p class="features-sub">
+          Helpful on their own, powerful together. The key technologies behind Marketboomer software that take your procurement abilities to the next level.
+        </p>
+      </div>
+
+      <div class="feat-rows">
+
+        <!-- Row 1: Real Time Marketplace — text left, image right -->
+        <div class="feat-row" id="fcard1">
+          <div class="feat-text">
+            <div class="feat-num">01</div>
+            <div class="feat-badge"><span class="feat-badge-dot"></span>Marketplace</div>
+            <h3 class="feat-h3">Access live pricing changes in a <span class="highlight">Real Time Marketplace</span></h3>
+            <p class="feat-body">Ditch fixed contracts and hidden markups. Shop online with live pricing from thousands of suppliers, updated in real time.</p>
+            <a href="#" class="feat-cta">Learn more →</a>
+          </div>
+          <div class="feat-img">
+            <img src="https://marketboomer.com/wp-content/uploads/2019/08/marketboomer-procurement-software-hotels_0003_shutterstock_1182412297.jpg" alt="Real Time Marketplace" />
+          </div>
+        </div>
+
+        <!-- Row 2: Robotic Automation — dark bg, image left, text right -->
+        <div class="feat-row feat-row--dark feat-row--reverse" id="fcard2">
+          <div class="feat-text">
+            <div class="feat-num">02</div>
+            <div class="feat-badge"><span class="feat-badge-dot"></span>Automation</div>
+            <h3 class="feat-h3">Effortlessly delegate purchasing authority with <span class="highlight">Robotic Automation</span></h3>
+            <p class="feat-body">Remove the bottlenecks. Automate approvals and delegate purchasing authority so your team can focus on what matters.</p>
+            <a href="#" class="feat-cta">Learn more →</a>
+          </div>
+          <div class="feat-img">
+            <img src="https://marketboomer.com/wp-content/uploads/2019/08/marketboomer-procurement-software-hotels_0010_shutterstock_451896418.jpg" alt="Robotic Automation" />
+          </div>
+        </div>
+
+        <!-- Row 3: Centralised Data — text left, image right -->
+        <div class="feat-row" id="fcard3">
+          <div class="feat-text">
+            <div class="feat-num">03</div>
+            <div class="feat-badge"><span class="feat-badge-dot"></span>Analytics</div>
+            <h3 class="feat-h3">Make minute by minute informed decisions with <span class="highlight">Centralised Data</span></h3>
+            <p class="feat-body">End uninformed decisions and guesswork. Get instant access to all purchasing, payment, supplier and margin data in one place.</p>
+            <a href="#" class="feat-cta">Learn more →</a>
+          </div>
+          <div class="feat-img">
+            <img src="https://marketboomer.com/wp-content/uploads/2019/08/marketboomer-procurement-software-hotels_0001_shutterstock_1376943989.jpg" alt="Centralised Data" />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="features-banner" id="featuresBanner">
+        <p class="banner-text">
+          <strong>Ready to see all three working together?</strong><br />
+          See how real-time pricing, automation and centralised data work together in one platform.
+        </p>
+        <a href="#" class="banner-btn">Explore platform →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 4: PRODUCTS ==================== -->
+  <section class="products-section">
+    <div class="products-container">
+
+      <div class="products-header" id="productsHeader">
+        <div class="section-eyebrow">Our Products</div>
+        <h2 class="products-h2">The <strong>tools</strong> to <span class="highlight">bring it all together</span></h2>
+        <p class="products-sub">
+          Utilise the advantages of complete automation with software designed for hotels, by hotel professionals.
+        </p>
+      </div>
+
+      <div class="products-grid">
+        <div class="product-card" id="pcard1">
+          <div class="card-bg-shape"></div>
+          <div class="product-num">01</div>
+          <div class="product-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2faee3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </div>
+          <div class="product-name-tag">PurchasePlus Marketplace</div>
+          <h3 class="product-title">The <strong>core</strong> of <span class="highlight">what we do</span></h3>
+          <p class="product-body">Your gateway to our marketplace. Access thousands of suppliers, live pricing, and seamless order management in one place.</p>
+          <ul class="product-features">
+            <li>Real-time pricing from 3,000+ suppliers</li>
+            <li>One-click ordering &amp; purchase orders</li>
+            <li>Supplier catalogue management</li>
+            <li>Multi-property &amp; multi-currency support</li>
+          </ul>
+          <a href="#" class="product-btn">Read more <span class="arrow">→</span></a>
+        </div>
+
+        <div class="product-card" id="pcard2">
+          <div class="card-bg-shape"></div>
+          <div class="product-num">02</div>
+          <div class="product-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2faee3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <div class="product-name-tag">Invoice Management</div>
+          <h3 class="product-title"><span class="highlight">Paperless</span> <strong>invoice</strong> processing</h3>
+          <p class="product-body">Read, pay, process &amp; review every invoice, no matter the format. Eliminate manual data entry and gain full visibility over every dollar spent.</p>
+          <ul class="product-features">
+            <li>AI-powered invoice reading &amp; matching</li>
+            <li>Automated approval &amp; payment workflows</li>
+            <li>Support for any invoice format</li>
+            <li>Real-time accruals &amp; spend reporting</li>
+          </ul>
+          <a href="#" class="product-btn">Read more <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 5: TESTIMONIALS ==================== -->
+  <section class="testimonials-section">
+    <div class="testi-container">
+
+      <div class="testi-header" id="testiHeader">
+        <div class="testi-stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <div class="testi-label">Testimonials</div>
+        <h2 class="testi-h2"><strong>Trusted</strong> by <span class="highlight">hotel professionals</span> worldwide</h2>
+        <p class="testi-sub">See what our customers say about transforming their procurement</p>
+      </div>
+
+      <div class="testi-grid">
+        <div class="testi-card" id="tcard1">
+          <div class="quote-mark">"</div>
+          <div class="card-stars">
+            <span class="card-star">★</span><span class="card-star">★</span><span class="card-star">★</span><span class="card-star">★</span><span class="card-star">★</span>
+          </div>
+          <p class="testi-quote">
+            "Managing vendor relationships and competitive tension is always a balancing act. Marketboomer gets this right — clear process, full transparency for Anglicare and our suppliers."
+          </p>
+          <div class="testi-divider"></div>
+          <div class="testi-author">
+            <div class="author-avatar avatar-1">A</div>
+            <div class="author-info">
+              <div class="author-name">Procurement Manager</div>
+              <div class="author-role">Anglicare</div>
+            </div>
+            <div class="author-verified"><span class="verified-dot"></span> Verified</div>
+          </div>
+        </div>
+
+        <div class="testi-card" id="tcard2">
+          <div class="quote-mark">"</div>
+          <div class="card-stars">
+            <span class="card-star">★</span><span class="card-star">★</span><span class="card-star">★</span><span class="card-star">★</span><span class="card-star">★</span>
+          </div>
+          <p class="testi-quote">
+            "PurchasePlus is user-friendly and easy to implement — a fantastic opportunity for hotels to improve their processes, with real depth in reporting and insights."
+          </p>
+          <div class="testi-divider"></div>
+          <div class="testi-author">
+            <div class="author-avatar avatar-2">H</div>
+            <div class="author-info">
+              <div class="author-name">General Manager</div>
+              <div class="author-role">Hospitality Group</div>
+            </div>
+            <div class="author-verified"><span class="verified-dot"></span> Verified</div>
+          </div>
+        </div>
+
+        <div class="testi-card" id="tcard3">
+          <div class="quote-mark">"</div>
+          <div class="card-stars">
+            <span class="card-star">★</span><span class="card-star">★</span><span class="card-star">★</span><span class="card-star">★</span><span class="card-star">★</span>
+          </div>
+          <p class="testi-quote">
+            "PurchasePlus has given us greater control over our approval processes. Reporting is now easy and convenient, providing accurate accruals. Paperless Invoicing has eliminated data entry, and provides the information we need, whenever we need it."
+          </p>
+          <div class="testi-divider"></div>
+          <div class="testi-author">
+            <div class="author-avatar avatar-3">F</div>
+            <div class="author-info">
+              <div class="author-name">Finance Director</div>
+              <div class="author-role">Luxury Hotel Group</div>
+            </div>
+            <div class="author-verified"><span class="verified-dot"></span> Verified</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-proof" id="testiProof">
+        <div class="proof-item">
+          <div class="proof-value"><span>500</span>+</div>
+          <div class="proof-label">Hotels &amp; Properties</div>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <div class="proof-value"><span>4.9</span>/5</div>
+          <div class="proof-label">Average Rating</div>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <div class="proof-value"><span>98</span>%</div>
+          <div class="proof-label">Customer Retention</div>
+        </div>
+        <div class="proof-divider"></div>
+        <div class="proof-item">
+          <div class="proof-value"><span>12</span>yr</div>
+          <div class="proof-label">Industry Experience</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 6: LOGOS ==================== -->
+  <section class="logos-section">
+    <div class="logos-container">
+
+      <div class="logos-header" id="logosHeader">
+        <div class="logos-eyebrow">Trusted By</div>
+        <h2 class="logos-h2">Companies we've helped <strong>take control</strong> of their <span class="highlight">procurement</span></h2>
+        <p class="logos-sub">Joining hundreds of hospitality groups, hotels and accommodation providers already using Marketboomer.</p>
+      </div>
+
+      <div class="logos-carousel-wrap">
+        <div class="logos-track">
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/Accor-Hotels-2.png" alt="Accor Hotels" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/InterContinental-2.png" alt="InterContinental" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/Hyatt-150x150-2.png" alt="Hyatt" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/Holiday-Inn-2.png" alt="Holiday Inn" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/Crowne-Plaza-2.png" alt="Crowne Plaza" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/westin-hotels-1.png" alt="Westin Hotels" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/sofitel-1.png" alt="Sofitel" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/sheraton-1.png" alt="Sheraton" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/pulman-1.jpg" alt="Pullman" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/the-peninsula-hotel-150x150-1.png" alt="The Peninsula Hotel" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/starwood-hotel-1.png" alt="Starwood Hotels" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/ritz-club-150x150-1.jpg" alt="Ritz Club" /></div>
+          <!-- Duplicate set for seamless loop -->
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/Accor-Hotels-2.png" alt="Accor Hotels" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/InterContinental-2.png" alt="InterContinental" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/Hyatt-150x150-2.png" alt="Hyatt" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/Holiday-Inn-2.png" alt="Holiday Inn" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/Crowne-Plaza-2.png" alt="Crowne Plaza" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/westin-hotels-1.png" alt="Westin Hotels" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/sofitel-1.png" alt="Sofitel" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/sheraton-1.png" alt="Sheraton" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/pulman-1.jpg" alt="Pullman" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/the-peninsula-hotel-150x150-1.png" alt="The Peninsula Hotel" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/starwood-hotel-1.png" alt="Starwood Hotels" /></div>
+          <div class="logo-item"><img src="https://marketboomer.com/wp-content/uploads/2019/09/ritz-club-150x150-1.jpg" alt="Ritz Club" /></div>
+        </div>
+      </div>
+
+      <div class="logos-cta" id="logosCta">
+        <p class="logos-cta-text">Want to join them?</p>
+        <a href="#" class="logos-cta-link">View Case Studies →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== SECTION 7: CTA ==================== -->
+  <section class="cta-section">
+    <div class="cta-circle cta-circle-1"></div>
+    <div class="cta-circle cta-circle-2"></div>
+    <div class="cta-circle cta-circle-3"></div>
+    <div class="cta-orb cta-orb-1"></div>
+    <div class="cta-orb cta-orb-2"></div>
+
+    <div class="cta-container" id="ctaContainer">
+      <div class="cta-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 21h18"></path>
+          <path d="M5 21V7l8-4v18"></path>
+          <path d="M19 21V11l-6-4"></path>
+          <path d="M9 9v.01"></path>
+          <path d="M9 12v.01"></path>
+          <path d="M9 15v.01"></path>
+          <path d="M9 18v.01"></path>
+        </svg>
+      </div>
+      <h2 class="cta-h2">We used to be you. That's why we <strong>created</strong> <span class="highlight">PurchasePlus</span></h2>
+      <p class="cta-body">We know the pain of sifting through thousands of suppliers to find the right price. Built by hospitality professionals, for hospitality professionals.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn-white">Discover More <span class="arrow">→</span></a>
+        <a href="#" class="btn-outline-white">Book a Demo</a>
+      </div>
+      <div class="cta-trust">
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          No credit card required
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          Free onboarding support
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          Up and running in days
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          Dedicated account manager
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+
+      <!-- Column 1: Brand + Contact -->
+      <div class="footer-col footer-col-brand">
+        <img class="footer-brand-logo"
+          src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png"
+          alt="Marketboomer PurchasePlus"
+        />
+        <div class="footer-contact-list">
+          <p><strong>AU</strong> <a href="tel:1300411014">1300 411 014</a></p>
+          <p><strong>AU</strong> <a href="tel:+61258496957">+61 258 496 957</a></p>
+          <p><strong>SG</strong> <a href="tel:+6531251540">+65 3125 1540</a></p>
+          <p><strong>US</strong> <a href="tel:+16802255236">+1 (680) 225-5236</a></p>
+          <p><strong>TH</strong> <a href="tel:+6622553703">+66 2255 3703</a></p>
+          <p><strong>GB</strong> <a href="tel:+442045387068">+44 204 538 7068</a></p>
+          <p><a href="mailto:help@marketboomer.com">help@marketboomer.com</a></p>
+          <p class="footer-address">Level 4/11<br/>York Street<br/>Sydney NSW 2000<br/>Australia</p>
+        </div>
+      </div>
+
+      <!-- Column 2: About -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">About</h4>
+        <p class="footer-col-text">
+          Created by hospitality, for hospitality, our cloud-based digital procurement solutions and expertise, help businesses grow by streamlining and optimising buyer-seller interactions.
+        </p>
+        <p class="footer-col-text">
+          Established in 1995, from our Headquarters in Sydney, Australia, with offices across Asia, Marketboomer proudly operates across 12 countries with a global community of over 2500 hospitality buyers and suppliers.
+        </p>
+      </div>
+
+      <!-- Column 3: Our Tools -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Our Tools</h4>
+        <ul class="footer-nav-list">
+          <li><a href="#">PurchasePlus</a></li>
+          <li><a href="#">Paperless Invoicing</a></li>
+          <li><a href="#">Connectivity and Data Translation</a></li>
+          <li><a href="#">Business Intelligence</a></li>
+          <li><a href="#">Document Storage</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Login CTA -->
+      <div class="footer-col footer-col-cta">
+        <a href="https://purchaseplus.com" class="footer-login-btn" target="_blank" rel="noopener">
+          <svg class="footer-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+          Log in PurchasePlus
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Footer bottom bar -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <span class="footer-copyright">© Marketboomer 2026</span>
+        <div class="footer-bottom-links">
+          <a href="#">Terms &amp; Conditions</a>
+          <span class="footer-sep">/</span>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // =====================
+    // Scroll animations
+    // =====================
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+
+    const animatedIds = [
+      'introLeft', 'introRight',
+      'featuresHeader', 'fcard1', 'fcard2', 'fcard3', 'featuresBanner',
+      'productsHeader', 'pcard1', 'pcard2',
+      'testiHeader', 'tcard1', 'tcard2', 'tcard3', 'testiProof',
+      'logosHeader',
+      'logosCta', 'ctaContainer'
+    ];
+    animatedIds.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    // =====================
+    // Desktop nav dropdowns (click-based)
+    // =====================
+    var dropdownItems = document.querySelectorAll('.hero-nav-links > li.has-dropdown');
+    dropdownItems.forEach(function(li) {
+      li.querySelector('a').addEventListener('click', function(e) {
+        e.preventDefault();
+        var isOpen = li.classList.contains('nav-open');
+        dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+        if (!isOpen) li.classList.add('nav-open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.has-dropdown')) {
+        dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+      }
+    });
+    window.addEventListener('scroll', function() {
+      dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+    }, { passive: true });
+
+    // =====================
+    // Hamburger / Mobile nav
+    // =====================
+    var hamburgerBtn = document.getElementById('hamburgerBtn');
+    var mobileNav    = document.getElementById('mobileNav');
+    var overlay      = document.getElementById('mobileNavOverlay');
+    var closeBtn     = document.getElementById('mobileNavClose');
+
+    function openMobileNav() {
+      hamburgerBtn.classList.add('open');
+      mobileNav.classList.add('open');
+      overlay.style.display = 'block';
+      requestAnimationFrame(function() { overlay.style.opacity = '1'; });
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+      hamburgerBtn.classList.remove('open');
+      mobileNav.classList.remove('open');
+      overlay.style.opacity = '0';
+      setTimeout(function() { overlay.style.display = 'none'; }, 300);
+      document.body.style.overflow = '';
+    }
+
+    hamburgerBtn.addEventListener('click', function() {
+      mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+    });
+    closeBtn.addEventListener('click', closeMobileNav);
+    overlay.addEventListener('click', closeMobileNav);
+
+    // Mobile accordion dropdowns
+    document.querySelectorAll('.mobile-nav-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var li = btn.closest('li');
+        var isOpen = li.classList.contains('mob-open');
+        document.querySelectorAll('.mobile-nav-links > li').forEach(function(el) {
+          el.classList.remove('mob-open');
+        });
+        if (!isOpen) li.classList.add('mob-open');
+      });
+    });
+  </script>
+
+</body>
+</html>

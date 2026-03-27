@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paperless Invoicing | Marketboomer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ===== CSS CUSTOM PROPERTIES ===== */
+:root {
+  --navy: #0f2542;
+  --navy-deep: #091a30;
+  --navy-mid: #1a3a6e;
+  --teal: #2faee3;
+  --teal-light: #5cc8f0;
+  --teal-deep: #0096b7;
+  --indigo: #3b5bdb;
+  --light-bg: #f8fafc;
+  --white: #ffffff;
+  --text-primary: #0f2542;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --border: #e2e8f0;
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { text-wrap: balance; }
+
+img { max-width: 100%; display: block; }
+
+a { text-decoration: none; color: inherit; }
+
+button, .btn {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: none;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── SCROLL ANIMATION ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ===== NAVIGATION ===== */
+.hero-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 60px;
+  z-index: 1000;
+  background: #ffffff;
+  box-shadow: 0 1px 0 rgba(15,37,66,0.08), 0 4px 16px rgba(15,37,66,0.04);
+}
+.hero-logo { display: flex; align-items: center; flex-shrink: 0; }
+.hero-logo img { height: 32px; width: auto; display: block; }
+.hero-nav-links {
+  display: flex; gap: 4px; list-style: none;
+  align-items: center; margin-left: auto; margin-right: 8px;
+}
+.hero-nav-links > li { position: relative; }
+.hero-nav-links > li > a {
+  display: flex; align-items: center; gap: 4px;
+  color: rgba(15,37,66,0.7); text-decoration: none;
+  font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em;
+  text-transform: uppercase; padding: 8px 11px; border-radius: 6px;
+  transition: color 0.2s, background 0.2s; white-space: nowrap;
+}
+.hero-nav-links > li > a:hover,
+.hero-nav-links > li.nav-open > a { color: var(--navy); background: rgba(15,37,66,0.04); }
+.nav-chevron { width: 12px; height: 12px; transition: transform 0.2s; flex-shrink: 0; }
+.hero-nav-links > li.nav-open .nav-chevron { transform: rotate(180deg); }
+.nav-dropdown {
+  position: absolute; top: calc(100% + 8px); left: 0;
+  min-width: 200px; background: #ffffff;
+  border: 1px solid rgba(15,37,66,0.08); border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(15,37,66,0.12); list-style: none;
+  padding: 6px; opacity: 0; visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s, transform 0.2s, visibility 0.2s; z-index: 100;
+}
+.hero-nav-links > li.nav-open .nav-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+.nav-dropdown a {
+  display: block; padding: 9px 14px; color: rgba(15,37,66,0.7);
+  text-decoration: none; font-size: 0.78rem; font-weight: 400;
+  border-radius: 6px; transition: background 0.15s, color 0.15s;
+}
+.nav-dropdown a:hover { background: rgba(36,150,208,0.06); color: var(--teal); }
+.hero-nav-cta {
+  background: var(--teal);
+  box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 20px rgba(47,174,227,0.3);
+  color: var(--white); border: none;
+  border-radius: 8px; padding: 9px 20px; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer; letter-spacing: 0.04em;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none; white-space: nowrap; flex-shrink: 0;
+}
+.hero-nav-cta:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(47,174,227,0.7), 0 8px 32px rgba(47,174,227,0.45); }
+.hamburger-btn {
+  display: none; flex-direction: column; justify-content: center;
+  align-items: center; gap: 5px; width: 40px; height: 40px;
+  background: none; border: 1px solid rgba(15,37,66,0.15);
+  border-radius: 8px; cursor: pointer; padding: 0; flex-shrink: 0;
+}
+.hamburger-btn span {
+  display: block; width: 18px; height: 1.5px;
+  background: var(--navy); border-radius: 2px; transition: all 0.25s;
+}
+.hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger-btn.open span:nth-child(2) { opacity: 0; }
+.hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+.mobile-nav-overlay {
+  position: fixed; inset: 0; background: rgba(9,26,48,0.45);
+  z-index: 1999; transition: opacity 0.3s;
+}
+.mobile-nav {
+  position: fixed; top: 0; right: -320px;
+  width: 300px; max-width: 90vw; height: 100vh;
+  background: #ffffff; z-index: 2000; overflow-y: auto;
+  transition: right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 0 0 40px; display: flex; flex-direction: column;
+  box-shadow: -8px 0 40px rgba(9,26,48,0.12);
+}
+.mobile-nav.open { right: 0; }
+.mobile-nav-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px; border-bottom: 1px solid rgba(15,37,66,0.08);
+}
+.mobile-nav-close {
+  background: none; border: none; cursor: pointer;
+  padding: 6px; color: rgba(15,37,66,0.5); font-size: 1.1rem; line-height: 1;
+  border-radius: 6px; transition: background 0.15s, color 0.15s;
+}
+.mobile-nav-close:hover { background: rgba(15,37,66,0.06); color: var(--navy); }
+.mobile-nav-links { list-style: none; flex: 1; padding: 8px 12px; }
+.mobile-nav-links > li { border-bottom: 1px solid rgba(15,37,66,0.05); }
+.mobile-nav-links > li > a,
+.mobile-nav-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 8px; color: var(--navy); text-decoration: none;
+  font-size: 0.85rem; font-weight: 500; letter-spacing: 0.03em;
+  text-transform: uppercase; background: none; border: none;
+  cursor: pointer; width: 100%; text-align: left; transition: color 0.15s;
+}
+.mobile-nav-links > li > a:hover, .mobile-nav-toggle:hover { color: var(--teal); }
+.mobile-nav-chevron { width: 14px; height: 14px; transition: transform 0.2s; color: rgba(15,37,66,0.4); flex-shrink: 0; }
+.mobile-nav-links > li.mob-open .mobile-nav-chevron { transform: rotate(180deg); }
+.mobile-sub { list-style: none; padding: 0 0 8px 12px; display: none; }
+.mobile-nav-links > li.mob-open .mobile-sub { display: block; }
+.mobile-sub a {
+  display: block; padding: 9px 8px; color: rgba(15,37,66,0.65);
+  text-decoration: none; font-size: 0.82rem; font-weight: 400; transition: color 0.15s;
+}
+.mobile-sub a:hover { color: var(--teal); }
+.mobile-nav-footer { padding: 20px; }
+.mobile-nav-footer .hero-nav-cta { display: block; text-align: center; padding: 13px 20px; font-size: 0.85rem; }
+
+@media (max-width: 1200px) {
+  .hero-nav { padding: 13px 40px; }
+  .hero-logo img { height: 28px; }
+  .hero-nav-links > li > a { font-size: 0.63rem; padding: 7px 8px; }
+}
+@media (max-width: 980px) {
+  .hero-nav { padding: 12px 28px; }
+  .hero-logo img { height: 26px; }
+  .hero-nav-links > li > a { font-size: 0.58rem; padding: 6px 6px; letter-spacing: 0.02em; }
+  .hero-nav-cta { padding: 8px 14px; font-size: 0.72rem; }
+}
+@media (max-width: 820px) {
+  .hero-nav { padding: 11px 24px; }
+  .hero-logo img { height: 22px; }
+  .hero-nav-links { gap: 0; margin-right: 4px; }
+  .hero-nav-links > li > a { font-size: 0.44rem; padding: 5px 4px; letter-spacing: 0; }
+  .hero-nav-cta { padding: 7px 11px; font-size: 0.68rem; }
+}
+@media (max-width: 700px) {
+  .hero-nav-links { display: none; }
+  .hero-nav-cta { display: none; }
+  .hamburger-btn { display: flex; }
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--teal);
+  box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 20px rgba(47,174,227,0.3);
+  color: var(--white);
+  border-color: transparent;
+  padding: 14px 28px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+}
+.btn-primary:hover { border-color: transparent; transform: translateY(-2px); box-shadow: 0 0 40px rgba(47,174,227,0.7), 0 8px 32px rgba(47,174,227,0.45); }
+.btn-navy {
+  background: var(--teal);
+  box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 20px rgba(47,174,227,0.3);
+  color: var(--white);
+  border-color: transparent;
+  padding: 14px 28px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+}
+.btn-navy:hover { border-color: transparent; transform: translateY(-2px); box-shadow: 0 0 40px rgba(47,174,227,0.7), 0 8px 32px rgba(47,174,227,0.45); }
+.btn-white {
+  background: var(--white);
+  color: var(--teal-deep);
+  border-color: var(--white);
+  padding: 14px 28px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 10px;
+}
+.btn-white:hover { background: var(--light-bg); transform: translateY(-2px); }
+.btn-outline-white {
+  background: transparent;
+  color: var(--white);
+  border-color: rgba(255,255,255,0.6);
+  padding: 14px 28px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 10px;
+}
+.btn-outline-white:hover { background: rgba(255,255,255,0.12); border-color: var(--white); transform: translateY(-2px); }
+
+/* ── SECTIONS ── */
+.section {
+  padding: 100px 60px;
+}
+.section-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.section h2 {
+  font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+  font-weight: 300;
+  color: var(--navy);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* ── HERO — Option B ── */
+.hero {
+  background: var(--light-bg) url('https://marketboomer.com/wp-content/uploads/2019/08/Hero-Banner_04.jpg') center center / cover no-repeat;
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  padding: 148px 60px 80px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 68px;
+}
+
+/* White overlay left-to-right */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg,
+    rgba(255,255,255,0.96) 0%,
+    rgba(255,255,255,0.88) 42%,
+    rgba(255,255,255,0.52) 65%,
+    rgba(255,255,255,0.08) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 220px bottom fade */
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 220px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.6) 50%, #ffffff 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 3;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(2rem, 4.2vw, 4.2rem);
+  font-weight: 300;
+  color: var(--navy);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  max-width: 640px;
+  margin-bottom: 20px;
+}
+.hero-sub {
+  font-size: 17px;
+  font-weight: 400;
+  color: rgba(15, 37, 66, 0.65);
+  max-width: 520px;
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+
+/* ── PROBLEM SECTION ── */
+.problem-section {
+  background: var(--light-bg);
+  color: var(--navy);
+  padding: 100px 60px;
+}
+.problem-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+.problem-left h2 {
+  font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+  font-weight: 300;
+  color: var(--navy);
+  margin-bottom: 20px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.problem-left p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.problem-cards { display: flex; flex-direction: column; gap: 16px; }
+.problem-card {
+  background: var(--white);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-left: 3px solid var(--teal);
+  border-radius: 10px;
+  padding: 20px 22px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  transition: background 0.2s;
+}
+.problem-card:hover { background: var(--white); }
+.problem-card strong { display: block; color: var(--navy); font-weight: 700; margin-bottom: 6px; font-size: 15px; }
+.problem-footer {
+  max-width: 1280px;
+  margin: 40px auto 0;
+  padding: 24px 28px;
+  background: rgba(47,174,227,0.1);
+  border: 1px solid rgba(47,174,227,0.25);
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-size: 14.5px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ── SOLUTION SECTION ── */
+.solution-section {
+  background: var(--light-bg);
+  padding: 100px 60px;
+}
+.solution-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.solution-left h2 {
+  font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+  font-weight: 300;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.solution-left > p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+.feature-list { display: flex; flex-direction: column; gap: 22px; }
+.feature-item { display: flex; gap: 14px; align-items: flex-start; }
+.feature-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: 2px;
+}
+.feature-icon svg { width: 24px; height: 24px; }
+.feature-text strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.feature-text p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.solution-photo {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(15,37,66,0.14);
+}
+.solution-photo img {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── FEATURES GRID ── */
+.features-grid-section {
+  background: var(--light-bg);
+  padding: 100px 60px;
+  text-align: center;
+}
+.features-grid-section h2 {
+  font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+  font-weight: 300;
+  color: var(--navy);
+  margin-bottom: 44px;
+  letter-spacing: -0.02em;
+}
+.feature-chips {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+.feature-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  background: var(--white);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 40px;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s, border-color 0.2s;
+  cursor: default;
+}
+.feature-chip:hover { background: rgba(47,174,227,0.18); border-color: rgba(47,174,227,0.4); }
+.feature-chip::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  background: var(--teal);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── OTHER TOOLS BANNER ── */
+.other-tools-section {
+  background: var(--light-bg);
+  padding: 70px 60px;
+}
+.other-tools-card {
+  max-width: 1280px;
+  margin: 0 auto;
+  background: var(--light-bg);
+  border-radius: 16px;
+  padding: 44px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.other-tools-card p {
+  font-size: 17px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  max-width: 560px;
+  line-height: 1.6;
+}
+.other-tools-card p strong { color: var(--navy); font-weight: 700; }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 45%, var(--teal-light) 100%);
+  padding: 100px 60px;
+  text-align: center;
+}
+.cta-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.cta-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 50%;
+  margin-bottom: 24px;
+}
+.cta-badge svg { width: 32px; height: 32px; color: var(--white); }
+.cta-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 14px;
+}
+.cta-section h2 {
+  font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+  font-weight: 300;
+  color: var(--white);
+  margin-bottom: 18px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.cta-section p {
+  font-size: 16px;
+  color: rgba(255,255,255,0.82);
+  margin-bottom: 36px;
+  line-height: 1.65;
+}
+.cta-buttons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.cta-trust {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.82);
+  font-weight: 500;
+}
+.cta-trust-item::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 16px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M6.5 11.5L3 8l1.4-1.4 2.1 2.1 4.6-4.6L12.5 5.5z'/%3E%3C/svg%3E");
+  background-size: contain;
+  flex-shrink: 0;
+}
+
+/* ── Animated gradient highlight ── */
+.highlight {
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--teal), var(--teal-light), #a8ecff, var(--teal-light), var(--teal));
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientFlow 4s linear infinite;
+}
+@keyframes gradientFlow {
+  0%   { background-position: 0% center; }
+  100% { background-position: 250% center; }
+}
+@keyframes btnGradientFlow {
+  0%   { background-position: 0% center; }
+  100% { background-position: 250% center; }
+}
+strong { font-weight: 800; }
+
+/* On blue CTA bg, gradient must be white-dominant */
+.cta-section .highlight {
+  background: linear-gradient(90deg, rgba(255,255,255,0.7), #ffffff, rgba(255,255,255,0.7));
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+/* =====================
+   SITE FOOTER
+===================== */
+.site-footer {
+  background: linear-gradient(135deg, #0f2542 0%, #1a5a8c 60%, #2faee3 100%);
+  color: rgba(255,255,255,0.85);
+  padding: 64px 60px 0;
+}
+.site-footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1.5fr 1.4fr 0.9fr;
+  gap: 48px;
+  padding-bottom: 52px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.footer-brand-logo {
+  height: 30px; width: auto; display: block;
+  filter: brightness(0) invert(1);
+  margin-bottom: 22px;
+}
+.footer-contact-list {
+  padding-left: 18px;
+}
+.footer-contact-list p {
+  font-size: 0.81rem; line-height: 1.85; color: rgba(255,255,255,0.72);
+}
+.footer-contact-list strong {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+  font-weight: 700;
+  margin-right: 4px;
+}
+.footer-contact-list a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-contact-list a:hover { color: #ffffff; }
+.footer-address { margin-top: 10px !important; }
+.footer-col-title {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.45);
+  margin-bottom: 18px;
+}
+.footer-col-text { font-size: 0.83rem; line-height: 1.75; color: rgba(255,255,255,0.72); }
+.footer-col-text + .footer-col-text { margin-top: 12px; }
+.footer-nav-list { list-style: none; }
+.footer-nav-list li { display: flex; align-items: center; }
+.footer-nav-list li::before { content: '›'; margin-right: 7px; color: rgba(255,255,255,0.35); flex-shrink: 0; }
+.footer-nav-list a {
+  color: rgba(255,255,255,0.72); text-decoration: none;
+  font-size: 0.76rem; line-height: 2.1; transition: color 0.2s;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.footer-nav-list a:hover { color: #ffffff; }
+.footer-col-cta { display: flex; flex-direction: column; justify-content: flex-start; padding-top: 24px; }
+.footer-login-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #ffffff; text-decoration: none;
+  border-radius: 10px; padding: 14px 18px;
+  font-size: 0.83rem; font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.footer-login-btn:hover { background: rgba(255,255,255,0.2); }
+.footer-login-icon { width: 17px; height: 17px; flex-shrink: 0; }
+.footer-bottom { padding: 18px 0; }
+.footer-bottom-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.footer-copyright { font-size: 0.76rem; color: rgba(255,255,255,0.4); }
+.footer-bottom-links { display: flex; align-items: center; gap: 10px; }
+.footer-bottom-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.76rem; transition: color 0.2s; }
+.footer-bottom-links a:hover { color: rgba(255,255,255,0.85); }
+.footer-sep { color: rgba(255,255,255,0.2); font-size: 0.76rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  .site-footer-inner { grid-template-columns: 1fr 1.4fr 1fr; gap: 36px; }
+  .footer-col-cta { display: none; }
+  .site-footer { padding: 56px 40px 0; }
+  .footer-bottom { padding: 16px 0; }
+  .problem-section { padding: 80px 40px; }
+  .solution-section { padding: 80px 40px; }
+  .features-grid-section { padding: 80px 40px; }
+  .other-tools-section { padding: 56px 40px; }
+  .cta-section { padding: 80px 40px; }
+  .hero { padding: 140px 40px 80px; }
+}
+
+@media (max-width: 900px) {
+  .problem-grid { grid-template-columns: 1fr; gap: 40px; }
+  .solution-grid { grid-template-columns: 1fr; gap: 40px; }
+  .solution-photo { order: -1; }
+  .solution-photo img { height: 320px; }
+  .other-tools-card { flex-direction: column; align-items: flex-start; padding: 32px 28px; }
+}
+
+@media (max-width: 768px) {
+  .site-footer-inner { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+  .site-footer { padding: 48px 32px 0; }
+  .footer-bottom { padding: 16px 0; }
+  .footer-col-cta { display: flex; order: 3; align-items: center; }
+  .footer-col-brand { order: 10; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .footer-brand-logo { margin: 0 auto 22px; }
+  .footer-contact-list { padding-left: 0; }
+  .footer-nav-list li { justify-content: center; }
+  .footer-nav-list li::before { display: none; }
+  .footer-login-btn { align-self: center; width: auto; padding: 9px 20px; font-size: 0.78rem; }
+  .footer-bottom-inner { flex-direction: column; align-items: center; gap: 8px; }
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 120px 40px 56px; }
+  .problem-section { padding: 56px 40px; }
+  .solution-section { padding: 56px 40px; }
+  .features-grid-section { padding: 56px 40px; }
+  .other-tools-section { padding: 40px 40px; }
+  .cta-section { padding: 56px 40px; }
+  .site-footer { padding: 40px 40px 0; }
+  .footer-bottom { padding: 14px 0; }
+  .site-footer-inner { text-align: center; }
+  .footer-col-brand { order: 10; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .footer-col-cta { order: 3; align-items: center; }
+  .footer-brand-logo { margin: 0 auto 14px; height: 20px; }
+  .footer-contact-list { padding-left: 0; }
+  .footer-nav-list li { justify-content: center; }
+  .footer-nav-list li::before { display: none; }
+  .footer-login-btn { align-self: center; width: auto; padding: 9px 20px; font-size: 0.78rem; }
+  .footer-bottom-inner { flex-direction: column; align-items: center; gap: 8px; }
+
+  /* ── Mobile centering ── */
+  p, h1, h2, h3 { text-align: center; }
+  .hero { text-align: center; }
+  .hero h1 { max-width: 100%; }
+  .hero-sub { max-width: 100%; }
+  .hero-content { text-align: center; }
+  .cta-section { text-align: center; }
+  .cta-badge, .cta-eyebrow { align-self: center; }
+  .cta-trust { flex-direction: column; align-items: center; }
+  .cta-buttons { justify-content: center; }
+  .problem-card { text-align: center; }
+  .problem-grid { text-align: center; }
+  .problem-footer { text-align: center; }
+  .solution-left { text-align: center; }
+  .feature-item { flex-direction: column; align-items: center; text-align: center; }
+  .other-tools-card { align-items: center; text-align: center; }
+  .features-grid-section { text-align: center; }
+  a[class*="btn"] { display: inline-flex; width: auto; align-self: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav class="hero-nav">
+  <div class="hero-logo">
+    <a href="#"><img src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png" alt="Marketboomer PurchasePlus" /></a>
+  </div>
+
+  <ul class="hero-nav-links">
+    <li><a href="#">Home</a></li>
+    <li class="has-dropdown">
+      <a href="#">About Us <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+      <ul class="nav-dropdown">
+        <li><a href="#">In The News</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="#">Features <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+      <ul class="nav-dropdown">
+        <li><a href="#">Real Time Marketplace</a></li>
+        <li><a href="#">Robotic Automation</a></li>
+        <li><a href="#">Centralised Data</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="#">Our Solutions <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+      <ul class="nav-dropdown">
+        <li><a href="#">PurchasePlus</a></li>
+        <li><a href="#">Paperless Invoicing</a></li>
+      </ul>
+    </li>
+    <li class="has-dropdown">
+      <a href="#">Our Customers <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+      <ul class="nav-dropdown">
+        <li><a href="#">Buyers</a></li>
+        <li><a href="#">Suppliers</a></li>
+        <li><a href="#">Channel Partners</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+
+  <a href="#" class="hero-nav-cta">Get started</a>
+
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile nav overlay -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay" style="display:none;opacity:0;"></div>
+
+<!-- Mobile nav drawer -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-header">
+    <span style="font-size:0.8rem;font-weight:600;color:rgba(15,37,66,0.5);letter-spacing:0.06em;text-transform:uppercase;">Menu</span>
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+  </div>
+  <ul class="mobile-nav-links">
+    <li><a href="#">Home</a></li>
+    <li>
+      <button class="mobile-nav-toggle">About Us <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+      <ul class="mobile-sub"><li><a href="#">In The News</a></li></ul>
+    </li>
+    <li>
+      <button class="mobile-nav-toggle">Features <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+      <ul class="mobile-sub">
+        <li><a href="#">Real Time Marketplace</a></li>
+        <li><a href="#">Robotic Automation</a></li>
+        <li><a href="#">Centralised Data</a></li>
+      </ul>
+    </li>
+    <li>
+      <button class="mobile-nav-toggle">Our Solutions <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+      <ul class="mobile-sub">
+        <li><a href="#">PurchasePlus</a></li>
+        <li><a href="#">Paperless Invoicing</a></li>
+      </ul>
+    </li>
+    <li>
+      <button class="mobile-nav-toggle">Our Customers <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+      <ul class="mobile-sub">
+        <li><a href="#">Buyers</a></li>
+        <li><a href="#">Suppliers</a></li>
+        <li><a href="#">Channel Partners</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="mobile-nav-footer">
+    <a href="#" class="hero-nav-cta">Get started</a>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow reveal">Paperless Invoicing</div>
+    <h1 class="reveal reveal-delay-1"><strong>Automatically</strong> process, pay and view <span class="highlight">every invoice</span></h1>
+    <p class="hero-sub reveal reveal-delay-2">Fully automate your invoice process to make payments easier, cheaper and quicker.</p>
+    <a href="/MarketBoomer/contact/" class="btn btn-navy reveal reveal-delay-3">Talk to us</a>
+  </div>
+</section>
+
+<!-- ── PROBLEM SECTION ── -->
+<section class="problem-section">
+  <div class="problem-grid">
+    <div class="problem-left reveal">
+      <h2><strong>Payments</strong> can be <span class="highlight">painful</span></h2>
+      <p>Something as simple as paying for goods and services can become a nightmare when your systems can't do what you want them to. Hotel invoicing systems are often over-complicated and under-supported by software.</p>
+    </div>
+    <div class="problem-cards reveal reveal-delay-2">
+      <div class="problem-card">
+        <strong>Multiple formats</strong>
+        Different suppliers send invoices in different formats which aren't supported by your system.
+      </div>
+      <div class="problem-card">
+        <strong>Manually Heavy</strong>
+        Invoices need to be entered into the system manually, which is time consuming and open to error.
+      </div>
+      <div class="problem-card">
+        <strong>Poor Visibility</strong>
+        Once entered, all you get is a reference number, leaving you in the dark on invoice details.
+      </div>
+    </div>
+  </div>
+  <div class="problem-footer reveal">
+    Not only is this confusing, it can easily lead to overpayments, underpayments, double payments, no payment… you see where this is going.
+  </div>
+</section>
+
+<!-- ── SOLUTION SECTION ── -->
+<section class="solution-section">
+  <div class="solution-grid">
+    <div class="solution-left">
+      <h2 class="reveal"><strong>Paperless invoicing</strong> is <span class="highlight">painless invoicing</span></h2>
+      <p class="reveal reveal-delay-1">Paperless Invoicing is software that makes invoicing easy and automatic. Get quick and complete access to payment information.</p>
+      <div class="feature-list">
+        <div class="feature-item reveal reveal-delay-1">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="12" fill="#2faee3" fill-opacity="0.12"/>
+              <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#2faee3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <strong>Automated Data Entry</strong>
+            <p>Invoice data is automatically entered into your system, so there's no need to waste staff — or risk error — by manually entering invoice information.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-2">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="12" fill="#2faee3" fill-opacity="0.12"/>
+              <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#2faee3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <strong>Automate Approvals</strong>
+            <p>Automatically 3-way match with the PO number and receiving note to automatically approve invoices. If there isn't a match, the invoice will be flagged for approval.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-3">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="12" fill="#2faee3" fill-opacity="0.12"/>
+              <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#2faee3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <strong>Format Integration with AP/ERP</strong>
+            <p>No matter what format your invoice is sent in, it will be automatically integrated with your AP or ERP system when it is received.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-4">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="12" fill="#2faee3" fill-opacity="0.12"/>
+              <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#2faee3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <strong>Detailed Visibility</strong>
+            <p>Don't get stuck with a meaningless reference number. Have a full view of all details of all invoices, past and present.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal reveal-delay-5">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="12" fill="#2faee3" fill-opacity="0.12"/>
+              <path d="M7 12.5l3.5 3.5 6.5-7" stroke="#2faee3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <strong>Unlimited Capacity</strong>
+            <p>Process, approve, pay and store an unlimited amount of invoices — and never use your filing cabinet again.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="solution-photo reveal reveal-delay-2">
+      <img src="https://marketboomer.com/wp-content/uploads/2019/08/marketboomer-procurement-software-hotels_0004_shutterstock_775583563.jpg" alt="Paperless invoicing in action" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES GRID SECTION ── -->
+<section class="features-grid-section">
+  <div class="section-inner">
+    <h2 class="reveal"><strong>Paperless Invoicing</strong> <span class="highlight">Features</span></h2>
+    <div class="feature-chips">
+      <div class="feature-chip reveal reveal-delay-1">Accepts multiple formats</div>
+      <div class="feature-chip reveal reveal-delay-1">Unlimited invoicing</div>
+      <div class="feature-chip reveal reveal-delay-2">Automated data entry</div>
+      <div class="feature-chip reveal reveal-delay-2">Automate Approvals</div>
+      <div class="feature-chip reveal reveal-delay-3">AP/ERP integration</div>
+      <div class="feature-chip reveal reveal-delay-3">Detailed visibility</div>
+      <div class="feature-chip reveal reveal-delay-4">Archive history</div>
+      <div class="feature-chip reveal reveal-delay-4">Speed reporting</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OTHER TOOLS BANNER ── -->
+<section class="other-tools-section">
+  <div class="other-tools-card reveal">
+    <p><strong>Paperless Invoicing</strong> is just one of the modules of our PurchasePlus system.</p>
+    <a href="/MarketBoomer/our-solutions/" class="btn btn-white">Explore solutions</a>
+  </div>
+</section>
+
+<!-- ── CTA SECTION ── -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-badge reveal">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+    </div>
+    <p class="cta-eyebrow reveal">Make invoicing easy</p>
+    <h2 class="reveal reveal-delay-1">Keen to see <strong>Paperless Invoicing</strong> <span class="highlight">in action?</span></h2>
+    <p class="reveal reveal-delay-2">Request a demo from our team and discover how Paperless Invoicing can transform your payment processes.</p>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <a href="/MarketBoomer/contact/" class="btn btn-white">Request a demo</a>
+      <a href="/MarketBoomer/our-solutions/" class="btn btn-outline-white">All solutions</a>
+    </div>
+    <div class="cta-trust reveal reveal-delay-4">
+      <span class="cta-trust-item">No obligation demo</span>
+      <span class="cta-trust-item">Multiple format support</span>
+      <span class="cta-trust-item">2500+ global users</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+
+    <!-- Column 1: Brand + Contact -->
+    <div class="footer-col footer-col-brand">
+      <img class="footer-brand-logo"
+        src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png"
+        alt="Marketboomer PurchasePlus"
+      />
+      <div class="footer-contact-list">
+        <p><strong>AU</strong> <a href="tel:1300411014">1300 411 014</a></p>
+        <p><strong>AU</strong> <a href="tel:+61258496957">+61 258 496 957</a></p>
+        <p><strong>SG</strong> <a href="tel:+6531251540">+65 3125 1540</a></p>
+        <p><strong>US</strong> <a href="tel:+16802255236">+1 (680) 225-5236</a></p>
+        <p><strong>TH</strong> <a href="tel:+6622553703">+66 2255 3703</a></p>
+        <p><strong>GB</strong> <a href="tel:+442045387068">+44 204 538 7068</a></p>
+        <p><a href="mailto:help@marketboomer.com">help@marketboomer.com</a></p>
+        <p class="footer-address">Level 4/11<br/>York Street<br/>Sydney NSW 2000<br/>Australia</p>
+      </div>
+    </div>
+
+    <!-- Column 2: About -->
+    <div class="footer-col">
+      <h4 class="footer-col-title">About</h4>
+      <p class="footer-col-text">
+        Created by hospitality, for hospitality, our cloud-based digital procurement solutions and expertise, help businesses grow by streamlining and optimising buyer-seller interactions.
+      </p>
+      <p class="footer-col-text">
+        Established in 1995, from our Headquarters in Sydney, Australia, with offices across Asia, Marketboomer proudly operates across 12 countries with a global community of over 2500 hospitality buyers and suppliers.
+      </p>
+    </div>
+
+    <!-- Column 3: Our Tools -->
+    <div class="footer-col">
+      <h4 class="footer-col-title">Our Tools</h4>
+      <ul class="footer-nav-list">
+        <li><a href="#">PurchasePlus</a></li>
+        <li><a href="#">Paperless Invoicing</a></li>
+        <li><a href="#">Connectivity and Data Translation</a></li>
+        <li><a href="#">Business Intelligence</a></li>
+        <li><a href="#">Document Storage</a></li>
+      </ul>
+    </div>
+
+    <!-- Column 4: Login CTA -->
+    <div class="footer-col footer-col-cta">
+      <a href="https://purchaseplus.com" class="footer-login-btn" target="_blank" rel="noopener">
+        <svg class="footer-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+        Log in PurchasePlus
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Footer bottom bar -->
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span class="footer-copyright">© Marketboomer 2026</span>
+      <div class="footer-bottom-links">
+        <a href="#">Terms &amp; Conditions</a>
+        <span class="footer-sep">/</span>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+
+  // =====================
+  // Scroll Reveal
+  // =====================
+  var revealEls = document.querySelectorAll('.reveal');
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+  revealEls.forEach(function(el) { revealObserver.observe(el); });
+
+  // =====================
+  // Nav scroll shadow
+  // =====================
+  var navEl = document.querySelector('.hero-nav');
+  if (navEl) {
+    window.addEventListener('scroll', function() {
+      navEl.style.boxShadow = window.scrollY > 10
+        ? '0 4px 24px rgba(15,37,66,0.14)'
+        : '0 1px 0 rgba(15,37,66,0.08), 0 4px 16px rgba(15,37,66,0.04)';
+    }, { passive: true });
+  }
+
+  // =====================
+  // Desktop nav dropdowns
+  // =====================
+  var dropdownItems = document.querySelectorAll('.hero-nav-links > li.has-dropdown');
+  dropdownItems.forEach(function(li) {
+    li.querySelector('a').addEventListener('click', function(e) {
+      e.preventDefault();
+      var isOpen = li.classList.contains('nav-open');
+      dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+      if (!isOpen) li.classList.add('nav-open');
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.has-dropdown')) {
+      dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+    }
+  });
+  window.addEventListener('scroll', function() {
+    dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+  }, { passive: true });
+
+  // =====================
+  // Hamburger / Mobile nav
+  // =====================
+  var hamburgerBtn = document.getElementById('hamburgerBtn');
+  var mobileNav    = document.getElementById('mobileNav');
+  var overlay      = document.getElementById('mobileNavOverlay');
+  var closeBtn     = document.getElementById('mobileNavClose');
+
+  function openMobileNav() {
+    hamburgerBtn.classList.add('open');
+    mobileNav.classList.add('open');
+    overlay.style.display = 'block';
+    requestAnimationFrame(function() { overlay.style.opacity = '1'; });
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileNav() {
+    hamburgerBtn.classList.remove('open');
+    mobileNav.classList.remove('open');
+    overlay.style.opacity = '0';
+    setTimeout(function() { overlay.style.display = 'none'; }, 300);
+    document.body.style.overflow = '';
+  }
+
+  hamburgerBtn.addEventListener('click', function() {
+    mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  });
+  closeBtn.addEventListener('click', closeMobileNav);
+  overlay.addEventListener('click', closeMobileNav);
+
+  document.querySelectorAll('.mobile-nav-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var li = btn.closest('li');
+      var isOpen = li.classList.contains('mob-open');
+      document.querySelectorAll('.mobile-nav-links > li').forEach(function(el) {
+        el.classList.remove('mob-open');
+      });
+      if (!isOpen) li.classList.add('mob-open');
+    });
+  });
+</script>
+</body>
+</html>
