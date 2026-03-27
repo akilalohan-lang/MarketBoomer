@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testimonials | Marketboomer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+
+    /* ===== CSS CUSTOM PROPERTIES ===== */
+    :root {
+      --navy:           #0f2542;
+      --navy-deep:      #091a30;
+      --navy-mid:       #1a3a6e;
+      --teal:           #2faee3;
+      --teal-light:     #5cc8f0;
+      --teal-deep:      #0096b7;
+      --indigo:         #3b5bdb;
+      --light-bg:       #f8fafc;
+      --white:          #ffffff;
+      --text-primary:   #0f2542;
+      --text-secondary: #4a5568;
+      --text-muted:     #718096;
+      --border:         #e2e8f0;
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      background: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1, h2, h3 {
+      text-wrap: balance;
+    }
+
+    button, .btn {
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ── Animated gradient highlight ── */
+    .highlight {
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light), #a8ecff, var(--teal-light), var(--teal));
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientFlow 4s linear infinite;
+    }
+    @keyframes gradientFlow {
+      0%   { background-position: 0% center; }
+      100% { background-position: 250% center; }
+    }
+    strong { font-weight: 800; }
+
+    /* On blue/teal CTA bg, gradient must be white-dominant */
+    .cta-section .highlight {
+      background: linear-gradient(90deg, rgba(255,255,255,0.7), #ffffff, rgba(255,255,255,0.7));
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+
+    /* ===== NAVIGATION ===== */
+    .hero-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 60px;
+      z-index: 1000;
+      background: #ffffff;
+      box-shadow: 0 1px 0 rgba(15,37,66,0.08), 0 4px 16px rgba(15,37,66,0.04);
+    }
+    .hero-logo { display: flex; align-items: center; flex-shrink: 0; }
+    .hero-logo img { height: 32px; width: auto; display: block; }
+    .hero-nav-links {
+      display: flex; gap: 4px; list-style: none;
+      align-items: center; margin-left: auto; margin-right: 8px;
+    }
+    .hero-nav-links > li { position: relative; }
+    .hero-nav-links > li > a {
+      display: flex; align-items: center; gap: 4px;
+      color: rgba(15,37,66,0.7); text-decoration: none;
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 8px 11px; border-radius: 6px;
+      transition: color 0.2s, background 0.2s; white-space: nowrap;
+    }
+    .hero-nav-links > li > a:hover,
+    .hero-nav-links > li.nav-open > a { color: var(--navy); background: rgba(15,37,66,0.04); }
+    .nav-chevron { width: 12px; height: 12px; transition: transform 0.2s; flex-shrink: 0; }
+    .hero-nav-links > li.nav-open .nav-chevron { transform: rotate(180deg); }
+    .nav-dropdown {
+      position: absolute; top: calc(100% + 8px); left: 0;
+      min-width: 200px; background: #ffffff;
+      border: 1px solid rgba(15,37,66,0.08); border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(15,37,66,0.12); list-style: none;
+      padding: 6px; opacity: 0; visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.2s, transform 0.2s, visibility 0.2s; z-index: 100;
+    }
+    .hero-nav-links > li.nav-open .nav-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+    .nav-dropdown a {
+      display: block; padding: 9px 14px; color: rgba(15,37,66,0.7);
+      text-decoration: none; font-size: 0.78rem; font-weight: 400;
+      border-radius: 6px; transition: background 0.15s, color 0.15s;
+    }
+    .nav-dropdown a:hover { background: rgba(36,150,208,0.06); color: var(--teal); }
+
+    /* Get Started CTA */
+    .hero-nav-cta {
+      background: var(--teal);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 9px 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .hero-nav-cta:hover { background: var(--teal-light); transform: translateY(-1px); }
+
+    /* Hamburger button */
+    .hamburger-btn {
+      display: none; flex-direction: column; justify-content: center;
+      align-items: center; gap: 5px; width: 40px; height: 40px;
+      background: none; border: 1px solid rgba(15,37,66,0.15);
+      border-radius: 8px; cursor: pointer; padding: 0; flex-shrink: 0;
+    }
+    .hamburger-btn span {
+      display: block; width: 18px; height: 1.5px;
+      background: var(--navy); border-radius: 2px; transition: all 0.25s;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile nav overlay */
+    .mobile-nav-overlay {
+      position: fixed; inset: 0; background: rgba(9,26,48,0.45);
+      z-index: 1999; transition: opacity 0.3s;
+    }
+
+    /* Mobile nav drawer */
+    .mobile-nav {
+      position: fixed; top: 0; right: -320px;
+      width: 300px; max-width: 90vw; height: 100vh;
+      background: #ffffff; z-index: 2000; overflow-y: auto;
+      transition: right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      padding: 0 0 40px; display: flex; flex-direction: column;
+      box-shadow: -8px 0 40px rgba(9,26,48,0.12);
+    }
+    .mobile-nav.open { right: 0; }
+    .mobile-nav-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px; border-bottom: 1px solid rgba(15,37,66,0.08);
+    }
+    .mobile-nav-logo img { height: 26px; width: auto; }
+    .mobile-nav-close {
+      background: none; border: none; cursor: pointer;
+      padding: 6px; color: rgba(15,37,66,0.5); font-size: 1.1rem; line-height: 1;
+      border-radius: 6px; transition: background 0.15s, color 0.15s;
+    }
+    .mobile-nav-close:hover { background: rgba(15,37,66,0.06); color: var(--navy); }
+    .mobile-nav-links { list-style: none; flex: 1; padding: 8px 12px; }
+    .mobile-nav-links > li { border-bottom: 1px solid rgba(15,37,66,0.05); }
+    .mobile-nav-links > li > a,
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 8px; color: var(--navy); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.03em;
+      text-transform: uppercase; background: none; border: none;
+      cursor: pointer; width: 100%; text-align: left; transition: color 0.15s;
+    }
+    .mobile-nav-links > li > a:hover, .mobile-nav-toggle:hover { color: var(--teal); }
+    .mobile-nav-chevron { width: 14px; height: 14px; transition: transform 0.2s; color: rgba(15,37,66,0.4); flex-shrink: 0; }
+    .mobile-nav-links > li.mob-open .mobile-nav-chevron { transform: rotate(180deg); }
+    .mobile-sub { list-style: none; padding: 0 0 8px 12px; display: none; }
+    .mobile-nav-links > li.mob-open .mobile-sub { display: block; }
+    .mobile-sub a {
+      display: block; padding: 9px 8px; color: rgba(15,37,66,0.65);
+      text-decoration: none; font-size: 0.82rem; font-weight: 400; transition: color 0.15s;
+    }
+    .mobile-sub a:hover { color: var(--teal); }
+    .mobile-nav-footer { padding: 20px; }
+    .mobile-nav-footer .hero-nav-cta { display: block; text-align: center; padding: 13px 20px; font-size: 0.85rem; }
+
+    /* Nav responsive breakpoints */
+    @media (max-width: 1200px) {
+      .hero-nav { padding: 13px 40px; }
+      .hero-logo img { height: 28px; }
+      .hero-nav-links > li > a { font-size: 0.63rem; padding: 7px 8px; }
+    }
+    @media (max-width: 980px) {
+      .hero-nav { padding: 12px 28px; }
+      .hero-logo img { height: 26px; }
+      .hero-nav-links > li > a { font-size: 0.58rem; padding: 6px 6px; letter-spacing: 0.02em; }
+      .hero-nav-cta { padding: 8px 14px; font-size: 0.72rem; }
+    }
+    @media (max-width: 820px) {
+      .hero-nav { padding: 11px 24px; }
+      .hero-logo img { height: 22px; }
+      .hero-nav-links { gap: 0; margin-right: 4px; }
+      .hero-nav-links > li > a { font-size: 0.44rem; padding: 5px 4px; letter-spacing: 0; }
+      .hero-nav-cta { padding: 7px 11px; font-size: 0.68rem; }
+    }
+    @media (max-width: 700px) {
+      .hero-nav-links { display: none; }
+      .hero-nav-cta { display: none; }
+      .hamburger-btn { display: flex; }
+    }
+
+    /* ===== HERO — Option B: full-width with white overlay ===== */
+    .hero {
+      background: var(--light-bg) url('https://marketboomer.com/wp-content/uploads/2022/02/brooke-cagle-JBwcenOuRCg-unsplash-2-scaled.jpg') center center / cover no-repeat;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      padding: 148px 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* White overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg,
+        rgba(255,255,255,0.96) 0%,
+        rgba(255,255,255,0.88) 42%,
+        rgba(255,255,255,0.52) 65%,
+        rgba(255,255,255,0.08) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Bottom fade into next section */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 220px;
+      background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.6) 50%, #ffffff 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero .eyebrow {
+      color: var(--teal);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4.2vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.12;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      max-width: 680px;
+      margin-bottom: 20px;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+      color: var(--text-secondary);
+      max-width: 520px;
+      line-height: 1.75;
+      text-wrap: pretty;
+    }
+
+    /* ===== EYEBROW ===== */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .eyebrow--light { color: var(--teal-light); }
+
+    /* ===== STATS BAR ===== */
+    .stats-bar {
+      background: var(--light-bg);
+      padding: 52px 60px;
+    }
+    .stats-bar__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+    .stat-item { text-align: center; }
+    .stat-item__number {
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-item__number span { color: var(--teal-light); }
+    .stat-item__label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* ===== TESTIMONIALS SECTION ===== */
+    .testimonials-section {
+      background: var(--white);
+      padding: 100px 60px;
+    }
+    .section-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 56px;
+    }
+    .section-header h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--navy);
+      margin-bottom: 0;
+    }
+    .testi-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testi-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s;
+    }
+    .testi-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(15,37,66,0.1);
+      border-color: rgba(47,174,227,0.3);
+    }
+    .testi-quote-icon {
+      width: 32px; height: 32px;
+      color: var(--teal);
+      opacity: 0.4;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+    .testi-quote {
+      flex: 1;
+      font-style: italic;
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      text-wrap: pretty;
+      margin-bottom: 24px;
+    }
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: nowrap;
+    }
+    .author-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .author-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .author-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .testi-brand {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--teal-deep);
+      background: rgba(47,174,227,0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* ===== LOGOS SECTION ===== */
+    .logos-section {
+      background: var(--light-bg);
+      padding: 100px 60px;
+    }
+    .logos-section .section-header h2 { color: var(--navy); }
+    .logos-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .logo-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 140px;
+      height: 80px;
+      flex: 0 1 auto;
+      transition: transform 0.3s, box-shadow 0.2s;
+      overflow: hidden;
+    }
+    .logo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(15,37,66,0.18);
+    }
+    .logo-card img {
+      max-height: 40px;
+      max-width: 120px;
+      width: auto;
+      object-fit: contain;
+      filter: grayscale(100%) opacity(0.6);
+      transition: filter 0.3s;
+    }
+    .logo-card:hover img { filter: grayscale(0%) opacity(1); }
+
+    /* ===== CTA SECTION ===== */
+    .cta-section {
+      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 45%, var(--teal-light) 100%);
+      padding: 100px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .cta-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-badge {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .cta-badge svg { width: 30px; height: 30px; color: var(--white); }
+    .cta-section .eyebrow { color: rgba(255,255,255,0.8); }
+    .cta-section h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--white);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .cta-section p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 36px;
+      line-height: 1.7;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .btn-cta-white {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      padding: 14px 28px;
+      background: var(--white);
+      color: var(--teal-deep);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 10px;
+      letter-spacing: 0.02em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+    .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.18); }
+    .btn-cta-outline {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--white);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.65);
+      letter-spacing: 0.02em;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .btn-cta-outline:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.85);
+      transform: translateY(-2px);
+    }
+    .cta-trust {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.82);
+      font-weight: 500;
+    }
+    .trust-item svg { width: 15px; height: 15px; color: rgba(255,255,255,0.82); }
+
+    /* =====================
+       SITE FOOTER
+    ===================== */
+    .site-footer {
+      background: linear-gradient(135deg, #0f2542 0%, #1a5a8c 60%, #2faee3 100%);
+      color: rgba(255,255,255,0.85);
+      padding: 64px 60px 0;
+    }
+    .site-footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.3fr 1.6fr 1fr 0.9fr;
+      gap: 48px;
+      padding-bottom: 52px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .footer-brand-logo {
+      height: 30px; width: auto; display: block;
+      filter: brightness(0) invert(1);
+      margin-bottom: 22px;
+    }
+    .footer-contact-list {
+      padding-left: 18px;
+    }
+    .footer-contact-list p {
+      font-size: 0.81rem; line-height: 1.85; color: rgba(255,255,255,0.72);
+    }
+    .footer-contact-list strong {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.5);
+      font-weight: 700;
+      margin-right: 4px;
+    }
+    .footer-contact-list a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-contact-list a:hover { color: #ffffff; }
+    .footer-address { margin-top: 10px !important; }
+    .footer-col-title {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.45);
+      margin-bottom: 18px;
+    }
+    .footer-col-text { font-size: 0.83rem; line-height: 1.75; color: rgba(255,255,255,0.72); }
+    .footer-col-text + .footer-col-text { margin-top: 12px; }
+    .footer-nav-list { list-style: none; }
+    .footer-nav-list li { display: flex; align-items: center; }
+    .footer-nav-list li::before { content: '›'; margin-right: 7px; color: rgba(255,255,255,0.35); flex-shrink: 0; }
+    .footer-nav-list a {
+      color: rgba(255,255,255,0.72); text-decoration: none;
+      font-size: 0.83rem; line-height: 2.1; transition: color 0.2s;
+    }
+    .footer-nav-list a:hover { color: #ffffff; }
+    .footer-col-cta { display: flex; flex-direction: column; justify-content: flex-start; padding-top: 24px; }
+    .footer-login-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #ffffff; text-decoration: none;
+      border-radius: 10px; padding: 14px 18px;
+      font-size: 0.83rem; font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .footer-login-btn:hover { background: rgba(255,255,255,0.2); }
+    .footer-login-icon { width: 17px; height: 17px; flex-shrink: 0; }
+    .footer-bottom { padding: 18px 0; }
+    .footer-bottom-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .footer-copyright { font-size: 0.76rem; color: rgba(255,255,255,0.4); }
+    .footer-bottom-links { display: flex; align-items: center; gap: 10px; }
+    .footer-bottom-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.76rem; transition: color 0.2s; }
+    .footer-bottom-links a:hover { color: rgba(255,255,255,0.85); }
+    .footer-sep { color: rgba(255,255,255,0.2); font-size: 0.76rem; }
+
+    /* ===== RESPONSIVE BREAKPOINTS ===== */
+
+    @media (max-width: 1100px) {
+      .stats-bar { padding: 48px 40px; }
+      .testimonials-section { padding: 80px 40px; }
+      .logos-section { padding: 80px 40px; }
+      .cta-section { padding: 80px 40px; }
+      .site-footer-inner { grid-template-columns: 1fr 1.4fr 1fr; gap: 36px; }
+      .footer-col-cta { display: none; }
+      .site-footer { padding: 56px 40px 0; }
+      .footer-bottom { padding: 16px 0; }
+    }
+
+    @media (max-width: 900px) {
+      .testi-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-bar__inner { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .site-footer-inner { grid-template-columns: 1fr; gap: 32px; }
+      .site-footer { padding: 48px 32px 0; }
+      .footer-bottom { padding: 16px 0; }
+    }
+
+    @media (max-width: 600px) {
+      /* Section padding */
+      .stats-bar { padding: 40px 40px; }
+      .testimonials-section { padding: 56px 40px; }
+      .logos-section { padding: 56px 40px; }
+      .cta-section { padding: 56px 40px; }
+      .site-footer { padding: 40px 40px 0; }
+      .footer-bottom { padding: 14px 0; }
+
+      /* Stats grid */
+      .stats-bar__inner { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+
+      /* Testimonial grid */
+      .testi-grid { grid-template-columns: 1fr; }
+
+      /* Text centering */
+      p, h1, h2, h3 { text-align: center; }
+
+      /* Hero */
+      .hero { padding: 120px 40px 56px; text-align: center; }
+      .hero h1 { max-width: 100%; }
+      .hero-sub { max-width: 100%; margin: 0 auto; }
+
+      /* Eyebrows */
+      .eyebrow { display: flex; justify-content: center; align-items: center; width: 100%; }
+      .section-header .eyebrow { justify-content: center; }
+
+      /* Testimonial cards */
+      .testi-card { text-align: center; }
+      .testi-author { justify-content: center; }
+
+      /* CTA section */
+      .cta-section { text-align: center; }
+      .cta-btns { justify-content: center; }
+      .cta-trust { flex-direction: column; align-items: center; }
+
+      /* Footer */
+      .site-footer-inner { text-align: center; }
+      .footer-col-brand { order: 10; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .footer-col-cta { order: 3; align-items: center; display: flex; }
+      .footer-brand-logo { margin: 0 auto 14px; height: 20px; }
+      .footer-contact-list { padding-left: 0; }
+      .footer-nav-list li { justify-content: center; }
+      .footer-nav-list li::before { display: none; }
+      .footer-login-btn { align-self: center; width: auto; padding: 9px 20px; font-size: 0.78rem; }
+      .footer-bottom-inner { flex-direction: column; align-items: center; gap: 8px; }
+
+      /* Anti-orphan */
+      p, h1, h2, h3, h4,
+      .testi-quote, .hero-sub,
+      .cta-section p, .stat-item__label {
+        text-wrap: balance;
+      }
+      .testi-quote { text-wrap: pretty; font-size: 0.84rem; }
+
+      /* Buttons never go full width on mobile */
+      a[class], button[class] { display: inline-flex; width: auto; align-self: center; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav class="hero-nav">
+    <div class="hero-logo">
+      <a href="#"><img src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png" alt="Marketboomer PurchasePlus" /></a>
+    </div>
+
+    <ul class="hero-nav-links">
+      <li><a href="#">Home</a></li>
+      <li class="has-dropdown">
+        <a href="#">About Us <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">In The News</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="#">Features <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">Real Time Marketplace</a></li>
+          <li><a href="#">Robotic Automation</a></li>
+          <li><a href="#">Centralised Data</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="#">Our Solutions <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">PurchasePlus</a></li>
+          <li><a href="#">Paperless Invoicing</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="#">Our Customers <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">Buyers</a></li>
+          <li><a href="#">Suppliers</a></li>
+          <li><a href="#">Channel Partners</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+
+    <a href="#" class="hero-nav-cta">Get Started</a>
+
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" style="display:none;opacity:0;"></div>
+
+  <!-- Mobile nav drawer -->
+  <div class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+      <span style="font-size:0.8rem;font-weight:600;color:rgba(15,37,66,0.5);letter-spacing:0.06em;text-transform:uppercase;">Menu</span>
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+    </div>
+    <ul class="mobile-nav-links">
+      <li><a href="#">Home</a></li>
+      <li>
+        <button class="mobile-nav-toggle">About Us <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub"><li><a href="#">In The News</a></li></ul>
+      </li>
+      <li>
+        <button class="mobile-nav-toggle">Features <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub">
+          <li><a href="#">Real Time Marketplace</a></li>
+          <li><a href="#">Robotic Automation</a></li>
+          <li><a href="#">Centralised Data</a></li>
+        </ul>
+      </li>
+      <li>
+        <button class="mobile-nav-toggle">Our Solutions <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub">
+          <li><a href="#">PurchasePlus</a></li>
+          <li><a href="#">Paperless Invoicing</a></li>
+        </ul>
+      </li>
+      <li>
+        <button class="mobile-nav-toggle">Our Customers <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub">
+          <li><a href="#">Buyers</a></li>
+          <li><a href="#">Suppliers</a></li>
+          <li><a href="#">Channel Partners</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="mobile-nav-footer">
+      <a href="#" class="hero-nav-cta">Get Started</a>
+    </div>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="eyebrow reveal">What our customers say</span>
+      <h1 class="reveal reveal-delay-1"><strong>Trusted</strong> by <span class="highlight">hotel professionals</span> worldwide</h1>
+      <p class="hero-sub reveal reveal-delay-2">Discover how hotels and suppliers around the world are using Marketboomer to transform their procurement processes.</p>
+    </div>
+  </section>
+
+  <!-- ══ STATS BAR ══ -->
+  <section class="stats-bar">
+    <div class="stats-bar__inner">
+      <div class="stat-item reveal">
+        <div class="stat-item__number">2500<span>+</span></div>
+        <div class="stat-item__label">Global buyers &amp; suppliers</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-item__number">12</div>
+        <div class="stat-item__label">Countries of operation</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-item__number">7<span>–12%</span></div>
+        <div class="stat-item__label">Average cost savings</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-item__number">30<span>+</span></div>
+        <div class="stat-item__label">Years of experience</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TESTIMONIALS GRID ══ -->
+  <section class="testimonials-section">
+    <div style="max-width:1280px;margin:0 auto;">
+      <div class="section-header">
+        <h2 class="reveal">From <strong>hotels and suppliers</strong> <span class="highlight">around the world</span></h2>
+      </div>
+      <div class="testi-grid">
+
+        <!-- Card 1 -->
+        <div class="testi-card reveal reveal-delay-1">
+          <svg class="testi-quote-icon" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+          </svg>
+          <p class="testi-quote">"PurchasePlus has completely transformed how we manage our procurement. The real-time pricing alone has saved us thousands every quarter."</p>
+          <div class="testi-author">
+            <div class="author-avatar">HP</div>
+            <div>
+              <div class="author-name">Head of Procurement</div>
+              <div class="author-role">Crowne Plaza Sydney</div>
+              <span class="testi-brand">Crowne Plaza</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="testi-card reveal reveal-delay-2">
+          <svg class="testi-quote-icon" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+          </svg>
+          <p class="testi-quote">"The automation means our team focuses on service, not paperwork. It's been a game-changer for our operations."</p>
+          <div class="testi-author">
+            <div class="author-avatar">DF</div>
+            <div>
+              <div class="author-name">Director of Finance</div>
+              <div class="author-role">Novotel Melbourne</div>
+              <span class="testi-brand">Novotel</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="testi-card reveal reveal-delay-3">
+          <svg class="testi-quote-icon" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+          </svg>
+          <p class="testi-quote">"Always exceptional service. Great system. Far better than any other existing platform. The Hospitality industry would be a better place if PurchasePlus was utilised."</p>
+          <div class="testi-author">
+            <div class="author-avatar">AQ</div>
+            <div>
+              <div class="author-name">Aquanas Foods, Melbourne</div>
+              <div class="author-role">Supplier</div>
+              <span class="testi-brand">Aquanas Foods</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="testi-card reveal reveal-delay-1">
+          <svg class="testi-quote-icon" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+          </svg>
+          <p class="testi-quote">"We've seen a significant reduction in procurement errors since switching to PurchasePlus. The 3-way matching on invoices alone saves us hours each week."</p>
+          <div class="testi-author">
+            <div class="author-avatar">FM</div>
+            <div>
+              <div class="author-name">Finance Manager</div>
+              <div class="author-role">Pullman Sydney Airport</div>
+              <span class="testi-brand">Pullman Hotels</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="testi-card reveal reveal-delay-2">
+          <svg class="testi-quote-icon" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+          </svg>
+          <p class="testi-quote">"Real-time supplier pricing means we always know we're getting the best deal. We've reduced food and beverage costs by over 9% in the first year."</p>
+          <div class="testi-author">
+            <div class="author-avatar">EC</div>
+            <div>
+              <div class="author-name">Executive Chef</div>
+              <div class="author-role">Sofitel Sydney</div>
+              <span class="testi-brand">Sofitel</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="testi-card reveal reveal-delay-3">
+          <svg class="testi-quote-icon" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+          </svg>
+          <p class="testi-quote">"Marketboomer's platform has streamlined our entire supply chain. From order creation to invoice approval, everything is faster and more accurate."</p>
+          <div class="testi-author">
+            <div class="author-avatar">OD</div>
+            <div>
+              <div class="author-name">Operations Director</div>
+              <div class="author-role">IHG Hotels</div>
+              <span class="testi-brand">IHG Hotels &amp; Resorts</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="testi-card reveal reveal-delay-1">
+          <svg class="testi-quote-icon" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+          </svg>
+          <p class="testi-quote">"The visibility we now have over our procurement spend is incredible. We can see exactly where every dollar is going and why."</p>
+          <div class="testi-author">
+            <div class="author-avatar">CF</div>
+            <div>
+              <div class="author-name">CFO</div>
+              <div class="author-role">AccorHotels Group</div>
+              <span class="testi-brand">Accor</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="testi-card reveal reveal-delay-2">
+          <svg class="testi-quote-icon" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+          </svg>
+          <p class="testi-quote">"Setting up as a supplier was straightforward and the platform has genuinely connected us with new hotel clients we wouldn't have reached otherwise."</p>
+          <div class="testi-author">
+            <div class="author-avatar">NS</div>
+            <div>
+              <div class="author-name">National Sales Manager</div>
+              <div class="author-role">Bidfood</div>
+              <span class="testi-brand">Bidfood</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 9 -->
+        <div class="testi-card reveal reveal-delay-3">
+          <svg class="testi-quote-icon" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+          </svg>
+          <p class="testi-quote">"The health check they did for us revealed inefficiencies we'd simply accepted as normal. Three months later and we're running a much leaner operation."</p>
+          <div class="testi-author">
+            <div class="author-avatar">GM</div>
+            <div>
+              <div class="author-name">GM</div>
+              <div class="author-role">Holiday Inn Express Singapore</div>
+              <span class="testi-brand">Holiday Inn</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ LOGOS ══ -->
+  <section class="logos-section">
+    <div style="max-width:1280px;margin:0 auto;">
+      <div class="section-header">
+        <h2 class="reveal">Some of the <strong>brands</strong> that <span class="highlight">trust Marketboomer</span></h2>
+      </div>
+      <div class="logos-grid">
+        <div class="logo-card reveal reveal-delay-1">
+          <img src="https://marketboomer.com/wp-content/uploads/2021/08/Accor-Logo-.png" alt="Accor" loading="lazy">
+        </div>
+        <div class="logo-card reveal reveal-delay-2">
+          <img src="https://marketboomer.com/wp-content/uploads/2021/08/IHG_Hotels__Resorts_logo.svg-e1630023752961.png" alt="IHG Hotels &amp; Resorts" loading="lazy">
+        </div>
+        <div class="logo-card reveal reveal-delay-3">
+          <img src="https://marketboomer.com/wp-content/uploads/2019/09/Crowne-Plaza-1.png" alt="Crowne Plaza" loading="lazy">
+        </div>
+        <div class="logo-card reveal reveal-delay-1">
+          <img src="https://marketboomer.com/wp-content/uploads/2019/09/Holiday-Inn-1.png" alt="Holiday Inn" loading="lazy">
+        </div>
+        <div class="logo-card reveal reveal-delay-2">
+          <img src="https://marketboomer.com/wp-content/uploads/2019/09/novotel-1.jpg" alt="Novotel" loading="lazy">
+        </div>
+        <div class="logo-card reveal reveal-delay-3">
+          <img src="https://marketboomer.com/wp-content/uploads/2019/09/sofitel-1.png" alt="Sofitel" loading="lazy">
+        </div>
+        <div class="logo-card reveal reveal-delay-1">
+          <img src="https://marketboomer.com/wp-content/uploads/2019/09/pulman-1.jpg" alt="Pullman" loading="lazy">
+        </div>
+        <div class="logo-card reveal reveal-delay-2">
+          <img src="https://marketboomer.com/wp-content/uploads/2019/09/westin-hotels-1.png" alt="Westin Hotels" loading="lazy">
+        </div>
+        <div class="logo-card reveal reveal-delay-3">
+          <img src="https://marketboomer.com/wp-content/uploads/2019/09/mercure-1.png" alt="Mercure" loading="lazy">
+        </div>
+        <div class="logo-card reveal reveal-delay-4">
+          <img src="https://marketboomer.com/wp-content/uploads/2019/10/BIDFOOD-FOODSERVICE-RGB.png" alt="Bidfood" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CTA ══ -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <div class="cta-badge reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <h2 class="reveal reveal-delay-1">Join <strong>thousands</strong> of hotels <span class="highlight">buying better</span></h2>
+      <p class="reveal reveal-delay-2">See for yourself how Marketboomer can transform your procurement processes.</p>
+      <div class="cta-btns reveal reveal-delay-3">
+        <a class="btn-cta-white" href="/MarketBoomer/contact/">Request a demo</a>
+        <a class="btn-cta-outline" href="/MarketBoomer/our-solutions/">Explore solutions</a>
+      </div>
+      <div class="cta-trust reveal reveal-delay-4">
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          No obligation demo
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          2500+ global users
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          12 countries
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+
+      <!-- Column 1: Brand + Contact -->
+      <div class="footer-col footer-col-brand">
+        <img class="footer-brand-logo"
+          src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png"
+          alt="Marketboomer PurchasePlus"
+        />
+        <div class="footer-contact-list">
+          <p><strong>AU</strong> <a href="tel:1300411014">1300 411 014</a></p>
+          <p><strong>AU</strong> <a href="tel:+61258496957">+61 258 496 957</a></p>
+          <p><strong>SG</strong> <a href="tel:+6531251540">+65 3125 1540</a></p>
+          <p><strong>US</strong> <a href="tel:+16802255236">+1 (680) 225-5236</a></p>
+          <p><strong>TH</strong> <a href="tel:+6622553703">+66 2255 3703</a></p>
+          <p><strong>GB</strong> <a href="tel:+442045387068">+44 204 538 7068</a></p>
+          <p><a href="mailto:help@marketboomer.com">help@marketboomer.com</a></p>
+          <p class="footer-address">Level 4/11<br/>York Street<br/>Sydney NSW 2000<br/>Australia</p>
+        </div>
+      </div>
+
+      <!-- Column 2: About -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">About</h4>
+        <p class="footer-col-text">
+          Created by hospitality, for hospitality, our cloud-based digital procurement solutions and expertise, help businesses grow by streamlining and optimising buyer-seller interactions.
+        </p>
+        <p class="footer-col-text">
+          Established in 1995, from our Headquarters in Sydney, Australia, with offices across Asia, Marketboomer proudly operates across 12 countries with a global community of over 2500 hospitality buyers and suppliers.
+        </p>
+      </div>
+
+      <!-- Column 3: Our Tools -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Our Tools</h4>
+        <ul class="footer-nav-list">
+          <li><a href="#">PurchasePlus</a></li>
+          <li><a href="#">Paperless Invoicing</a></li>
+          <li><a href="#">Connectivity and Data Translation</a></li>
+          <li><a href="#">Business Intelligence</a></li>
+          <li><a href="#">Document Storage</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Login CTA -->
+      <div class="footer-col footer-col-cta">
+        <a href="https://purchaseplus.com" class="footer-login-btn" target="_blank" rel="noopener">
+          <svg class="footer-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+          Log in PurchasePlus
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Footer bottom bar -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <span class="footer-copyright">© Marketboomer 2026</span>
+        <div class="footer-bottom-links">
+          <a href="#">Terms &amp; Conditions</a>
+          <span class="footer-sep">/</span>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══ SCRIPTS ══ -->
+  <script>
+
+    // =====================
+    // Scroll Reveal
+    // =====================
+    var revealEls = document.querySelectorAll('.reveal');
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+    revealEls.forEach(function(el) { revealObserver.observe(el); });
+
+    // =====================
+    // Nav scroll shadow
+    // =====================
+    var navEl = document.querySelector('.hero-nav');
+    if (navEl) {
+      window.addEventListener('scroll', function() {
+        navEl.style.boxShadow = window.scrollY > 10
+          ? '0 4px 24px rgba(15,37,66,0.14)'
+          : '0 1px 0 rgba(15,37,66,0.08), 0 4px 16px rgba(15,37,66,0.04)';
+      }, { passive: true });
+    }
+
+    // =====================
+    // Desktop nav dropdowns (click-based)
+    // =====================
+    var dropdownItems = document.querySelectorAll('.hero-nav-links > li.has-dropdown');
+    dropdownItems.forEach(function(li) {
+      li.querySelector('a').addEventListener('click', function(e) {
+        e.preventDefault();
+        var isOpen = li.classList.contains('nav-open');
+        dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+        if (!isOpen) li.classList.add('nav-open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.has-dropdown')) {
+        dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+      }
+    });
+    window.addEventListener('scroll', function() {
+      dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+    }, { passive: true });
+
+    // =====================
+    // Hamburger / Mobile nav
+    // =====================
+    var hamburgerBtn = document.getElementById('hamburgerBtn');
+    var mobileNav    = document.getElementById('mobileNav');
+    var overlay      = document.getElementById('mobileNavOverlay');
+    var closeBtn     = document.getElementById('mobileNavClose');
+
+    function openMobileNav() {
+      hamburgerBtn.classList.add('open');
+      mobileNav.classList.add('open');
+      overlay.style.display = 'block';
+      requestAnimationFrame(function() { overlay.style.opacity = '1'; });
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+      hamburgerBtn.classList.remove('open');
+      mobileNav.classList.remove('open');
+      overlay.style.opacity = '0';
+      setTimeout(function() { overlay.style.display = 'none'; }, 300);
+      document.body.style.overflow = '';
+    }
+
+    hamburgerBtn.addEventListener('click', function() {
+      mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+    });
+    closeBtn.addEventListener('click', closeMobileNav);
+    overlay.addEventListener('click', closeMobileNav);
+
+    // Mobile accordion dropdowns
+    document.querySelectorAll('.mobile-nav-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var li = btn.closest('li');
+        var isOpen = li.classList.contains('mob-open');
+        document.querySelectorAll('.mobile-nav-links > li').forEach(function(el) {
+          el.classList.remove('mob-open');
+        });
+        if (!isOpen) li.classList.add('mob-open');
+      });
+    });
+  </script>
+</body>
+</html>

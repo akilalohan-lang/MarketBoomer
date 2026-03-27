@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Features – Marketboomer Procurement Platform</title>
+  <meta name="description" content="Discover ways to gain visibility you need to fast-track purchasing, simplify payments and empower smart decision-making." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* =====================
+       RESET & ROOT
+    ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f2542;
+      --navy-deep: #091a30;
+      --navy-mid: #1a3a6e;
+      --teal: #2faee3;
+      --teal-light: #5cc8f0;
+      --teal-deep: #0096b7;
+      --indigo: #3b5bdb;
+      --light-bg: #f8fafc;
+      --white: #ffffff;
+      --text-primary: #0f2542;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --border: #e2e8f0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      overflow-x: hidden;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    a { color: inherit; text-decoration: none; }
+
+    h1, h2, h3 { text-wrap: balance; }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--teal);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .section-eyebrow::after {
+      content: '';
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--teal);
+      border-radius: 2px;
+    }
+
+    .feature-btn, .cta-btn, .card-link {
+      white-space: nowrap;
+    }
+
+    /* =====================
+       NAVIGATION
+    ===================== */
+    .hero-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 60px;
+      z-index: 1000;
+      background: #ffffff;
+      box-shadow: 0 1px 0 rgba(15,37,66,0.08), 0 4px 16px rgba(15,37,66,0.04);
+    }
+    .hero-logo { display: flex; align-items: center; flex-shrink: 0; }
+    .hero-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+    .hero-nav-links {
+      display: flex;
+      gap: 4px;
+      list-style: none;
+      align-items: center;
+      margin-left: auto;
+      margin-right: 8px;
+    }
+    .hero-nav-links > li { position: relative; }
+    .hero-nav-links > li > a {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: rgba(15,37,66,0.7);
+      text-decoration: none;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 8px 11px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .hero-nav-links > li > a:hover,
+    .hero-nav-links > li.nav-open > a { color: var(--navy); background: rgba(15,37,66,0.04); }
+
+    /* Dropdown chevron */
+    .nav-chevron { width: 12px; height: 12px; transition: transform 0.2s; flex-shrink: 0; }
+    .hero-nav-links > li.nav-open .nav-chevron { transform: rotate(180deg); }
+
+    /* Dropdown panel */
+    .nav-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 200px;
+      background: #ffffff;
+      border: 1px solid rgba(15,37,66,0.08);
+      border-radius: 10px;
+      box-shadow: 0 8px 32px rgba(15,37,66,0.12);
+      list-style: none;
+      padding: 6px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+      z-index: 100;
+    }
+    .hero-nav-links > li.nav-open .nav-dropdown {
+      opacity: 1; visibility: visible; transform: translateY(0);
+    }
+    .nav-dropdown a {
+      display: block;
+      padding: 9px 14px;
+      color: rgba(15,37,66,0.7);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 400;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-dropdown a:hover { background: rgba(36,150,208,0.06); color: var(--teal); }
+
+    /* Get Started CTA */
+    .hero-nav-cta {
+      background: var(--teal);
+      box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 20px rgba(47,174,227,0.3);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 9px 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .hero-nav-cta:hover { transform: translateY(-1px); box-shadow: 0 0 40px rgba(47,174,227,0.7), 0 8px 32px rgba(47,174,227,0.45); }
+
+    /* Hamburger button */
+    .hamburger-btn {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px; height: 40px;
+      background: none;
+      border: 1px solid rgba(15,37,66,0.15);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .hamburger-btn span {
+      display: block; width: 18px; height: 1.5px;
+      background: var(--navy); border-radius: 2px; transition: all 0.25s;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile nav overlay */
+    .mobile-nav-overlay {
+      position: fixed; inset: 0;
+      background: rgba(9,26,48,0.45);
+      z-index: 1999;
+      transition: opacity 0.3s;
+    }
+    /* Mobile nav drawer */
+    .mobile-nav {
+      position: fixed;
+      top: 0; right: -320px;
+      width: 300px; max-width: 90vw; height: 100vh;
+      background: #ffffff;
+      z-index: 2000;
+      overflow-y: auto;
+      transition: right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      padding: 0 0 40px;
+      display: flex; flex-direction: column;
+      box-shadow: -8px 0 40px rgba(9,26,48,0.12);
+    }
+    .mobile-nav.open { right: 0; }
+    .mobile-nav-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(15,37,66,0.08);
+    }
+    .mobile-nav-logo img { height: 26px; width: auto; }
+    .mobile-nav-close {
+      background: none; border: none; cursor: pointer;
+      padding: 6px; color: rgba(15,37,66,0.5); font-size: 1.1rem; line-height: 1;
+      border-radius: 6px; transition: background 0.15s, color 0.15s;
+    }
+    .mobile-nav-close:hover { background: rgba(15,37,66,0.06); color: var(--navy); }
+    .mobile-nav-links { list-style: none; flex: 1; padding: 8px 12px; }
+    .mobile-nav-links > li { border-bottom: 1px solid rgba(15,37,66,0.05); }
+    .mobile-nav-links > li > a,
+    .mobile-nav-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 8px;
+      color: var(--navy); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500;
+      letter-spacing: 0.03em; text-transform: uppercase;
+      background: none; border: none; cursor: pointer; width: 100%; text-align: left;
+      transition: color 0.15s;
+    }
+    .mobile-nav-links > li > a:hover, .mobile-nav-toggle:hover { color: var(--teal); }
+    .mobile-nav-chevron { width: 14px; height: 14px; transition: transform 0.2s; color: rgba(15,37,66,0.4); flex-shrink: 0; }
+    .mobile-nav-links > li.mob-open .mobile-nav-chevron { transform: rotate(180deg); }
+    .mobile-sub { list-style: none; padding: 0 0 8px 12px; display: none; }
+    .mobile-nav-links > li.mob-open .mobile-sub { display: block; }
+    .mobile-sub a {
+      display: block; padding: 9px 8px;
+      color: rgba(15,37,66,0.65); text-decoration: none; font-size: 0.82rem; font-weight: 400;
+      transition: color 0.15s;
+    }
+    .mobile-sub a:hover { color: var(--teal); }
+    .mobile-nav-footer { padding: 20px; }
+    .mobile-nav-footer .hero-nav-cta { display: block; text-align: center; padding: 13px 20px; font-size: 0.85rem; }
+
+    /* Responsive nav */
+    @media (max-width: 1200px) {
+      .hero-nav { padding: 13px 40px; }
+      .hero-logo img { height: 28px; }
+      .hero-nav-links > li > a { font-size: 0.63rem; padding: 7px 8px; }
+    }
+
+    @media (max-width: 980px) {
+      .hero-nav { padding: 12px 28px; }
+      .hero-logo img { height: 26px; }
+      .hero-nav-links > li > a { font-size: 0.58rem; padding: 6px 6px; letter-spacing: 0.02em; }
+      .hero-nav-cta { padding: 8px 14px; font-size: 0.72rem; }
+    }
+
+    @media (max-width: 820px) {
+      .hero-nav { padding: 11px 24px; }
+      .hero-logo img { height: 22px; }
+      .hero-nav-links { gap: 0; margin-right: 4px; }
+      .hero-nav-links > li > a { font-size: 0.44rem; padding: 5px 4px; letter-spacing: 0; }
+      .hero-nav-cta { padding: 7px 11px; font-size: 0.68rem; }
+    }
+
+    @media (max-width: 700px) {
+      .hero-nav-links { display: none; }
+      .hero-nav-cta { display: none; }
+      .hamburger-btn { display: flex; }
+    }
+
+    /* =====================
+       HERO
+    ===================== */
+    .page-hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 0 60px;
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 220px;
+      background: linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.6) 50%, #ffffff 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .page-hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .page-hero-bg img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 40%;
+    }
+    .page-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, #ffffff 0%, #ffffff 45%, rgba(255,255,255,0.88) 62%, rgba(255,255,255,0.35) 80%, transparent 100%);
+      z-index: 1;
+    }
+    .page-hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 148px 0 80px;
+      width: 100%;
+    }
+    .page-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(47,174,227,0.1);
+      border: 1px solid rgba(47,174,227,0.3);
+      color: var(--teal);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .page-hero-eyebrow-dot {
+      width: 7px; height: 7px;
+      background: var(--teal); border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    .page-hero-h1 {
+      font-size: clamp(2rem, 4.2vw, 4.2rem);
+      font-weight: 300;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      max-width: 640px;
+    }
+    .page-hero-h1 .gradient-text {
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .page-hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: 36px;
+    }
+    .page-hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--teal);
+      box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 20px rgba(47,174,227,0.3);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    .page-hero-cta:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(47,174,227,0.7), 0 8px 32px rgba(47,174,227,0.45); }
+    .page-hero-cta svg { transition: transform 0.2s; }
+    .page-hero-cta:hover svg { transform: translateX(4px); }
+
+    /* =====================
+       PROBLEM SECTION
+    ===================== */
+    .problem-section {
+      background: var(--light-bg);
+      padding: 88px 60px;
+    }
+    .problem-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .problem-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--teal-light);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .problem-eyebrow::before {
+      content: '';
+      display: block;
+      width: 18px; height: 2px;
+      background: var(--teal-light);
+      border-radius: 2px;
+    }
+    .problem-h2 {
+      font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+      font-weight: 300;
+      color: var(--navy);
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .problem-body {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .problem-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .problem-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: background 0.2s;
+    }
+    .problem-card:hover { background: rgba(47,174,227,0.03); }
+    .problem-card-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: rgba(47,174,227,0.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .problem-card-icon svg { width: 18px; height: 18px; color: var(--teal-light); }
+    .problem-card-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .problem-card-body {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* =====================
+       FEATURES SECTION
+    ===================== */
+    .features-section {
+      background: var(--white);
+      padding: 100px 60px;
+    }
+    .features-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .features-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .features-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .features-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .feat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s, border-color 0.3s;
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    .feat-card.in-view {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s, border-color 0.3s;
+    }
+    .feat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(15,37,66,0.1);
+      border-color: rgba(47,174,227,0.3);
+    }
+    .feat-card-icon {
+      width: 72px; height: 72px;
+      background: rgba(47,174,227,0.08);
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 28px;
+    }
+    .feat-card-icon img {
+      width: 44px; height: 44px;
+      object-fit: contain;
+    }
+    .feat-card-badge {
+      display: inline-block;
+      background: rgba(47,174,227,0.1);
+      color: var(--teal);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .feat-card-h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+    .feat-card-body {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      flex: 1;
+      margin-bottom: 28px;
+    }
+    .feat-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--teal);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      transition: gap 0.2s;
+      white-space: nowrap;
+    }
+    .feat-card-link:hover { gap: 12px; }
+    .feat-card-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* =====================
+       BENEFITS SECTION
+    ===================== */
+    .benefits-section {
+      background: var(--light-bg);
+      padding: 100px 60px;
+    }
+    .benefits-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .benefits-header {
+      max-width: 640px;
+      margin-bottom: 60px;
+    }
+    .benefits-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--teal-light);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .benefits-eyebrow::before {
+      content: '';
+      display: block;
+      width: 18px; height: 2px;
+      background: var(--teal-light);
+      border-radius: 2px;
+    }
+    .benefits-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300;
+      color: var(--navy);
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .benefits-sub {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .benefit-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 24px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: background 0.2s;
+    }
+    .benefit-item.in-view {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s;
+    }
+    .benefit-item:hover { background: rgba(47,174,227,0.03); }
+    .benefit-check {
+      width: 36px; height: 36px;
+      background: rgba(47,174,227,0.2);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .benefit-check svg { width: 18px; height: 18px; color: var(--teal-light); }
+    .benefit-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+    .benefit-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* =====================
+       QUOTE STRIP
+    ===================== */
+    .quote-strip {
+      background: var(--light-bg);
+      padding: 80px 60px;
+    }
+    .quote-strip-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    .quote-strip-img {
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+    }
+    .quote-strip-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .quote-strip-img:hover img { transform: scale(1.04); }
+    .quote-strip-text .section-eyebrow { justify-content: flex-start; }
+    .quote-strip-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.4rem);
+      font-weight: 300;
+      color: var(--navy);
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .quote-strip-body {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+    .quote-strip-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--teal);
+      box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 20px rgba(47,174,227,0.3);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    .quote-strip-cta:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(47,174,227,0.7), 0 8px 32px rgba(47,174,227,0.45); }
+    .quote-strip-cta svg { transition: transform 0.2s; }
+    .quote-strip-cta:hover svg { transform: translateX(4px); }
+
+    /* =====================
+       CTA SECTION
+    ===================== */
+    .cta-section {
+      position: relative;
+      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 45%, var(--teal-light) 100%);
+      padding: 100px 60px;
+      overflow: hidden;
+    }
+    .cta-grid-texture {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .cta-orb-1 {
+      position: absolute; width: 420px; height: 420px;
+      border-radius: 50%;
+      background: var(--white);
+      filter: blur(80px);
+      top: -120px; right: -80px; z-index: 0;
+      opacity: 0.15;
+    }
+    .cta-orb-2 {
+      position: absolute; width: 300px; height: 300px;
+      border-radius: 50%;
+      background: var(--white);
+      filter: blur(60px);
+      bottom: -80px; left: 40px; z-index: 0;
+      opacity: 0.15;
+    }
+    .cta-inner {
+      position: relative; z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .cta-badge {
+      width: 76px; height: 76px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 22px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .cta-badge svg { width: 36px; height: 36px; color: var(--white); }
+    .cta-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.8); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 18px;
+    }
+    .cta-eyebrow::before, .cta-eyebrow::after {
+      content: ''; display: block; width: 18px; height: 2px;
+      background: rgba(255,255,255,0.6); border-radius: 2px;
+    }
+    .cta-h2 {
+      font-size: clamp(1.4rem, 2.4vw, 2.5rem);
+      font-weight: 300; color: var(--white);
+      letter-spacing: -0.025em; line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .cta-body {
+      font-size: 0.95rem; color: rgba(255,255,255,0.82);
+      line-height: 1.75; margin-bottom: 36px;
+    }
+    .cta-buttons {
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; flex-wrap: wrap; margin-bottom: 28px;
+    }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #ffffff; color: var(--teal-deep);
+      text-decoration: none; border-radius: 10px;
+      padding: 14px 28px; font-size: 0.875rem; font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .btn-white svg { transition: transform 0.2s; }
+    .btn-white:hover svg { transform: translateX(4px); }
+    .btn-outline-white {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.5);
+      color: var(--white); text-decoration: none; border-radius: 10px;
+      padding: 14px 28px; font-size: 0.875rem; font-weight: 600;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+    .btn-outline-white:hover { border-color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+    .cta-trust {
+      display: flex; align-items: center; justify-content: center;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .cta-trust-item {
+      display: flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.75); font-size: 0.8rem; font-weight: 500;
+    }
+    .cta-trust-item svg { width: 14px; height: 14px; color: rgba(255,255,255,0.75); flex-shrink: 0; }
+
+    /* =====================
+       SITE FOOTER
+    ===================== */
+    .site-footer {
+      background: linear-gradient(135deg, #0f2542 0%, #1a5a8c 60%, #2faee3 100%);
+      color: rgba(255,255,255,0.85);
+      padding: 64px 60px 0;
+    }
+    .site-footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 1.5fr 1.4fr 0.9fr;
+      gap: 48px;
+      padding-bottom: 52px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+    .footer-brand-logo {
+      height: 30px; width: auto; display: block;
+      filter: brightness(0) invert(1);
+      margin-bottom: 22px;
+    }
+    .footer-contact-list {
+      padding-left: 18px;
+    }
+    .footer-contact-list p {
+      font-size: 0.81rem; line-height: 1.85; color: rgba(255,255,255,0.72);
+    }
+    .footer-contact-list strong {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.5);
+      font-weight: 700;
+      margin-right: 4px;
+    }
+    .footer-contact-list a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-contact-list a:hover { color: #ffffff; }
+    .footer-address { margin-top: 10px !important; }
+    .footer-col-title {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.45);
+      margin-bottom: 18px;
+    }
+    .footer-col-text { font-size: 0.83rem; line-height: 1.75; color: rgba(255,255,255,0.72); }
+    .footer-col-text + .footer-col-text { margin-top: 12px; }
+    .footer-nav-list { list-style: none; }
+    .footer-nav-list li { display: flex; align-items: center; }
+    .footer-nav-list li::before { content: '›'; margin-right: 7px; color: rgba(255,255,255,0.35); flex-shrink: 0; }
+    .footer-nav-list a {
+      color: rgba(255,255,255,0.72); text-decoration: none;
+      font-size: 0.76rem; line-height: 2.1; transition: color 0.2s;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .footer-nav-list a:hover { color: #ffffff; }
+    .footer-col-cta { display: flex; flex-direction: column; justify-content: flex-start; padding-top: 24px; }
+    .footer-login-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #ffffff; text-decoration: none;
+      border-radius: 10px; padding: 14px 18px;
+      font-size: 0.83rem; font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .footer-login-btn:hover { background: rgba(255,255,255,0.2); }
+    .footer-login-icon { width: 17px; height: 17px; flex-shrink: 0; }
+    .footer-bottom { padding: 18px 0; }
+    .footer-bottom-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .footer-copyright { font-size: 0.76rem; color: rgba(255,255,255,0.4); }
+    .footer-bottom-links { display: flex; align-items: center; gap: 10px; }
+    .footer-bottom-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.76rem; transition: color 0.2s; }
+    .footer-bottom-links a:hover { color: rgba(255,255,255,0.85); }
+    .footer-sep { color: rgba(255,255,255,0.2); font-size: 0.76rem; }
+
+    /* ── Animated gradient highlight ── */
+    .highlight {
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light), #a8ecff, var(--teal-light), var(--teal));
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientFlow 4s linear infinite;
+    }
+    @keyframes gradientFlow {
+      0%   { background-position: 0% center; }
+      100% { background-position: 250% center; }
+    }
+    @keyframes btnGradientFlow {
+      0%   { background-position: 0% center; }
+      100% { background-position: 250% center; }
+    }
+    strong { font-weight: 800; }
+
+    /* On blue CTA bg, gradient must be white-dominant */
+    .cta-section .highlight {
+      background: linear-gradient(90deg, rgba(255,255,255,0.7), #ffffff, rgba(255,255,255,0.7));
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+
+    /* =====================
+       SCROLL ANIMATIONS
+    ===================== */
+    .animate-fade {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .animate-fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 1100px) {
+      .features-section, .benefits-section, .problem-section, .quote-strip, .cta-section { padding-left: 40px; padding-right: 40px; }
+      .page-hero { padding: 0 40px; }
+      .site-footer-inner { grid-template-columns: 1fr 1.4fr 1fr; gap: 36px; }
+      .footer-col-cta { display: none; }
+      .site-footer { padding: 56px 40px 0; }
+      .footer-bottom { padding: 16px 0; }
+    }
+
+    @media (max-width: 900px) {
+      .problem-inner { grid-template-columns: 1fr; gap: 48px; }
+      .features-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+      .benefits-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+      .quote-strip-inner { grid-template-columns: 1fr; gap: 40px; }
+      .quote-strip-img { order: -1; }
+    }
+
+    @media (max-width: 768px) {
+      .site-footer-inner { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+      .site-footer { padding: 48px 32px 0; }
+      .footer-bottom { padding: 16px 0; }
+      .footer-col-cta { display: flex; order: 3; align-items: center; }
+      .footer-col-brand { order: 10; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .site-footer-inner > .footer-col:nth-child(2) { order: 1; }
+      .site-footer-inner > .footer-col:nth-child(3) { order: 2; }
+      .footer-brand-logo { margin: 0 auto 22px; }
+      .footer-contact-list { padding-left: 0; }
+      .footer-nav-list li { justify-content: center; }
+      .footer-nav-list li::before { display: none; }
+      .footer-login-btn { align-self: center; width: auto; padding: 9px 20px; font-size: 0.78rem; }
+      .footer-bottom-inner { flex-direction: column; align-items: center; gap: 8px; }
+    }
+
+    @media (max-width: 600px) {
+      .page-hero { padding: 0 40px; }
+      .page-hero-content { padding: 100px 0 60px; text-align: center; }
+      .page-hero-h1 { font-size: clamp(1.8rem, 7vw, 2.8rem); text-align: center; max-width: 100%; }
+      .page-hero-eyebrow { align-self: center; }
+      .page-hero-sub { font-size: 0.9rem; text-align: center; max-width: 100%; }
+      .page-hero-cta { align-self: center; }
+      .problem-section { padding: 56px 24px; }
+      .problem-text { text-align: center; }
+      .problem-eyebrow { display: flex; justify-content: center; align-items: center; }
+      .problem-h2 { text-align: center; }
+      .problem-body { text-align: center; }
+      .problem-card { text-align: center; flex-direction: column; align-items: center; }
+      .features-section { padding: 56px 24px; }
+      .features-header { text-align: center; }
+      .features-h2 { text-align: center; }
+      .features-sub { text-align: center; }
+      .section-eyebrow { display: flex; justify-content: center; align-items: center; }
+      .section-eyebrow::before { content: ''; display: block; width: 18px; height: 2px; background: var(--teal); border-radius: 2px; }
+      .feat-card { text-align: center; align-items: center; }
+      .feat-card-link { align-self: center; }
+      .benefits-section { padding: 56px 24px; }
+      .benefits-header { max-width: 100%; text-align: center; }
+      .benefits-eyebrow { display: flex; justify-content: center; align-items: center; }
+      .benefits-eyebrow::before { content: ''; display: block; width: 18px; height: 2px; background: var(--teal-light); border-radius: 2px; }
+      .benefits-h2 { text-align: center; }
+      .benefits-sub { text-align: center; }
+      .benefits-grid { grid-template-columns: 1fr; }
+      .benefit-item { text-align: center; display: flex; flex-direction: column; align-items: center; }
+      .benefit-title { text-align: center; }
+      .benefit-desc { text-align: center; }
+      .quote-strip { padding: 56px 24px; }
+      .quote-strip-text { text-align: center; }
+      .quote-strip-h2 { text-align: center; }
+      .quote-strip-body { text-align: center; text-wrap: balance; }
+      .quote-strip-cta { align-self: center; }
+      .quote-strip-text .section-eyebrow { justify-content: center; }
+      .cta-section { padding: 56px 24px; }
+      .cta-inner { text-align: center; }
+      .cta-badge { margin: 0 auto 28px; }
+      .cta-eyebrow { justify-content: center; }
+      .cta-h2 { text-align: center; }
+      .cta-body { text-align: center; text-wrap: balance; }
+      .cta-buttons { flex-direction: column; align-items: center; }
+      .cta-trust { justify-content: center; }
+      .cta-trust-item { justify-content: center; }
+      .btn-white, .btn-outline-white { width: auto; align-self: center; padding: 9px 20px; font-size: 0.78rem; }
+      .problem-card-body { text-wrap: balance; }
+      .site-footer { padding: 40px 24px 0; }
+      .footer-bottom { padding: 14px 0; }
+      .site-footer-inner { text-align: center; }
+      .footer-col-brand { order: 10; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .footer-col-cta { order: 3; align-items: center; }
+      .footer-brand-logo { margin: 0 auto 14px; height: 20px; }
+      .footer-contact-list { padding-left: 0; }
+      .footer-nav-list li { justify-content: center; }
+      .footer-nav-list li::before { display: none; }
+      .footer-login-btn { align-self: center; width: auto; padding: 9px 20px; font-size: 0.78rem; }
+      .footer-bottom-inner { flex-direction: column; align-items: center; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="hero-nav">
+    <div class="hero-logo">
+      <a href="#"><img src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png" alt="Marketboomer PurchasePlus" /></a>
+    </div>
+
+    <ul class="hero-nav-links">
+      <li><a href="#">Home</a></li>
+      <li class="has-dropdown">
+        <a href="#">About Us <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">In The News</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="#">Features <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">Real Time Marketplace</a></li>
+          <li><a href="#">Robotic Automation</a></li>
+          <li><a href="#">Centralised Data</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="#">Our Solutions <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">PurchasePlus</a></li>
+          <li><a href="#">Paperless Invoicing</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown">
+        <a href="#">Our Customers <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+        <ul class="nav-dropdown">
+          <li><a href="#">Buyers</a></li>
+          <li><a href="#">Suppliers</a></li>
+          <li><a href="#">Channel Partners</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+
+    <a href="#" class="hero-nav-cta">Get started</a>
+
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile nav overlay -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" style="display:none;opacity:0;"></div>
+
+  <!-- Mobile nav drawer -->
+  <div class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+      <span style="font-size:0.8rem;font-weight:600;color:rgba(15,37,66,0.5);letter-spacing:0.06em;text-transform:uppercase;">Menu</span>
+      <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">✕</button>
+    </div>
+    <ul class="mobile-nav-links">
+      <li><a href="#">Home</a></li>
+      <li>
+        <button class="mobile-nav-toggle">About Us <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub"><li><a href="#">In The News</a></li></ul>
+      </li>
+      <li>
+        <button class="mobile-nav-toggle">Features <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub">
+          <li><a href="#">Real Time Marketplace</a></li>
+          <li><a href="#">Robotic Automation</a></li>
+          <li><a href="#">Centralised Data</a></li>
+        </ul>
+      </li>
+      <li>
+        <button class="mobile-nav-toggle">Our Solutions <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub">
+          <li><a href="#">PurchasePlus</a></li>
+          <li><a href="#">Paperless Invoicing</a></li>
+        </ul>
+      </li>
+      <li>
+        <button class="mobile-nav-toggle">Our Customers <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+        <ul class="mobile-sub">
+          <li><a href="#">Buyers</a></li>
+          <li><a href="#">Suppliers</a></li>
+          <li><a href="#">Channel Partners</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="mobile-nav-footer">
+      <a href="#" class="hero-nav-cta">Get started</a>
+    </div>
+  </div>
+
+  <!-- ========================
+       HERO
+  ========================= -->
+  <section class="page-hero">
+    <div class="page-hero-bg">
+      <img src="https://marketboomer.com/wp-content/uploads/2019/08/Hero-Banner_06.jpg" alt="Hotel procurement features" />
+    </div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="page-hero-eyebrow">
+        <span class="page-hero-eyebrow-dot"></span>
+        Platform Features
+      </div>
+      <h1 class="page-hero-h1">
+        The <strong>power</strong> of <span class="highlight">complete procurement</span> control
+      </h1>
+      <p class="page-hero-sub">
+        Make the right decision every time with full visibility and choice over price, process and performance.
+      </p>
+      <a href="/MarketBoomer/contact/" class="page-hero-cta">
+        Take control now
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========================
+       PROBLEM SECTION
+  ========================= -->
+  <section class="problem-section">
+    <div class="problem-inner">
+      <div class="problem-text">
+        <span class="problem-eyebrow">The challenge</span>
+        <h2 class="problem-h2">Don't <strong>underestimate</strong> the <span class="highlight">power of procurement</span></h2>
+        <p class="problem-body">
+          Every purchase you make affects the value and experience you can offer your guests. Procurement is more than simply making an order — it's a complex process made up of many steps. Without control over each one, you risk losing the ability to deliver your best.
+        </p>
+      </div>
+      <div class="problem-cards">
+        <div class="problem-card">
+          <div class="problem-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div>
+            <div class="problem-card-title">Right price, wrong payment system</div>
+            <div class="problem-card-body">Not paying the right amount at the right time can sour supplier relationships or result in extra fees — even when pricing is correct.</div>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div>
+            <div class="problem-card-title">Good payments, no analytics</div>
+            <div class="problem-card-body">When you can't analyse payment trends or identify unnecessary costs, you miss valuable opportunities to save and optimise.</div>
+          </div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/></svg>
+          </div>
+          <div>
+            <div class="problem-card-title">Process without visibility</div>
+            <div class="problem-card-body">When errors occur and you can't see who or what caused them, the same mistakes keep happening — preventing continuous improvement.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================
+       3 FEATURES
+  ========================= -->
+  <section class="features-section">
+    <div class="features-inner">
+      <div class="features-header">
+        <span class="section-eyebrow">What we offer</span>
+        <h2 class="features-h2">The <strong>pieces</strong> that <span class="highlight">pull procurement together</span></h2>
+        <p class="features-sub">Three key features that, when used together, transform what you can achieve — delivering the best experience for guests and staff every time.</p>
+      </div>
+      <div class="features-grid">
+
+        <!-- Real Time Marketplace -->
+        <div class="feat-card">
+          <div class="feat-card-icon">
+            <img src="https://marketboomer.com/wp-content/uploads/2019/08/Icon__real-time-marketplace-150x150.png" alt="Real Time Marketplace" />
+          </div>
+          <span class="feat-card-badge">Feature 01</span>
+          <h3 class="feat-card-h3">Real Time Marketplace</h3>
+          <p class="feat-card-body">Control the cost and quality of every product you order with all pricing and supplier information visible online in real time. No more locked-in contracts or outdated price lists.</p>
+          <a href="/MarketBoomer/features/real-time-marketplace/" class="feat-card-link">
+            Learn more
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+
+        <!-- Centralised Data -->
+        <div class="feat-card" style="transition-delay: 0.1s;">
+          <div class="feat-card-icon">
+            <img src="https://marketboomer.com/wp-content/uploads/2019/08/Icon__centralised-data-150x150.png" alt="Centralised Data" />
+          </div>
+          <span class="feat-card-badge">Feature 02</span>
+          <h3 class="feat-card-h3">Centralised Data</h3>
+          <p class="feat-card-body">All the information you need to view, report and improve your procurement processes — right at your fingertips. Make smarter decisions with accurate, usable insights in one place.</p>
+          <a href="/MarketBoomer/features/centralised-data/" class="feat-card-link">
+            Learn more
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+
+        <!-- Robotic Automation -->
+        <div class="feat-card" style="transition-delay: 0.2s;">
+          <div class="feat-card-icon">
+            <img src="https://marketboomer.com/wp-content/uploads/2019/08/Icon__robotic-automation-150x150.png" alt="Robotic Automation" />
+          </div>
+          <span class="feat-card-badge">Feature 03</span>
+          <h3 class="feat-card-h3">Robotic Automation</h3>
+          <p class="feat-card-body">Streamline procurement approval, purchase and payment with complete process automation. Improve your outcomes without increasing effort — let the system do the heavy lifting.</p>
+          <a href="/MarketBoomer/features/robotic-automation/" class="feat-card-link">
+            Learn more
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================
+       BENEFITS SECTION
+  ========================= -->
+  <section class="benefits-section">
+    <div class="benefits-inner">
+      <div class="benefits-header">
+        <span class="benefits-eyebrow">Combined impact</span>
+        <h2 class="benefits-h2">What you <strong>gain</strong> with <span class="highlight">all three features</span></h2>
+        <p class="benefits-sub">Individually powerful. Together, transformative. These features work in concert to deliver complete control over every step of your procurement.</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <div class="benefit-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="benefit-title">Complete Automation</div>
+          <div class="benefit-desc">Integrated systems and streamlined processes — no manual steps required.</div>
+        </div>
+        <div class="benefit-item" style="transition-delay: 0.1s;">
+          <div class="benefit-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="benefit-title">Full Visibility</div>
+          <div class="benefit-desc">Complete oversight across every purchase, payment and procurement decision.</div>
+        </div>
+        <div class="benefit-item" style="transition-delay: 0.2s;">
+          <div class="benefit-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="benefit-title">Significant Cost Savings</div>
+          <div class="benefit-desc">Save on every purchase with live pricing and automated cost analysis tools.</div>
+        </div>
+        <div class="benefit-item" style="transition-delay: 0.3s;">
+          <div class="benefit-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="benefit-title">Uniform, Accessible Data</div>
+          <div class="benefit-desc">One source of truth for all suppliers, products and prices — no confusion.</div>
+        </div>
+        <div class="benefit-item" style="transition-delay: 0.4s;">
+          <div class="benefit-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="benefit-title">Consistent Quality</div>
+          <div class="benefit-desc">Match product standards to your hotel's standards — consistently, every time.</div>
+        </div>
+        <div class="benefit-item" style="transition-delay: 0.5s;">
+          <div class="benefit-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="benefit-title">Purchasing Analysis</div>
+          <div class="benefit-desc">Identify trends, flag anomalies, and uncover savings opportunities with ease.</div>
+        </div>
+        <div class="benefit-item" style="transition-delay: 0.6s;">
+          <div class="benefit-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="benefit-title">Supplier Integration</div>
+          <div class="benefit-desc">Directly connected to thousands of suppliers — no more phone calls or catalogues.</div>
+        </div>
+        <div class="benefit-item" style="transition-delay: 0.7s;">
+          <div class="benefit-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <div class="benefit-title">Smarter Decisions</div>
+          <div class="benefit-desc">Empower your team with real data — so every decision is an informed one.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================
+       QUOTE / STORY STRIP
+  ========================= -->
+  <section class="quote-strip">
+    <div class="quote-strip-inner">
+      <div class="quote-strip-text">
+        <span class="section-eyebrow">Our software</span>
+        <h2 class="quote-strip-h2"><strong>Star features</strong> built by <span class="highlight">hotel people</span>, for hotel people</h2>
+        <p class="quote-strip-body">
+          As a team of hotel and hospitality professionals, we know firsthand the shortcomings of traditional procurement. We've experienced the pain, identified the gaps, and built the solution. Discover the difference of feature-rich software designed specifically for your world.
+        </p>
+        <a href="/MarketBoomer/our-solutions/" class="quote-strip-cta">
+          Explore our software
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+      <div class="quote-strip-img">
+        <img src="https://marketboomer.com/wp-content/uploads/2019/08/marketboomer-procurement-software-hotels_0003_shutterstock_1182412297.jpg" alt="Hotel procurement software in action" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================
+       CTA SECTION
+  ========================= -->
+  <section class="cta-section">
+    <div class="cta-grid-texture"></div>
+    <div class="cta-orb-1"></div>
+    <div class="cta-orb-2"></div>
+    <div class="cta-inner">
+      <div class="cta-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 7.91a16 16 0 0 0 6 6l.81-.81a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+      </div>
+      <span class="cta-eyebrow">Knowledge is power</span>
+      <h2 class="cta-h2">Have <strong>questions</strong> about our <span class="highlight">features?</span></h2>
+      <p class="cta-body">If you have more questions about Marketboomer features or software, our team are on hand to answer them. Get in touch and let's talk procurement.</p>
+      <div class="cta-buttons">
+        <a href="/MarketBoomer/contact/" class="btn-white">
+          Get in touch with the team
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+        <a href="/MarketBoomer/our-solutions/" class="btn-outline-white">Explore our solutions</a>
+      </div>
+      <div class="cta-trust">
+        <span class="cta-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          No obligation demo
+        </span>
+        <span class="cta-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          2500+ global users
+        </span>
+        <span class="cta-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          12 countries
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================
+       FOOTER
+  ========================= -->
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+
+      <!-- Column 1: Brand + Contact -->
+      <div class="footer-col footer-col-brand">
+        <img class="footer-brand-logo"
+          src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png"
+          alt="Marketboomer PurchasePlus"
+        />
+        <div class="footer-contact-list">
+          <p><strong>AU</strong> <a href="tel:1300411014">1300 411 014</a></p>
+          <p><strong>AU</strong> <a href="tel:+61258496957">+61 258 496 957</a></p>
+          <p><strong>SG</strong> <a href="tel:+6531251540">+65 3125 1540</a></p>
+          <p><strong>US</strong> <a href="tel:+16802255236">+1 (680) 225-5236</a></p>
+          <p><strong>TH</strong> <a href="tel:+6622553703">+66 2255 3703</a></p>
+          <p><strong>GB</strong> <a href="tel:+442045387068">+44 204 538 7068</a></p>
+          <p><a href="mailto:help@marketboomer.com">help@marketboomer.com</a></p>
+          <p class="footer-address">Level 4/11<br/>York Street<br/>Sydney NSW 2000<br/>Australia</p>
+        </div>
+      </div>
+
+      <!-- Column 2: About -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">About</h4>
+        <p class="footer-col-text">
+          Created by hospitality, for hospitality, our cloud-based digital procurement solutions and expertise, help businesses grow by streamlining and optimising buyer-seller interactions.
+        </p>
+        <p class="footer-col-text">
+          Established in 1995, from our Headquarters in Sydney, Australia, with offices across Asia, Marketboomer proudly operates across 12 countries with a global community of over 2500 hospitality buyers and suppliers.
+        </p>
+      </div>
+
+      <!-- Column 3: Our Tools -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">Our Tools</h4>
+        <ul class="footer-nav-list">
+          <li><a href="#">PurchasePlus</a></li>
+          <li><a href="#">Paperless Invoicing</a></li>
+          <li><a href="#">Connectivity and Data Translation</a></li>
+          <li><a href="#">Business Intelligence</a></li>
+          <li><a href="#">Document Storage</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Login CTA -->
+      <div class="footer-col footer-col-cta">
+        <a href="https://purchaseplus.com" class="footer-login-btn" target="_blank" rel="noopener">
+          <svg class="footer-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+          Log in PurchasePlus
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Footer bottom bar -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <span class="footer-copyright">© Marketboomer 2026</span>
+        <div class="footer-bottom-links">
+          <a href="#">Terms &amp; Conditions</a>
+          <span class="footer-sep">/</span>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+
+    // =====================
+    // Scroll Reveal — .animate-fade elements
+    // =====================
+    var revealEls = document.querySelectorAll('.animate-fade');
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+    revealEls.forEach(function(el) { revealObserver.observe(el); });
+
+    // =====================
+    // Scroll Reveal — .feat-card and .benefit-item (in-view class)
+    // =====================
+    var cardEls = document.querySelectorAll('.feat-card, .benefit-item');
+    var cardObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          cardObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    cardEls.forEach(function(el) { cardObserver.observe(el); });
+
+    // =====================
+    // Nav scroll shadow
+    // =====================
+    var navEl = document.querySelector('.hero-nav');
+    if (navEl) {
+      window.addEventListener('scroll', function() {
+        navEl.style.boxShadow = window.scrollY > 10
+          ? '0 4px 24px rgba(15,37,66,0.14)'
+          : '0 1px 0 rgba(15,37,66,0.08), 0 4px 16px rgba(15,37,66,0.04)';
+      }, { passive: true });
+    }
+
+    // =====================
+    // Desktop nav dropdowns (click-based)
+    // =====================
+    var dropdownItems = document.querySelectorAll('.hero-nav-links > li.has-dropdown');
+    dropdownItems.forEach(function(li) {
+      li.querySelector('a').addEventListener('click', function(e) {
+        e.preventDefault();
+        var isOpen = li.classList.contains('nav-open');
+        dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+        if (!isOpen) li.classList.add('nav-open');
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.has-dropdown')) {
+        dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+      }
+    });
+    window.addEventListener('scroll', function() {
+      dropdownItems.forEach(function(el) { el.classList.remove('nav-open'); });
+    }, { passive: true });
+
+    // =====================
+    // Hamburger / Mobile nav
+    // =====================
+    var hamburgerBtn = document.getElementById('hamburgerBtn');
+    var mobileNav    = document.getElementById('mobileNav');
+    var overlay      = document.getElementById('mobileNavOverlay');
+    var closeBtn     = document.getElementById('mobileNavClose');
+
+    function openMobileNav() {
+      hamburgerBtn.classList.add('open');
+      mobileNav.classList.add('open');
+      overlay.style.display = 'block';
+      requestAnimationFrame(function() { overlay.style.opacity = '1'; });
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+      hamburgerBtn.classList.remove('open');
+      mobileNav.classList.remove('open');
+      overlay.style.opacity = '0';
+      setTimeout(function() { overlay.style.display = 'none'; }, 300);
+      document.body.style.overflow = '';
+    }
+
+    hamburgerBtn.addEventListener('click', function() {
+      mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+    });
+    closeBtn.addEventListener('click', closeMobileNav);
+    overlay.addEventListener('click', closeMobileNav);
+
+    // Mobile accordion dropdowns
+    document.querySelectorAll('.mobile-nav-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var li = btn.closest('li');
+        var isOpen = li.classList.contains('mob-open');
+        document.querySelectorAll('.mobile-nav-links > li').forEach(function(el) {
+          el.classList.remove('mob-open');
+        });
+        if (!isOpen) li.classList.add('mob-open');
+      });
+    });
+  </script>
+</body>
+</html>
