@@ -1839,6 +1839,11 @@
       if (el) observer.observe(el);
     });
 
+    // Also observe all .reveal elements (covers team sections and any future additions)
+    document.querySelectorAll('.reveal').forEach(function(el) {
+      observer.observe(el);
+    });
+
     // =====================
     // Desktop nav dropdowns (click-based)
     // =====================
