@@ -222,6 +222,11 @@
       box-shadow: 0 0 0 3px rgba(47,174,227,0.12);
       background: #fff;
     }
+    #mb-msg-input.drag-over {
+      border-color: #2FAEE3;
+      background: rgba(47,174,227,0.06);
+      box-shadow: 0 0 0 3px rgba(47,174,227,0.18);
+    }
 
     /* Attachment strip */
     #mb-attach-strip {
@@ -485,6 +490,36 @@
   attachInput.addEventListener('change', function () {
     handleFiles(Array.from(attachInput.files));
     attachInput.value = '';
+  });
+
+  // Drag-and-drop onto the textarea
+  msgInput.addEventListener('dragenter', function (e) { e.preventDefault(); msgInput.classList.add('drag-over'); });
+  msgInput.addEventListener('dragover',  function (e) { e.preventDefault(); msgInput.classList.add('drag-over'); });
+  msgInput.addEventListener('dragleave', function ()  { msgInput.classList.remove('drag-over'); });
+  msgInput.addEventListener('drop', function (e) {
+    e.preventDefault();
+    msgInput.classList.remove('drag-over');
+    const files = Array.from(e.dataTransfer.files).filter(function (f) { return f.type.startsWith('image/'); });
+    if (files.length) {
+      handleFiles(files);
+    } else {
+      // Maybe they dragged text — insert it
+      const text = e.dataTransfer.getData('text');
+      if (text) msgInput.value += text;
+    }
+  });
+
+  // Also allow drag onto the whole input area
+  const inputArea = document.getElementById('mb-input-area');
+  inputArea.addEventListener('dragover', function (e) { e.preventDefault(); msgInput.classList.add('drag-over'); });
+  inputArea.addEventListener('dragleave', function (e) {
+    if (!inputArea.contains(e.relatedTarget)) msgInput.classList.remove('drag-over');
+  });
+  inputArea.addEventListener('drop', function (e) {
+    e.preventDefault();
+    msgInput.classList.remove('drag-over');
+    const files = Array.from(e.dataTransfer.files).filter(function (f) { return f.type.startsWith('image/'); });
+    if (files.length) handleFiles(files);
   });
 
   function handleFiles(files) {
