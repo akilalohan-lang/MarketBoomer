@@ -1268,6 +1268,110 @@
     }
     strong { font-weight: 800; }
 
+
+    /* ===== MEET OUR TEAM (merged from meet-our-team page) ===== */
+    .meet-team-section {
+      background: var(--light-bg);
+      padding: 100px 60px;
+    }
+    .meet-team-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .meet-team-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 64px;
+    }
+    .meet-team-header h2 {
+      font-size: clamp(1.6rem, 2.6vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--text-primary);
+      margin-bottom: 18px;
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 80px;
+    }
+    .value-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 36px;
+      transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), box-shadow 0.25s;
+    }
+    .value-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(15,37,66,0.10); }
+    .value-icon {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, rgba(47,174,227,0.12) 0%, rgba(47,174,227,0.06) 100%);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .value-icon svg { width: 24px; height: 24px; color: var(--teal); }
+    .value-card h3 { font-size: 19px; font-weight: 700; color: var(--text-primary); margin-bottom: 14px; line-height: 1.3; }
+    .value-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; }
+
+    .leadership-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      box-shadow: 0 4px 24px rgba(15,37,66,0.07);
+      margin-bottom: 80px;
+    }
+    .leadership-photo { position: relative; overflow: hidden; min-height: 420px; }
+    .leadership-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .leadership-bio { padding: 40px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .leader-name { font-size: 30px; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; }
+    .leader-title { font-size: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); margin-bottom: 28px; }
+    .leader-bio { font-size: 16px; color: var(--text-secondary); line-height: 1.75; }
+
+    .team-photo-section {
+      position: relative; min-height: 440px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; background: var(--light-bg);
+    }
+    .team-photo-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .team-photo-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.88) 45%, rgba(255,255,255,0.55) 72%, rgba(255,255,255,0.1) 100%);
+    }
+    .team-photo-content { position: relative; z-index: 2; text-align: center; padding: 80px 60px; max-width: 760px; margin: 0 auto; }
+    .team-photo-content h2 { font-size: clamp(1.4rem,2.4vw,2.5rem); font-weight: 300; color: var(--navy); margin-bottom: 20px; line-height: 1.2; }
+    .team-photo-content p { font-size: 17px; color: var(--text-secondary); line-height: 1.7; }
+
+    .careers-section { background: var(--light-bg); padding: 100px 60px; }
+    .careers-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .careers-text h2 { font-size: clamp(1.4rem,2.4vw,2.5rem); font-weight: 300; color: var(--text-primary); margin-bottom: 18px; line-height: 1.2; }
+    .careers-text p { font-size: 15.5px; color: var(--text-secondary); line-height: 1.75; }
+    .careers-actions { display: flex; flex-direction: column; gap: 16px; }
+    .action-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 14px;
+      padding: 24px 28px; display: flex; align-items: center; gap: 20px;
+      text-decoration: none; color: var(--text-primary);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .action-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(15,37,66,0.10); border-color: var(--teal); }
+    .action-icon { width: 46px; height: 46px; border-radius: 12px; background: linear-gradient(135deg, rgba(47,174,227,0.12) 0%, rgba(47,174,227,0.06) 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .action-icon svg { width: 22px; height: 22px; color: var(--teal); }
+    .action-card-label { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+    .action-card-sublabel { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+    @media (max-width: 900px) {
+      .values-grid { grid-template-columns: 1fr; }
+      .leadership-card { grid-template-columns: 1fr; }
+      .leadership-photo { min-height: 280px; }
+      .careers-inner { grid-template-columns: 1fr; gap: 36px; }
+      .meet-team-section { padding: 70px 28px; }
+      .careers-section { padding: 70px 28px; }
+    }
+
   </style>
 </head>
 <body>
@@ -1280,12 +1384,8 @@
 
     <ul class="hero-nav-links">
       <li><a href="/MarketBoomer/">Home</a></li>
-      <li class="has-dropdown">
-        <a href="/MarketBoomer/about/">About Us <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
-        <ul class="nav-dropdown">
-          <li><a href="/MarketBoomer/about/meet-our-team/">Meet our team</a></li>
-          <li><a href="#">In The News</a></li>
-        </ul>
+      <li>
+      <a href="/MarketBoomer/about/">About us</a>
       </li>
       <li class="has-dropdown">
         <a href="/MarketBoomer/features/">Features <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
@@ -1333,10 +1433,7 @@
     </div>
     <ul class="mobile-nav-links">
       <li><a href="/MarketBoomer/">Home</a></li>
-      <li>
-        <button class="mobile-nav-toggle">About Us <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-        <ul class="mobile-sub"><li><a href="/MarketBoomer/about/">About Us</a></li><li><a href="/MarketBoomer/about/meet-our-team/">Meet our team</a></li><li><a href="#">In The News</a></li></ul>
-      </li>
+      <li><a href="/MarketBoomer/about/">About us</a></li>
       <li>
         <button class="mobile-nav-toggle">Features <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
         <ul class="mobile-sub">
@@ -1510,6 +1607,113 @@
           src="https://marketboomer.com/wp-content/uploads/2019/08/marketboomer-procurement-software-hotels_0001_shutterstock_1376943989.jpg"
           alt="Hotel procurement platform in use"
         />
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==================== MEET OUR TEAM ==================== -->
+  <section class="meet-team-section">
+    <div class="meet-team-inner">
+
+      <div class="meet-team-header reveal">
+        <span class="eyebrow">Our people</span>
+        <h2>Meet the <span class="highlight">Team</span></h2>
+      </div>
+
+      <!-- Core Values -->
+      <div class="values-grid">
+        <div class="value-card reveal" style="transition-delay:0.05s;">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <h3>Own it and Talk Straight</h3>
+          <p>Deliver what you've committed to. Ambiguity is not acceptable. Everything is out on the table — it's ok to challenge each other in the spirit of a better outcome. Seek clarity if you are unclear. We're all on the same team and transparent conversations are key to progress.</p>
+        </div>
+        <div class="value-card reveal" style="transition-delay:0.15s;">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3>Be the Customer</h3>
+          <p>Put yourself in your customer's shoes. What impact will this have on them? What would you like if you were them in this situation? What do they need to know?</p>
+        </div>
+        <div class="value-card reveal" style="transition-delay:0.25s;">
+          <div class="value-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+              <polyline points="16 7 22 7 22 13"/>
+            </svg>
+          </div>
+          <h3>Raise the Bar</h3>
+          <p>Take 'good' and make it great. If you see something that needs doing, grab it and get it done with no band-aids. Solve for the greater good and for all time. Grow your own skills and help others grow with you.</p>
+        </div>
+      </div>
+
+      <!-- Leadership -->
+      <div class="leadership-card reveal">
+        <div class="leadership-photo">
+          <img src="https://marketboomer.com/wp-content/uploads/2022/02/Malcolm-Jull-v2.jpg" alt="Malcolm Jull, Chief Executive Officer at Marketboomer" loading="lazy" />
+        </div>
+        <div class="leadership-bio">
+          <p class="leader-name">Malcolm Jull</p>
+          <p class="leader-title">Chief Executive Officer</p>
+          <p class="leader-bio">With extensive experience to share, and the energy to inspire, Malcolm champions an exciting future for both Marketboomer and our wider PurchasePlus community, where our technology unlocks solutions and opportunities that grow a sustained, prosperous, and evolving global hospitality industry for all. Not just a bigger piece of the pie, but a bigger pie for all — including our buyers, suppliers, and partners.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== TEAM PHOTO ==================== -->
+  <section class="team-photo-section">
+    <img class="team-photo-bg" src="https://marketboomer.com/wp-content/uploads/2022/02/brooke-cagle-JBwcenOuRCg-unsplash-2-scaled.jpg" alt="The Marketboomer team" loading="lazy" />
+    <div class="team-photo-overlay" aria-hidden="true"></div>
+    <div class="team-photo-content reveal">
+      <h2>A <strong>team</strong> built from the <span class="highlight">hospitality industry</span></h2>
+      <p>We have specialists from hotel management to hospitality, procurement, technology and software — making us better positioned to improve it.</p>
+    </div>
+  </section>
+
+  <!-- ==================== CAREERS ==================== -->
+  <section class="careers-section">
+    <div class="careers-inner">
+      <div class="careers-text reveal">
+        <h2>Interested in <strong>joining</strong> the <span class="highlight">Marketboomer team?</span></h2>
+        <p>All current position vacancies will be posted on our LinkedIn page. To be considered for a position, please send your CV and cover letter to help@marketboomer.com — we'd love to hear from you!</p>
+      </div>
+      <div class="careers-actions">
+        <a href="https://linkedin.com/company/marketboomer" target="_blank" rel="noopener noreferrer" class="action-card reveal" style="transition-delay:0.1s;">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+              <rect x="2" y="9" width="4" height="12"/>
+              <circle cx="4" cy="4" r="2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="action-card-label">View open positions on LinkedIn</div>
+            <div class="action-card-sublabel">linkedin.com/company/marketboomer</div>
+          </div>
+        </a>
+        <a href="mailto:help@marketboomer.com" class="action-card reveal" style="transition-delay:0.2s;">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div>
+            <div class="action-card-label">Send your CV to help@marketboomer.com</div>
+            <div class="action-card-sublabel">We'd love to hear from you</div>
+          </div>
+        </a>
       </div>
     </div>
   </section>
