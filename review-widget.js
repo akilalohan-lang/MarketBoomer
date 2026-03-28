@@ -1,416 +1,490 @@
-/* MarketBoomer Review Widget — GitHub-backed storage */
+/* MarketBoomer Review Widget v2 — chat style, no backdrop */
 (function () {
   const GITHUB_TOKEN = ['github', '_pat_', '11B5YKNKA0xc3JKqSICKKB', '_nsGjr6P45RDq2N1uaZ7csbXsWMVhnO5ZwOLG5eMDMbvLWW37HMXQbL40Y8H'].join('');
   const REPO = 'akilalohan-lang/MarketBoomer';
   const API = 'https://api.github.com';
   const REVIEWS_PATH = 'reviews/reviews.json';
 
-  /* ── Inject styles ── */
+  /* ── Styles ── */
   const style = document.createElement('style');
   style.textContent = `
-    #mb-review-fab {
+    #mb-fab {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
-      z-index: 99999;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
       background: #2FAEE3;
       color: #fff;
       border: none;
       border-radius: 50px;
-      padding: 13px 22px;
+      padding: 11px 20px;
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
-      box-shadow: 0 0 24px rgba(47,174,227,0.55), 0 4px 16px rgba(47,174,227,0.3);
+      box-shadow: 0 0 22px rgba(47,174,227,0.5), 0 3px 12px rgba(47,174,227,0.28);
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: transform 0.2s, box-shadow 0.2s;
+      gap: 7px;
+      transition: transform 0.18s, box-shadow 0.18s;
+      line-height: 1;
     }
-    #mb-review-fab:hover {
+    #mb-fab:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 36px rgba(47,174,227,0.7), 0 6px 24px rgba(47,174,227,0.4);
+      box-shadow: 0 0 32px rgba(47,174,227,0.65), 0 5px 18px rgba(47,174,227,0.38);
     }
-    #mb-review-fab svg { flex-shrink: 0; }
 
-    #mb-review-backdrop {
-      display: none;
+    #mb-chat {
       position: fixed;
-      inset: 0;
-      z-index: 99998;
-      background: rgba(10,20,40,0.45);
-      backdrop-filter: blur(3px);
-    }
-    #mb-review-backdrop.open { display: block; }
-
-    #mb-review-panel {
-      position: fixed;
-      bottom: 90px;
-      right: 28px;
-      z-index: 99999;
-      width: 360px;
-      max-width: calc(100vw - 40px);
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      width: 300px;
+      max-width: calc(100vw - 32px);
       background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 12px 48px rgba(10,20,50,0.22), 0 2px 8px rgba(10,20,50,0.08);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(10,20,50,0.18), 0 2px 8px rgba(10,20,50,0.07);
+      display: none;
+      flex-direction: column;
       overflow: hidden;
-      transform: translateY(20px) scale(0.97);
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 0.25s cubic-bezier(.4,0,.2,1), opacity 0.25s ease;
+      /* No pointer-events blocking — page stays interactive */
     }
-    #mb-review-panel.open {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-      pointer-events: all;
-    }
+    #mb-chat.open { display: flex; }
 
-    .mb-panel-header {
-      background: linear-gradient(135deg, #0F2542 0%, #1a3a5c 100%);
-      padding: 18px 20px 16px;
+    /* Header */
+    #mb-chat-header {
+      background: #0F2542;
+      padding: 13px 14px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-shrink: 0;
     }
-    .mb-panel-header-text h3 {
-      margin: 0;
+    #mb-chat-header span {
       color: #fff;
-      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
       font-weight: 700;
-      font-family: 'Inter', sans-serif;
     }
-    .mb-panel-header-text p {
-      margin: 3px 0 0;
-      color: rgba(255,255,255,0.65);
-      font-size: 0.78rem;
-      font-family: 'Inter', sans-serif;
-    }
-    .mb-close-btn {
-      background: rgba(255,255,255,0.12);
+    #mb-chat-close {
+      background: rgba(255,255,255,0.1);
       border: none;
-      color: #fff;
-      width: 30px;
-      height: 30px;
+      color: rgba(255,255,255,0.8);
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 0.75rem;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background 0.15s;
       flex-shrink: 0;
     }
-    .mb-close-btn:hover { background: rgba(255,255,255,0.22); }
+    #mb-chat-close:hover { background: rgba(255,255,255,0.2); }
 
-    .mb-panel-body { padding: 22px 20px; }
-
-    .mb-step { display: none; }
-    .mb-step.active { display: block; }
-
-    .mb-label {
-      display: block;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #0F2542;
-      margin-bottom: 7px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+    /* Name step */
+    #mb-name-step {
+      padding: 16px 14px 14px;
     }
-    .mb-input, .mb-textarea {
+    #mb-name-step p {
+      margin: 0 0 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: #4a5568;
+      line-height: 1.45;
+    }
+    #mb-name-input {
       width: 100%;
       box-sizing: border-box;
       border: 1.5px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 11px 14px;
+      border-radius: 9px;
+      padding: 9px 12px;
       font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #0F2542;
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
       background: #f8fafc;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .mb-input:focus, .mb-textarea:focus {
+    #mb-name-input:focus {
       border-color: #2FAEE3;
-      box-shadow: 0 0 0 3px rgba(47,174,227,0.15);
+      box-shadow: 0 0 0 3px rgba(47,174,227,0.12);
       background: #fff;
     }
-    .mb-textarea { resize: vertical; min-height: 100px; }
-
-    .mb-step-title {
+    #mb-name-error {
       font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #0F2542;
-      margin: 0 0 5px;
+      font-size: 0.74rem;
+      color: #ef4444;
+      margin-top: 6px;
+      display: none;
     }
-    .mb-step-sub {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.82rem;
-      color: #6b7a90;
-      margin: 0 0 18px;
-    }
-
-    .mb-btn-primary {
+    #mb-name-error.show { display: block; }
+    #mb-name-go {
       width: 100%;
+      margin-top: 10px;
       background: #2FAEE3;
       color: #fff;
       border: none;
-      border-radius: 10px;
-      padding: 12px 20px;
+      border-radius: 9px;
+      padding: 10px;
       font-family: 'Inter', sans-serif;
-      font-size: 0.875rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 16px;
-      box-shadow: 0 0 20px rgba(47,174,227,0.4), 0 3px 10px rgba(47,174,227,0.25);
-      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 0 16px rgba(47,174,227,0.38), 0 2px 8px rgba(47,174,227,0.22);
+      transition: transform 0.15s;
     }
-    .mb-btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 28px rgba(47,174,227,0.55), 0 4px 14px rgba(47,174,227,0.35);
-    }
-    .mb-btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
+    #mb-name-go:hover { transform: translateY(-1px); }
 
-    .mb-upload-zone {
-      border: 2px dashed #c8d6e5;
-      border-radius: 10px;
-      padding: 16px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-      margin-top: 14px;
-      background: #f8fafc;
+    /* Chat step */
+    #mb-chat-step { display: none; flex-direction: column; }
+    #mb-chat-step.active { display: flex; }
+
+    /* Message feed */
+    #mb-feed {
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 12px 12px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      scroll-behavior: smooth;
     }
-    .mb-upload-zone:hover, .mb-upload-zone.dragover {
-      border-color: #2FAEE3;
-      background: rgba(47,174,227,0.05);
+    #mb-feed::-webkit-scrollbar { width: 4px; }
+    #mb-feed::-webkit-scrollbar-track { background: transparent; }
+    #mb-feed::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+
+    .mb-bubble-row {
+      display: flex;
+      justify-content: flex-end;
     }
-    .mb-upload-zone p {
-      margin: 0;
+    .mb-bubble {
+      background: #0F2542;
+      color: #fff;
+      border-radius: 12px 12px 2px 12px;
+      padding: 8px 11px;
       font-family: 'Inter', sans-serif;
       font-size: 0.8rem;
-      color: #6b7a90;
+      line-height: 1.45;
+      max-width: 230px;
+      word-break: break-word;
     }
-    .mb-upload-zone input { display: none; }
-
-    .mb-preview-grid {
+    .mb-bubble.sending { opacity: 0.55; }
+    .mb-bubble-imgs {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 4px;
+      margin-top: 5px;
     }
-    .mb-preview-grid img {
-      width: 64px;
-      height: 64px;
+    .mb-bubble-imgs img {
+      width: 56px;
+      height: 56px;
       object-fit: cover;
-      border-radius: 8px;
-      border: 1.5px solid #e2e8f0;
+      border-radius: 6px;
+      border: 1.5px solid rgba(255,255,255,0.15);
     }
-    .mb-img-wrap { position: relative; }
-    .mb-img-remove {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #ef4444;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-size: 10px;
-      line-height: 1;
+
+    .mb-system-msg {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.76rem;
+      color: #8a9ab5;
+      text-align: center;
+      padding: 2px 0;
+    }
+
+    /* Input area */
+    #mb-input-area {
+      padding: 8px 12px 12px;
+      border-top: 1px solid #f0f4f8;
+      flex-shrink: 0;
+    }
+
+    #mb-msg-input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 9px;
+      padding: 8px 11px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: #0F2542;
+      outline: none;
+      resize: none;
+      min-height: 60px;
+      max-height: 120px;
+      background: #f8fafc;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      line-height: 1.4;
+    }
+    #mb-msg-input:focus {
+      border-color: #2FAEE3;
+      box-shadow: 0 0 0 3px rgba(47,174,227,0.12);
+      background: #fff;
+    }
+
+    /* Attachment strip */
+    #mb-attach-strip {
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 6px;
+      margin-top: 6px;
     }
-
-    .mb-success-icon {
-      text-align: center;
-      font-size: 2.8rem;
-      margin-bottom: 10px;
-    }
-    .mb-success-title {
+    #mb-attach-btn {
+      background: #f0f4f8;
+      border: none;
+      border-radius: 7px;
+      padding: 5px 9px;
       font-family: 'Inter', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #0F2542;
-      text-align: center;
-      margin: 0 0 6px;
+      font-size: 0.74rem;
+      color: #4a5568;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.12s;
+      flex-shrink: 0;
     }
-    .mb-success-sub {
+    #mb-attach-btn:hover { background: #e2e8f0; }
+    #mb-attach-input { display: none; }
+    #mb-attach-count {
       font-family: 'Inter', sans-serif;
-      font-size: 0.83rem;
-      color: #6b7a90;
-      text-align: center;
-      margin: 0;
-    }
-
-    .mb-error-msg {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8rem;
-      color: #ef4444;
-      margin-top: 8px;
-      display: none;
-    }
-    .mb-error-msg.visible { display: block; }
-
-    .mb-progress {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8rem;
+      font-size: 0.73rem;
       color: #2FAEE3;
-      margin-top: 10px;
+    }
+
+    /* Action buttons row */
+    #mb-actions {
+      display: flex;
+      gap: 7px;
+      margin-top: 8px;
+    }
+    #mb-send-btn {
+      flex: 1;
+      background: #2FAEE3;
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 9px 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 14px rgba(47,174,227,0.35), 0 2px 6px rgba(47,174,227,0.2);
+      transition: transform 0.15s;
+    }
+    #mb-send-btn:hover { transform: translateY(-1px); }
+    #mb-send-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    #mb-done-btn {
+      flex: 1;
+      background: #f0f4f8;
+      color: #0F2542;
+      border: none;
+      border-radius: 9px;
+      padding: 9px 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    #mb-done-btn:hover { background: #e2e8f0; }
+    #mb-done-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    #mb-send-error {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.73rem;
+      color: #ef4444;
+      margin-top: 5px;
       display: none;
+    }
+    #mb-send-error.show { display: block; }
+
+    /* Done / thank you */
+    #mb-done-step {
+      display: none;
+      padding: 22px 16px 20px;
       text-align: center;
     }
-    .mb-progress.visible { display: block; }
+    #mb-done-step.active { display: block; }
+    #mb-done-step .mb-done-icon { font-size: 2rem; margin-bottom: 8px; }
+    #mb-done-step p {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: #4a5568;
+      line-height: 1.5;
+    }
+    #mb-done-step strong {
+      display: block;
+      font-size: 0.95rem;
+      color: #0F2542;
+      margin-bottom: 5px;
+    }
 
-    @media (max-width: 420px) {
-      #mb-review-panel { right: 12px; left: 12px; width: auto; bottom: 80px; }
-      #mb-review-fab { right: 16px; bottom: 20px; }
+    @media (max-width: 400px) {
+      #mb-chat { right: 10px; left: 10px; width: auto; bottom: 16px; }
+      #mb-fab { right: 14px; bottom: 16px; }
     }
   `;
   document.head.appendChild(style);
 
   /* ── HTML ── */
-  const container = document.createElement('div');
-  container.innerHTML = `
-    <div id="mb-review-backdrop"></div>
-
-    <button id="mb-review-fab" aria-label="Leave a review">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `
+    <button id="mb-fab" aria-label="Leave a review">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
       </svg>
       Leave a review
     </button>
 
-    <div id="mb-review-panel" role="dialog" aria-modal="true" aria-label="Leave a review">
-      <div class="mb-panel-header">
-        <div class="mb-panel-header-text">
-          <h3>Leave a review</h3>
-          <p>We'd love to hear your feedback</p>
-        </div>
-        <button class="mb-close-btn" aria-label="Close" id="mb-panel-close">✕</button>
+    <div id="mb-chat" aria-label="Review chat">
+
+      <div id="mb-chat-header">
+        <span>Leave a review</span>
+        <button id="mb-chat-close" aria-label="Close">✕</button>
       </div>
 
-      <div class="mb-panel-body">
+      <!-- Step 1: Name -->
+      <div id="mb-name-step">
+        <p>What's your first name?</p>
+        <input id="mb-name-input" type="text" placeholder="e.g. Sarah" autocomplete="given-name" maxlength="60" />
+        <div id="mb-name-error">Please enter your name.</div>
+        <button id="mb-name-go">Start →</button>
+      </div>
 
-        <!-- Step 1: Name -->
-        <div class="mb-step active" id="mb-step-1">
-          <p class="mb-step-title">First, what's your name?</p>
-          <p class="mb-step-sub">Just your first name is fine.</p>
-          <label class="mb-label" for="mb-name-input">Your first name</label>
-          <input class="mb-input" id="mb-name-input" type="text" placeholder="e.g. Sarah" autocomplete="given-name" maxlength="60" />
-          <div class="mb-error-msg" id="mb-name-error">Please enter your name to continue.</div>
-          <button class="mb-btn-primary" id="mb-name-next">Continue →</button>
-        </div>
-
-        <!-- Step 2: Review + images -->
-        <div class="mb-step" id="mb-step-2">
-          <p class="mb-step-title" id="mb-step2-greeting">Hi! Share your feedback</p>
-          <p class="mb-step-sub">Tell us about your experience. Screenshots are welcome.</p>
-          <label class="mb-label" for="mb-review-text">Your review</label>
-          <textarea class="mb-textarea" id="mb-review-text" placeholder="What did you think of MarketBoomer?"></textarea>
-          <div class="mb-error-msg" id="mb-review-error">Please write a review before submitting.</div>
-
-          <div class="mb-upload-zone" id="mb-upload-zone">
-            <input type="file" id="mb-file-input" accept="image/*" multiple />
-            <p>📎 Attach screenshots or images<br><span style="color:#aab4c2;font-size:0.74rem;">Click or drag & drop (PNG, JPG, GIF — max 5MB each)</span></p>
+      <!-- Step 2: Chat -->
+      <div id="mb-chat-step">
+        <div id="mb-feed"></div>
+        <div id="mb-input-area">
+          <textarea id="mb-msg-input" placeholder="Type your review here…" rows="3"></textarea>
+          <div id="mb-attach-strip">
+            <button id="mb-attach-btn" type="button">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+              Attach image
+            </button>
+            <input id="mb-attach-input" type="file" accept="image/*" multiple />
+            <span id="mb-attach-count"></span>
           </div>
-          <div class="mb-preview-grid" id="mb-preview-grid"></div>
-
-          <div class="mb-progress" id="mb-submit-progress">Saving your review…</div>
-          <div class="mb-error-msg" id="mb-submit-error"></div>
-          <button class="mb-btn-primary" id="mb-submit-btn">Submit review</button>
+          <div id="mb-actions">
+            <button id="mb-send-btn">Send</button>
+            <button id="mb-done-btn">I'm done</button>
+          </div>
+          <div id="mb-send-error"></div>
         </div>
-
-        <!-- Step 3: Success -->
-        <div class="mb-step" id="mb-step-3">
-          <div class="mb-success-icon">🎉</div>
-          <p class="mb-success-title">Thank you!</p>
-          <p class="mb-success-sub">Your review has been saved. We really appreciate you taking the time to share your thoughts.</p>
-        </div>
-
       </div>
+
+      <!-- Step 3: Thank you -->
+      <div id="mb-done-step">
+        <div class="mb-done-icon">🎉</div>
+        <p><strong>Thank you!</strong>Your reviews have been saved. We really appreciate you taking the time.</p>
+      </div>
+
     </div>
   `;
-  document.body.appendChild(container);
+  document.body.appendChild(wrap);
 
   /* ── State ── */
-  let uploadsData = []; // [{filename, base64, mimeType}]
+  let reviewerName = '';
+  let pendingImages = []; // [{filename, base64, mimeType, previewSrc}]
+  let messageCount = 0;
 
-  /* ── DOM refs ── */
-  const fab = document.getElementById('mb-review-fab');
-  const panel = document.getElementById('mb-review-panel');
-  const backdrop = document.getElementById('mb-review-backdrop');
-  const closeBtn = document.getElementById('mb-panel-close');
-  const nameInput = document.getElementById('mb-name-input');
-  const nameNext = document.getElementById('mb-name-next');
-  const nameError = document.getElementById('mb-name-error');
-  const step2Greeting = document.getElementById('mb-step2-greeting');
-  const reviewText = document.getElementById('mb-review-text');
-  const reviewError = document.getElementById('mb-review-error');
-  const uploadZone = document.getElementById('mb-upload-zone');
-  const fileInput = document.getElementById('mb-file-input');
-  const previewGrid = document.getElementById('mb-preview-grid');
-  const submitBtn = document.getElementById('mb-submit-btn');
-  const submitProgress = document.getElementById('mb-submit-progress');
-  const submitError = document.getElementById('mb-submit-error');
+  /* ── DOM ── */
+  const fab        = document.getElementById('mb-fab');
+  const chat       = document.getElementById('mb-chat');
+  const closeBtn   = document.getElementById('mb-chat-close');
+  const nameStep   = document.getElementById('mb-name-step');
+  const nameInput  = document.getElementById('mb-name-input');
+  const nameError  = document.getElementById('mb-name-error');
+  const nameGo     = document.getElementById('mb-name-go');
+  const chatStep   = document.getElementById('mb-chat-step');
+  const feed       = document.getElementById('mb-feed');
+  const msgInput   = document.getElementById('mb-msg-input');
+  const attachBtn  = document.getElementById('mb-attach-btn');
+  const attachInput= document.getElementById('mb-attach-input');
+  const attachCount= document.getElementById('mb-attach-count');
+  const sendBtn    = document.getElementById('mb-send-btn');
+  const doneBtn    = document.getElementById('mb-done-btn');
+  const sendError  = document.getElementById('mb-send-error');
+  const doneStep   = document.getElementById('mb-done-step');
 
   /* ── Open / close ── */
-  function openPanel() {
-    panel.classList.add('open');
-    backdrop.classList.add('open');
+  function openChat() {
+    chat.classList.add('open');
     fab.style.display = 'none';
-    nameInput.focus();
+    if (!reviewerName) nameInput.focus();
+    else msgInput.focus();
   }
-  function closePanel() {
-    panel.classList.remove('open');
-    backdrop.classList.remove('open');
+  function closeChat() {
+    chat.classList.remove('open');
     fab.style.display = '';
   }
-  fab.addEventListener('click', openPanel);
-  closeBtn.addEventListener('click', closePanel);
-  backdrop.addEventListener('click', closePanel);
+  fab.addEventListener('click', openChat);
+  closeBtn.addEventListener('click', closeChat);
 
-  /* ── Step nav ── */
-  function showStep(n) {
-    document.getElementById('mb-step-1').classList.remove('active');
-    document.getElementById('mb-step-2').classList.remove('active');
-    document.getElementById('mb-step-3').classList.remove('active');
-    document.getElementById('mb-step-' + n).classList.add('active');
+  /* ── Name step ── */
+  function startChat() {
+    const name = nameInput.value.trim();
+    if (!name) { nameError.classList.add('show'); return; }
+    nameError.classList.remove('show');
+    reviewerName = name;
+    nameStep.style.display = 'none';
+    chatStep.classList.add('active');
+    addSystemMsg('Hi ' + name + ', feel free to leave all your reviews in the chat.');
+    msgInput.focus();
+  }
+  nameGo.addEventListener('click', startChat);
+  nameInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') startChat(); });
+
+  /* ── Feed helpers ── */
+  function addSystemMsg(text) {
+    const el = document.createElement('div');
+    el.className = 'mb-system-msg';
+    el.textContent = text;
+    feed.appendChild(el);
+    scrollFeed();
   }
 
-  nameNext.addEventListener('click', function () {
-    const name = nameInput.value.trim();
-    if (!name) { nameError.classList.add('visible'); return; }
-    nameError.classList.remove('visible');
-    step2Greeting.textContent = 'Hi ' + name + '! Share your feedback';
-    showStep(2);
-    reviewText.focus();
-  });
-  nameInput.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') nameNext.click();
-  });
+  function addBubble(text, imgPreviews, sending) {
+    const row = document.createElement('div');
+    row.className = 'mb-bubble-row';
+    const bub = document.createElement('div');
+    bub.className = 'mb-bubble' + (sending ? ' sending' : '');
 
-  /* ── Image upload ── */
-  uploadZone.addEventListener('click', function () { fileInput.click(); });
-  uploadZone.addEventListener('dragover', function (e) { e.preventDefault(); uploadZone.classList.add('dragover'); });
-  uploadZone.addEventListener('dragleave', function () { uploadZone.classList.remove('dragover'); });
-  uploadZone.addEventListener('drop', function (e) {
-    e.preventDefault();
-    uploadZone.classList.remove('dragover');
-    handleFiles(Array.from(e.dataTransfer.files));
-  });
-  fileInput.addEventListener('change', function () {
-    handleFiles(Array.from(fileInput.files));
-    fileInput.value = '';
+    if (text) {
+      const t = document.createElement('div');
+      t.textContent = text;
+      bub.appendChild(t);
+    }
+
+    if (imgPreviews && imgPreviews.length) {
+      const grid = document.createElement('div');
+      grid.className = 'mb-bubble-imgs';
+      imgPreviews.forEach(function (src) {
+        const img = document.createElement('img');
+        img.src = src;
+        grid.appendChild(img);
+      });
+      bub.appendChild(grid);
+    }
+
+    row.appendChild(bub);
+    feed.appendChild(row);
+    scrollFeed();
+    return bub;
+  }
+
+  function scrollFeed() {
+    feed.scrollTop = feed.scrollHeight;
+  }
+
+  /* ── Image attachment ── */
+  attachBtn.addEventListener('click', function () { attachInput.click(); });
+  attachInput.addEventListener('change', function () {
+    handleFiles(Array.from(attachInput.files));
+    attachInput.value = '';
   });
 
   function handleFiles(files) {
@@ -419,45 +493,33 @@
       if (file.size > 5 * 1024 * 1024) return;
       const reader = new FileReader();
       reader.onload = function (e) {
-        const base64Full = e.target.result; // data:image/png;base64,....
-        const base64 = base64Full.split(',')[1];
-        const uid = Date.now() + '_' + Math.random().toString(36).slice(2, 7);
-        const ext = file.name.split('.').pop() || 'jpg';
-        const filename = uid + '.' + ext;
-        uploadsData.push({ filename: filename, base64: base64, mimeType: file.type });
-
-        const wrap = document.createElement('div');
-        wrap.className = 'mb-img-wrap';
-        wrap.dataset.filename = filename;
-        const img = document.createElement('img');
-        img.src = base64Full;
-        const rm = document.createElement('button');
-        rm.className = 'mb-img-remove';
-        rm.innerHTML = '✕';
-        rm.addEventListener('click', function () {
-          uploadsData = uploadsData.filter(function (u) { return u.filename !== filename; });
-          wrap.remove();
-        });
-        wrap.appendChild(img);
-        wrap.appendChild(rm);
-        previewGrid.appendChild(wrap);
+        const src = e.target.result;
+        const base64 = src.split(',')[1];
+        const uid = Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+        const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+        pendingImages.push({ filename: uid + '.' + ext, base64: base64, mimeType: file.type, previewSrc: src });
+        updateAttachCount();
       };
       reader.readAsDataURL(file);
     });
   }
 
-  /* ── GitHub API helpers ── */
+  function updateAttachCount() {
+    attachCount.textContent = pendingImages.length ? pendingImages.length + ' image' + (pendingImages.length > 1 ? 's' : '') + ' ready' : '';
+  }
+
+  /* ── GitHub API ── */
   async function ghGet(path) {
     const res = await fetch(API + '/repos/' + REPO + '/contents/' + path, {
       headers: { Authorization: 'token ' + GITHUB_TOKEN, Accept: 'application/vnd.github.v3+json' }
     });
     if (res.status === 404) return null;
-    if (!res.ok) throw new Error('GitHub GET failed: ' + res.status);
+    if (!res.ok) throw new Error('GET ' + res.status);
     return res.json();
   }
 
-  async function ghPut(path, content64, sha, message) {
-    const body = { message: message, content: content64 };
+  async function ghPut(path, content64, sha, msg) {
+    const body = { message: msg, content: content64 };
     if (sha) body.sha = sha;
     const res = await fetch(API + '/repos/' + REPO + '/contents/' + path, {
       method: 'PUT',
@@ -470,82 +532,100 @@
     });
     if (!res.ok) {
       const err = await res.json().catch(function () { return {}; });
-      throw new Error('GitHub PUT failed: ' + res.status + ' ' + (err.message || ''));
+      throw new Error('PUT ' + res.status + ' ' + (err.message || ''));
     }
     return res.json();
   }
 
-  function toBase64(str) {
-    return btoa(unescape(encodeURIComponent(str)));
+  function b64(str) { return btoa(unescape(encodeURIComponent(str))); }
+
+  async function saveMessage(text, images) {
+    // Upload images first
+    const imageRefs = [];
+    for (const img of images) {
+      const p = 'reviews/images/' + img.filename;
+      await ghPut(p, img.base64, null, 'Review image ' + img.filename);
+      imageRefs.push(p);
+    }
+    // Append to reviews.json
+    const existing = await ghGet(REVIEWS_PATH);
+    let reviews = [];
+    let sha = null;
+    if (existing) {
+      sha = existing.sha;
+      reviews = JSON.parse(decodeURIComponent(escape(atob(existing.content.replace(/\n/g, '')))));
+    }
+    reviews.push({
+      id: Date.now(),
+      name: reviewerName,
+      message: text,
+      images: imageRefs,
+      page: window.location.pathname,
+      timestamp: new Date().toISOString()
+    });
+    await ghPut(REVIEWS_PATH, b64(JSON.stringify(reviews, null, 2)), sha, 'Review from ' + reviewerName);
   }
 
-  /* ── Submit ── */
-  submitBtn.addEventListener('click', async function () {
-    const name = nameInput.value.trim();
-    const text = reviewText.value.trim();
-    if (!text) { reviewError.classList.add('visible'); return; }
-    reviewError.classList.remove('visible');
-    submitError.classList.remove('visible');
+  /* ── Send ── */
+  async function doSend() {
+    const text = msgInput.value.trim();
+    const imgs = pendingImages.slice();
+    if (!text && !imgs.length) {
+      sendError.textContent = 'Please type a message or attach an image.';
+      sendError.classList.add('show');
+      return;
+    }
+    sendError.classList.remove('show');
 
-    submitBtn.disabled = true;
-    submitProgress.classList.add('visible');
+    // Optimistic bubble
+    const previews = imgs.map(function (i) { return i.previewSrc; });
+    const bub = addBubble(text, previews, true);
+
+    // Clear input immediately
+    msgInput.value = '';
+    pendingImages = [];
+    updateAttachCount();
+    messageCount++;
+
+    sendBtn.disabled = true;
+    doneBtn.disabled = true;
 
     try {
-      // 1. Upload images
-      const imageRefs = [];
-      for (const img of uploadsData) {
-        const imgPath = 'reviews/images/' + img.filename;
-        await ghPut(imgPath, img.base64, null, 'Add review image ' + img.filename);
-        imageRefs.push(imgPath);
-      }
-
-      // 2. Read existing reviews.json
-      const existing = await ghGet(REVIEWS_PATH);
-      let reviews = [];
-      let sha = null;
-      if (existing) {
-        sha = existing.sha;
-        const decoded = decodeURIComponent(escape(atob(existing.content.replace(/\n/g, ''))));
-        reviews = JSON.parse(decoded);
-      }
-
-      // 3. Append new review
-      const review = {
-        id: Date.now(),
-        name: name,
-        review: text,
-        images: imageRefs,
-        page: window.location.pathname,
-        timestamp: new Date().toISOString()
-      };
-      reviews.push(review);
-
-      // 4. Write back
-      const newContent = toBase64(JSON.stringify(reviews, null, 2));
-      await ghPut(REVIEWS_PATH, newContent, sha, 'Add review from ' + name);
-
-      submitProgress.classList.remove('visible');
-      submitBtn.disabled = false;
-      showStep(3);
-
-      // Auto-close after 4s
-      setTimeout(function () {
-        closePanel();
-        // Reset for next use
-        setTimeout(function () {
-          showStep(1);
-          nameInput.value = '';
-          reviewText.value = '';
-          uploadsData = [];
-          previewGrid.innerHTML = '';
-        }, 400);
-      }, 4000);
-
+      await saveMessage(text, imgs);
+      bub.classList.remove('sending');
     } catch (err) {
-      submitProgress.classList.remove('visible');
-      submitBtn.disabled = false;
-      submitError.textContent = 'Something went wrong: ' + err.message + '. Please try again.';
-      submitError.classList.add('visible');
+      bub.classList.remove('sending');
+      bub.style.background = '#fee2e2';
+      bub.style.color = '#991b1b';
+      sendError.textContent = 'Failed to save — check your connection and try again.';
+      sendError.classList.add('show');
     }
+
+    sendBtn.disabled = false;
+    doneBtn.disabled = false;
+    msgInput.focus();
+  }
+
+  sendBtn.addEventListener('click', doSend);
+  msgInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); doSend(); }
   });
+
+  /* ── I'm done ── */
+  doneBtn.addEventListener('click', function () {
+    chatStep.classList.remove('active');
+    doneStep.classList.add('active');
+    setTimeout(function () {
+      closeChat();
+      setTimeout(function () {
+        // Reset for next open
+        doneStep.classList.remove('active');
+        chatStep.classList.add('active');
+        feed.innerHTML = '';
+        messageCount = 0;
+        addSystemMsg('Hi ' + reviewerName + ', feel free to leave all your reviews in the chat.');
+      }, 400);
+    }, 3000);
+  });
+
 })();
