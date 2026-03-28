@@ -116,7 +116,9 @@ button, .btn {
   transform: translateY(-8px);
   transition: opacity 0.2s, transform 0.2s, visibility 0.2s; z-index: 100;
 }
-.hero-nav-links > li.nav-open .nav-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+.hero-nav-links > li.has-dropdown:hover .nav-dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
+    .hero-nav-links > li.has-dropdown:hover > a { color: var(--navy); background: rgba(15,37,66,0.04); }
+    .hero-nav-links > li.has-dropdown:hover .nav-chevron { transform: rotate(180deg); }
 .nav-dropdown a {
   display: block; padding: 9px 14px; color: rgba(15,37,66,0.7);
   text-decoration: none; font-size: 0.78rem; font-weight: 400;
@@ -815,7 +817,7 @@ strong { font-weight: 800; }
     <li><a href="/MarketBoomer/">Home</a></li>
     <li>
       <button class="mobile-nav-toggle">About Us <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-      <ul class="mobile-sub"><li><a href="#">In The News</a></li></ul>
+      <ul class="mobile-sub"><li><a href="/MarketBoomer/about/">About Us</a></li><li><a href="/MarketBoomer/about/meet-our-team/">Meet our team</a></li><li><a href="#">In The News</a></li></ul>
     </li>
     <li>
       <button class="mobile-nav-toggle">Features <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
