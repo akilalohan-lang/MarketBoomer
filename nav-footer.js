@@ -128,25 +128,25 @@
     .hamburger-btn.open span:nth-child(2) { opacity: 0; }
     .hamburger-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
     .mobile-nav-overlay {
-      position: fixed; inset: 0;
+      position: fixed !important; inset: 0;
       background: rgba(9,26,48,0.45);
       z-index: 1999;
       transition: opacity 0.3s;
     }
     .mobile-nav {
+      display: none !important;
       position: fixed !important;
-      top: 0 !important; right: -320px !important;
+      top: 0 !important; right: 0 !important;
       width: 300px; max-width: 90vw; height: 100vh !important;
       background: #ffffff;
       z-index: 2000;
       overflow-y: auto;
-      transition: right 0.3s cubic-bezier(0.22, 1, 0.36, 1);
       padding: 0 0 40px;
-      display: flex; flex-direction: column;
+      flex-direction: column;
       box-shadow: -8px 0 40px rgba(9,26,48,0.12);
       font-family: 'Inter', sans-serif;
     }
-    .mobile-nav.open { right: 0 !important; }
+    .mobile-nav.open { display: flex !important; }
     .mobile-nav-header {
       display: flex; align-items: center; justify-content: space-between;
       padding: 18px 20px;
@@ -350,20 +350,19 @@
       <div class="footer-col footer-col-brand">
         <img class="footer-brand-logo" src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png" alt="Marketboomer PurchasePlus" />
         <div class="footer-contact-list">
-          <p><strong>AU</strong> <a href="tel:1300411014">1300 411 014</a></p>
-          <p><strong>AU</strong> <a href="tel:+61258496957">+61 258 496 957</a></p>
-          <p><strong>SG</strong> <a href="tel:+6531251540">+65 3125 1540</a></p>
-          <p><strong>US</strong> <a href="tel:+16802255236">+1 (680) 225-5236</a></p>
-          <p><strong>TH</strong> <a href="tel:+6622553703">+66 2255 3703</a></p>
-          <p><strong>GB</strong> <a href="tel:+442045387068">+44 204 538 7068</a></p>
+          <p><strong>AU</strong> <a href="tel:+61258496957">+61 2 5849 6957</a></p>
+          <p><strong>SG</strong> <a href="tel:+6531388600">+65 3138 8600</a></p>
+          <p><strong>US</strong> <a href="tel:+16802255236">+1 680 225 5236</a></p>
+          <p><strong>TH</strong> <a href="tel:+6624609340">+66 2 460 9340</a></p>
+          <p><strong>GB</strong> <a href="tel:+442045387068">+44 20 4538 7068</a></p>
           <p><a href="mailto:help@marketboomer.com">help@marketboomer.com</a></p>
-          <p class="footer-address">Level 4/11<br/>York Street<br/>Sydney NSW 2000<br/>Australia</p>
+          <p class="footer-address">477 Pitt Street<br/>Haymarket NSW 2000<br/>Australia</p>
         </div>
       </div>
       <div class="footer-col">
         <h4 class="footer-col-title">About</h4>
         <p class="footer-col-text">Created by hospitality, for hospitality, our cloud-based digital procurement solutions and expertise, help businesses grow by streamlining and optimising buyer-seller interactions.</p>
-        <p class="footer-col-text">Established in 1995, from our Headquarters in Sydney, Australia, with offices across Asia, Marketboomer proudly operates across 12 countries with a global community of over 2500 hospitality buyers and suppliers.</p>
+        <p class="footer-col-text">Established in 1995, from our Headquarters in Sydney, Australia, with offices across Asia, Marketboomer proudly operates across 25 countries with a global community of over 5,000 hospitality buyers and suppliers.</p>
       </div>
       <div class="footer-col">
         <h4 class="footer-col-title">Our Tools</h4>
@@ -418,7 +417,7 @@
     hamburgerBtn.classList.remove('open');
     mobileNav.classList.remove('open');
     overlay.style.opacity = '0';
-    setTimeout(function () { overlay.style.display = 'none'; }, 300);
+    setTimeout(function () { overlay.style.display = 'none'; }, 150);
     document.body.style.overflow = '';
   }
 
