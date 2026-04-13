@@ -1490,23 +1490,23 @@
       <div class="before-after-photo reveal" id="beforeAfterPhoto">
         <img
           id="baImage"
-          src="/MarketBoomer/images/before-paper-invoices.webp"
-          alt="Hotel procurement before Marketboomer — paper invoice chaos"
+          src="https://marketboomer.com/wp-content/uploads/2019/08/marketboomer-procurement-software-hotels_0001_shutterstock_1376943989.jpg"
+          alt="Hotel procurement after Marketboomer — results"
           loading="lazy"
         />
         <div class="before-after-labels">
-          <button class="label-before active" onclick="setBAState('before')">Before</button>
-          <button class="label-after" onclick="setBAState('after')">After</button>
+          <button class="label-before" onclick="setBAState('before')">Before</button>
+          <button class="label-after active" onclick="setBAState('after')">After</button>
         </div>
       </div>
       <div class="before-after-text reveal reveal-delay-2" id="beforeAfterText">
-        <div class="ba-state" id="baTextBefore">
+        <div class="ba-state hidden" id="baTextBefore">
           <span class="eyebrow">Without Marketboomer</span>
           <h2>The daily reality of <strong>manual</strong> procurement</h2>
           <p>Stacks of paper purchase orders. Hours of manual data entry. Invoices lost in inboxes. No visibility over what's been ordered, received, or paid — until something goes wrong.</p>
           <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">This is what procurement looks like without the right tools.</p>
         </div>
-        <div class="ba-state hidden" id="baTextAfter">
+        <div class="ba-state" id="baTextAfter">
           <span class="eyebrow">The proof is in the results</span>
           <h2>See the <strong>difference</strong> <span class="highlight">Marketboomer</span> makes</h2>
           <p>Photo submitted by a PurchasePlus customer. Left: 5 days' invoices (before Paperless Invoicing) from 10–14 Sep 2018. Right: 5 days' invoices (after Paperless Invoicing) from 29 July – 2 Aug 2019.</p>
@@ -1873,8 +1873,8 @@
       }
     }
 
-    // Default: Before active on load
-    setBAState('before');
+    // Default: After active on load
+    setBAState('after');
   </script>
 </body>
 </html>
