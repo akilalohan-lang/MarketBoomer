@@ -662,6 +662,12 @@
       font-weight: 700;
       border-radius: 100px;
       padding: 4px 12px;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      opacity: 0.45;
+      transition: opacity 0.2s;
     }
 
     .label-before {
@@ -674,6 +680,27 @@
       background: rgba(34,197,94,0.1);
       color: #16a34a;
       border: 1px solid rgba(34,197,94,0.2);
+    }
+
+    .label-before.active,
+    .label-after.active {
+      opacity: 1;
+    }
+
+    .before-after-photo img {
+      transition: opacity 0.35s ease;
+    }
+
+    .before-after-photo img.fading {
+      opacity: 0;
+    }
+
+    .ba-state {
+      display: block;
+    }
+
+    .ba-state.hidden {
+      display: none;
     }
 
     .before-after-caption {
@@ -1462,20 +1489,29 @@
     <div class="before-after-inner">
       <div class="before-after-photo reveal" id="beforeAfterPhoto">
         <img
-          src="https://marketboomer.com/wp-content/uploads/2019/08/marketboomer-procurement-software-hotels_0001_shutterstock_1376943989.jpg"
-          alt="Hotel procurement invoices before and after Marketboomer"
+          id="baImage"
+          src="/MarketBoomer/images/before-paper-invoices.webp"
+          alt="Hotel procurement before Marketboomer — paper invoice chaos"
           loading="lazy"
         />
         <div class="before-after-labels">
-          <span class="label-before">Before</span>
-          <span class="label-after">After</span>
+          <button class="label-before active" onclick="setBAState('before')">Before</button>
+          <button class="label-after" onclick="setBAState('after')">After</button>
         </div>
       </div>
       <div class="before-after-text reveal reveal-delay-2" id="beforeAfterText">
-        <span class="eyebrow">The proof is in the results</span>
-        <h2>See the <strong>difference</strong> <span class="highlight">Marketboomer</span> makes</h2>
-        <p>Photo submitted by a PurchasePlus customer. Left: 5 days' invoices (before Paperless Invoicing) from 10–14 Sep 2018. Right: 5 days' invoices (after Paperless Invoicing) from 29 July – 2 Aug 2019.</p>
-        <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">This represents a <strong>reduction in paper invoices of over 90%</strong> within 10 months of going live.</p>
+        <div class="ba-state" id="baTextBefore">
+          <span class="eyebrow">Without Marketboomer</span>
+          <h2>The daily reality of <strong>manual</strong> procurement</h2>
+          <p>Stacks of paper purchase orders. Hours of manual data entry. Invoices lost in inboxes. No visibility over what's been ordered, received, or paid — until something goes wrong.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">This is what procurement looks like without the right tools.</p>
+        </div>
+        <div class="ba-state hidden" id="baTextAfter">
+          <span class="eyebrow">The proof is in the results</span>
+          <h2>See the <strong>difference</strong> <span class="highlight">Marketboomer</span> makes</h2>
+          <p>Photo submitted by a PurchasePlus customer. Left: 5 days' invoices (before Paperless Invoicing) from 10–14 Sep 2018. Right: 5 days' invoices (after Paperless Invoicing) from 29 July – 2 Aug 2019.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">This represents a <strong>reduction in paper invoices of over 90%</strong> within 10 months of going live.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1806,5 +1842,39 @@
 
 
   <script src="/MarketBoomer/review-widget.js"></script>
+  <script>
+    var BA_IMAGES = {
+      before: '/MarketBoomer/images/before-paper-invoices.webp',
+      after:  'https://marketboomer.com/wp-content/uploads/2019/08/marketboomer-procurement-software-hotels_0001_shutterstock_1376943989.jpg'
+    };
+
+    function setBAState(state) {
+      var img = document.getElementById('baImage');
+      var btnBefore = document.querySelector('.label-before');
+      var btnAfter  = document.querySelector('.label-after');
+      var textBefore = document.getElementById('baTextBefore');
+      var textAfter  = document.getElementById('baTextAfter');
+
+      btnBefore.classList.toggle('active', state === 'before');
+      btnAfter.classList.toggle('active',  state === 'after');
+
+      img.classList.add('fading');
+      setTimeout(function() {
+        img.src = BA_IMAGES[state];
+        img.classList.remove('fading');
+      }, 350);
+
+      if (state === 'before') {
+        textBefore.classList.remove('hidden');
+        textAfter.classList.add('hidden');
+      } else {
+        textAfter.classList.remove('hidden');
+        textBefore.classList.add('hidden');
+      }
+    }
+
+    // Default: Before active on load
+    setBAState('before');
+  </script>
 </body>
 </html>
