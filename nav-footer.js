@@ -266,39 +266,39 @@
   var NAV_HTML = `
   <nav class="hero-nav">
     <div class="hero-logo">
-      <a href="/MarketBoomer/"><img src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png" alt="Marketboomer PurchasePlus" /></a>
+      <a href="https://marketboomer.com/"><img src="https://marketboomer.com/wp-content/uploads/2022/02/marketboomer_logo-2.png" alt="Marketboomer PurchasePlus" /></a>
     </div>
     <ul class="hero-nav-links">
-      <li><a href="/MarketBoomer/">Home</a></li>
-      <li><a href="/MarketBoomer/about/">About us</a></li>
+      <li><a href="https://marketboomer.com/">Home</a></li>
+      <li><a href="https://marketboomer.com/about-market-boomer/">About us</a></li>
       <li class="has-dropdown">
-        <a href="/MarketBoomer/features/">Features <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <a href="https://marketboomer.com/features/">Features <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
         <ul class="nav-dropdown">
-          <li><a href="/MarketBoomer/features/real-time-marketplace/">Real Time Marketplace</a></li>
-          <li><a href="/MarketBoomer/features/robotic-automation/">Robotic Automation</a></li>
-          <li><a href="/MarketBoomer/features/centralised-data/">Centralised Data</a></li>
+          <li><a href="https://marketboomer.com/features/real-time-marketplace/">Real Time Marketplace</a></li>
+          <li><a href="https://marketboomer.com/features/robotic-automation/">Robotic Automation</a></li>
+          <li><a href="https://marketboomer.com/features/centralised-data/">Centralised Data</a></li>
         </ul>
       </li>
       <li class="has-dropdown">
-        <a href="/MarketBoomer/our-solutions/">Our Solutions <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <a href="https://marketboomer.com/our-solutions/">Our Solutions <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
         <ul class="nav-dropdown">
-          <li><a href="/MarketBoomer/our-solutions/purchaseplus/">PurchasePlus</a></li>
-          <li><a href="/MarketBoomer/our-solutions/paperless-invoicing/">Paperless Invoicing</a></li>
-          <li><a href="/MarketBoomer/api/">API Documentation</a></li>
+          <li><a href="https://marketboomer.com/our-solutions/purchase-plus/">PurchasePlus</a></li>
+          <li><a href="https://marketboomer.com/our-solutions/paperless-invoicing/">Paperless Invoicing</a></li>
+          <li><a href="https://marketboomer.com/api/">API Documentation</a></li>
         </ul>
       </li>
       <li class="has-dropdown">
-        <a href="/MarketBoomer/our-customers/">Our Customers <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <a href="https://marketboomer.com/our-customers/">Our Customers <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
         <ul class="nav-dropdown">
-          <li><a href="/MarketBoomer/our-customers/buyers/">Buyers</a></li>
-          <li><a href="/MarketBoomer/our-customers/suppliers/">Suppliers</a></li>
+          <li><a href="https://marketboomer.com/our-customers/buyers/">Buyers</a></li>
+          <li><a href="https://marketboomer.com/our-customers/suppliers/">Suppliers</a></li>
           <li><a href="#">Channel Partners</a></li>
         </ul>
       </li>
-      <li><a href="/MarketBoomer/contact/">Contact</a></li>
-      <li><a href="/MarketBoomer/health-check/">Help</a></li>
+      <li><a href="https://marketboomer.com/contact-us/">Contact</a></li>
+      <li><a href="https://marketboomer.com/hotel-procurement-health-check/">Help</a></li>
     </ul>
-    <a href="/MarketBoomer/contact/" class="hero-nav-cta">Get started</a>
+    <a href="https://marketboomer.com/contact-us/" class="hero-nav-cta">Get started</a>
     <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu">
       <span></span><span></span><span></span>
     </button>
@@ -310,36 +310,36 @@
       <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">&#x2715;</button>
     </div>
     <ul class="mobile-nav-links">
-      <li><a href="/MarketBoomer/">Home</a></li>
-      <li><a href="/MarketBoomer/about/">About us</a></li>
+      <li><a href="https://marketboomer.com/">Home</a></li>
+      <li><a href="https://marketboomer.com/about-market-boomer/">About us</a></li>
       <li>
         <button class="mobile-nav-toggle">Features <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
         <ul class="mobile-sub">
-          <li><a href="/MarketBoomer/features/real-time-marketplace/">Real Time Marketplace</a></li>
-          <li><a href="/MarketBoomer/features/robotic-automation/">Robotic Automation</a></li>
-          <li><a href="/MarketBoomer/features/centralised-data/">Centralised Data</a></li>
+          <li><a href="https://marketboomer.com/features/real-time-marketplace/">Real Time Marketplace</a></li>
+          <li><a href="https://marketboomer.com/features/robotic-automation/">Robotic Automation</a></li>
+          <li><a href="https://marketboomer.com/features/centralised-data/">Centralised Data</a></li>
         </ul>
       </li>
       <li>
         <button class="mobile-nav-toggle">Our Solutions <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
         <ul class="mobile-sub">
-          <li><a href="/MarketBoomer/our-solutions/purchaseplus/">PurchasePlus</a></li>
-          <li><a href="/MarketBoomer/our-solutions/paperless-invoicing/">Paperless Invoicing</a></li>
+          <li><a href="https://marketboomer.com/our-solutions/purchase-plus/">PurchasePlus</a></li>
+          <li><a href="https://marketboomer.com/our-solutions/paperless-invoicing/">Paperless Invoicing</a></li>
         </ul>
       </li>
       <li>
         <button class="mobile-nav-toggle">Our Customers <svg class="mobile-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
         <ul class="mobile-sub">
-          <li><a href="/MarketBoomer/our-customers/buyers/">Buyers</a></li>
-          <li><a href="/MarketBoomer/our-customers/suppliers/">Suppliers</a></li>
+          <li><a href="https://marketboomer.com/our-customers/buyers/">Buyers</a></li>
+          <li><a href="https://marketboomer.com/our-customers/suppliers/">Suppliers</a></li>
           <li><a href="#">Channel Partners</a></li>
         </ul>
       </li>
-      <li><a href="/MarketBoomer/contact/">Contact</a></li>
-      <li><a href="/MarketBoomer/health-check/">Help</a></li>
+      <li><a href="https://marketboomer.com/contact-us/">Contact</a></li>
+      <li><a href="https://marketboomer.com/hotel-procurement-health-check/">Help</a></li>
     </ul>
     <div class="mobile-nav-footer">
-      <a href="/MarketBoomer/contact/" class="hero-nav-cta">Get started</a>
+      <a href="https://marketboomer.com/contact-us/" class="hero-nav-cta">Get started</a>
     </div>
   </div>`;
 
@@ -367,8 +367,8 @@
       <div class="footer-col">
         <h4 class="footer-col-title">Our Tools</h4>
         <ul class="footer-nav-list">
-          <li><a href="/MarketBoomer/our-solutions/purchaseplus/">PurchasePlus</a></li>
-          <li><a href="/MarketBoomer/our-solutions/paperless-invoicing/">Paperless Invoicing</a></li>
+          <li><a href="https://marketboomer.com/our-solutions/purchase-plus/">PurchasePlus</a></li>
+          <li><a href="https://marketboomer.com/our-solutions/paperless-invoicing/">Paperless Invoicing</a></li>
           <li><a href="#">Connectivity and Data Translation</a></li>
           <li><a href="#">Business Intelligence</a></li>
           <li><a href="#">Document Storage</a></li>
