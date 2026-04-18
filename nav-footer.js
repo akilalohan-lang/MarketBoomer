@@ -209,7 +209,7 @@
 
     /* ── FOOTER ── */
     .site-footer {
-      background: linear-gradient(135deg, #0f2542 0%, #1a5a8c 60%, #2faee3 100%);
+      background: linear-gradient(135deg, #0f2542 0%, #1a5a8c 60%, #2faee3 100%) !important;
       color: rgba(255,255,255,0.85);
       padding: 64px 60px 0;
       font-family: 'Inter', sans-serif;
